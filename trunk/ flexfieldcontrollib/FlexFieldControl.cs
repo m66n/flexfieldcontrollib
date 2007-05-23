@@ -598,6 +598,26 @@ namespace FlexFieldControlLib
 
             Controls.Add( sc );
          }
+
+         for ( int index = 0; index < _separatorControls.Count; ++index )
+         {
+            string text;
+
+            if ( index == 0 )
+            {
+               text = "<";
+            }
+            else if ( index == ( _separatorControls.Count - 1 ) )
+            {
+               text = ">";
+            }
+            else
+            {
+               text = "><";
+            }
+
+            _separatorControls[index].Text = text;
+         }
       }
 
       private bool IsValidFieldIndex( int fieldIndex )
@@ -612,12 +632,10 @@ namespace FlexFieldControlLib
 
       private bool IsValidSeparatorIndex( int separatorIndex )
       {
-         Debug.Assert( false );
          if ( separatorIndex >= 0 && separatorIndex < _separatorControls.Count )
          {
             return true;
          }
-
 
          return false;
       }
