@@ -93,14 +93,7 @@ namespace FlexFieldControlLib
 
             base.MaxLength = value;
 
-            // When MaxLength is changed, RangeLow and RangeHigh are reset
-            RangeLow = 0;
-            RangeHigh = _valueFormatter.MaxValue( base.MaxLength );
-
-            // Text is reset, too.
-            Text = String.Empty;
-
-            Size = MinimumSize;
+            ResetProperties();
          }
       }
 
@@ -199,7 +192,7 @@ namespace FlexFieldControlLib
                      break;
                }
 
-               Size = MinimumSize;
+               ResetProperties();
 
                ResetCedeFocusKeys();
             }
@@ -403,12 +396,21 @@ namespace FlexFieldControlLib
 
             if ( value > RangeHigh )
             {
-               Text = _valueFormatter.ValueText( RangeHigh );
+               base.Text = _valueFormatter.ValueText( RangeHigh );
                SelectionStart = 0;
             }
             else
             {
-               Text = GetCasedText();
+               int originalLength = TextLength;
+               int newSelectionStart = SelectionStart;
+
+               base.Text = GetCasedText();
+
+               if ( TextLength < originalLength )
+               {
+                  newSelectionStart -= ( originalLength - TextLength );
+                  SelectionStart = newSelectionStart;
+               }
             }
          }
 
@@ -556,7 +558,10 @@ namespace FlexFieldControlLib
 
          bool nonZeroFound = false;
 
-         while ( textIndex < text.Length && valueStringIndex < valueString.Length )
+         bool zeroAppended = false;
+
+         while ( ( textIndex < text.Length ) &&
+                 ( valueStringIndex < valueString.Length ) )
          {
             if ( !nonZeroFound && text[textIndex] == '0' )
             {
@@ -564,8 +569,13 @@ namespace FlexFieldControlLib
                {
                   sb.Append( '0' );
                }
-               
-               ++textIndex;
+               else if ( !zeroAppended && ( value == 0 ) )
+               {
+                  sb.Append( '0' );
+                  zeroAppended = true;
+               }
+
+               ++textIndex;          
             }
             else if ( text[textIndex] == valueString[valueStringIndex] )
             {
@@ -687,6 +697,16 @@ namespace FlexFieldControlLib
          }
 
          return false;
+      }
+
+      private void ResetProperties()
+      {
+         RangeLow = 0;
+         RangeHigh = _valueFormatter.MaxValue( base.MaxLength );
+
+         Text = String.Empty;
+
+         Size = MinimumSize;
       }
 
       private void SendCedeFocusEvent( Action action )

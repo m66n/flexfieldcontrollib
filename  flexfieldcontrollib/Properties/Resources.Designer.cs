@@ -61,15 +61,6 @@ namespace FlexFieldControlLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to |.
-        /// </summary>
-        internal static string DefaultSeparatorText {
-            get {
-                return ResourceManager.GetString("DefaultSeparatorText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to FieldControl.
         /// </summary>
         internal static string FieldControlName {

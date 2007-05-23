@@ -78,7 +78,7 @@ namespace FlexFieldControlLib
 
          BackColor = SystemColors.Window;
 
-         Text = FlexFieldControlLib.Properties.Resources.DefaultSeparatorText;
+         //Text = FlexFieldControlLib.Properties.Resources.DefaultSeparatorText;
 
          Size = MinimumSize;
          TabStop = false;
