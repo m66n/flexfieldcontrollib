@@ -39,6 +39,7 @@ namespace FlexFieldControlLib
       #region Public Events
 
       public event EventHandler<FieldChangedEventArgs> FieldChangedEvent;
+      public event EventHandler<FieldValidatedEventArgs> FieldValidatedEvent;
 
       #endregion  // Public Events
 
@@ -216,7 +217,47 @@ namespace FlexFieldControlLib
          }
       }
 
-      public bool IsFieldBlank( int fieldIndex )
+      public int GetRangeHigh( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            return _fieldControls[fieldIndex].RangeHigh;
+         }
+
+         return 0;
+      }
+
+      public int GetRangeLow( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            return _fieldControls[fieldIndex].RangeLow;
+         }
+
+         return 0;
+      }
+
+      public int GetValue( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            return _fieldControls[fieldIndex].Value;
+         }
+
+         return 0;
+      }
+
+      public bool HasFocus( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            return _fieldControls[fieldIndex].Focused;
+         }
+
+         return false;
+      }
+
+      public bool IsBlank( int fieldIndex )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
@@ -276,19 +317,19 @@ namespace FlexFieldControlLib
          }
       }
 
-      public void SetLeadingZeroes( bool leadingZeroes )
+      public void SetLeadingZeros( bool leadingZeros )
       {
          foreach ( FieldControl fc in _fieldControls )
          {
-            fc.LeadingZeroes = leadingZeroes;
+            fc.LeadingZeros = leadingZeros;
          }
       }
 
-      public void SetLeadingZeroes( int fieldIndex, bool leadingZeroes )
+      public void SetLeadingZeros( int fieldIndex, bool leadingZeros )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].LeadingZeroes = leadingZeroes;
+            _fieldControls[fieldIndex].LeadingZeros = leadingZeros;
          }
       }
 
@@ -339,6 +380,14 @@ namespace FlexFieldControlLib
          if ( IsValidSeparatorIndex( separatorIndex ) )
          {
             _separatorControls[separatorIndex].Text = text;
+         }
+      }
+
+      public void SetValue( int fieldIndex, int value )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[fieldIndex].Value = value;
          }
       }
 
@@ -578,6 +627,7 @@ namespace FlexFieldControlLib
             fc.FieldChangedEvent += new EventHandler<FieldChangedEventArgs>( OnFieldChanged );
             fc.FieldId = index;
             fc.FieldSizeChangedEvent += new EventHandler<EventArgs>( OnFieldSizeChanged );
+            fc.FieldValidatedEvent += new EventHandler<FieldValidatedEventArgs>( OnFieldValidated );
             fc.Name = Properties.Resources.FieldControlName + index.ToString( CultureInfo.InvariantCulture );
             fc.Parent = this;
 
@@ -713,6 +763,14 @@ namespace FlexFieldControlLib
       {
          AdjustSize();
          Invalidate();
+      }
+
+      private void OnFieldValidated( object sender, FieldValidatedEventArgs e )
+      {
+         if ( FieldValidatedEvent != null )
+         {
+            FieldValidatedEvent( this, e );
+         }
       }
 
       private void OnFocusCeded( object sender, CedeFocusEventArgs e )
