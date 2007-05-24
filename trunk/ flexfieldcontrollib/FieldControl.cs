@@ -36,6 +36,7 @@ namespace FlexFieldControlLib
       public event EventHandler<CedeFocusEventArgs> CedeFocusEvent;
       public event EventHandler<FieldChangedEventArgs> FieldChangedEvent;
       public event EventHandler<EventArgs> FieldSizeChangedEvent;
+      public event EventHandler<FieldValidatedEventArgs> FieldValidatedEvent;
 
       #endregion  // Public Events
 
@@ -61,15 +62,15 @@ namespace FlexFieldControlLib
          }
       }
 
-      public bool LeadingZeroes
+      public bool LeadingZeros
       {
          get
          {
-            return _leadingZeroes;
+            return _leadingZeros;
          }
          set
          {
-            _leadingZeroes = value;
+            _leadingZeros = value;
 
             if ( !Blank )
             {
@@ -166,6 +167,10 @@ namespace FlexFieldControlLib
          get
          {
             return _valueFormatter.Value( Text );
+         }
+         set
+         {
+            Text = _valueFormatter.ValueText( value );
          }
       }
 
@@ -284,7 +289,7 @@ namespace FlexFieldControlLib
 
       public override string ToString()
       {
-         if ( LeadingZeroes )
+         if ( LeadingZeros )
          {
             return GetPaddedText();
          }
@@ -433,10 +438,25 @@ namespace FlexFieldControlLib
                Text = RangeLow.ToString( CultureInfo.InvariantCulture );
             }
 
-            if ( LeadingZeroes )
+            if ( LeadingZeros )
             {
                Text = GetPaddedText();
             }
+         }
+      }
+
+      protected override void OnValidated( EventArgs e )
+      {
+         base.OnValidated( e );
+
+         if ( FieldValidatedEvent != null )
+         {
+            FieldValidatedEventArgs args = new FieldValidatedEventArgs();
+
+            args.FieldId = FieldId;
+            args.Text = Text;
+
+            FieldValidatedEvent( this, args );
          }
       }
 
@@ -565,7 +585,7 @@ namespace FlexFieldControlLib
          {
             if ( !nonZeroFound && text[textIndex] == '0' )
             {
-               if ( LeadingZeroes )
+               if ( LeadingZeros )
                {
                   sb.Append( '0' );
                }
@@ -761,7 +781,7 @@ namespace FlexFieldControlLib
       private int _fieldId = -1;
       private ValueFormat _valueFormat = ValueFormat.Decimal;
       private IValueFormatter _valueFormatter = new DecimalValue();
-      private bool _leadingZeroes;
+      private bool _leadingZeros;
 
       private int _rangeLow;  // = 0
       private int _rangeHigh = Int32.MaxValue;
