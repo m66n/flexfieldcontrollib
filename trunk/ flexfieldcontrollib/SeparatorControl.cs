@@ -31,23 +31,24 @@ namespace FlexFieldControlLib
    {
       public event EventHandler<EventArgs> SeparatorSizeChangedEvent;
 
-      public bool MinimizeWidth
-      {
-         get
-         {
-            return _minimizeWidth;
-         }
-         set
-         {
-            _minimizeWidth = value;
-            Size = MinimumSize;
-         }
-      }
       public new Size MinimumSize
       {
          get
          {
             return CalculateMinimumSize();
+         }
+      }
+
+      public bool ReadOnly
+      {
+         get
+         {
+            return _readOnly;
+         }
+         set
+         {
+            _readOnly = value;
+            Invalidate();
          }
       }
 
@@ -78,8 +79,6 @@ namespace FlexFieldControlLib
 
          BackColor = SystemColors.Window;
 
-         //Text = FlexFieldControlLib.Properties.Resources.DefaultSeparatorText;
-
          Size = MinimumSize;
          TabStop = false;
       }
@@ -94,13 +93,44 @@ namespace FlexFieldControlLib
       {
          base.OnPaint( e );
 
-         e.Graphics.FillRectangle( new SolidBrush( BackColor ), ClientRectangle );
+         Color backColor = BackColor;
 
-         StringFormat format = new StringFormat();
+         if ( !_backColorChanged )
+         {
+            if ( !Enabled || ReadOnly )
+            {
+               backColor = SystemColors.Control;
+            }
+         }
 
-         format.Alignment = StringAlignment.Center;
+         Color foreColor = ForeColor;
 
-         TextRenderer.DrawText( e.Graphics, Text, Font, ClientRectangle, ForeColor );
+         if ( !Enabled )
+         {
+            foreColor = SystemColors.GrayText;
+         }
+         else if ( ReadOnly )
+         {
+            if ( !_backColorChanged )
+            {
+               foreColor = SystemColors.WindowText;
+            }
+         }
+
+         e.Graphics.FillRectangle( new SolidBrush( backColor ), ClientRectangle );
+         
+         TextRenderer.DrawText( e.Graphics, Text, Font, ClientRectangle,
+            foreColor, _textFormatFlags );
+         
+      }
+
+      protected override void OnParentBackColorChanged( EventArgs e )
+      {
+         base.OnParentBackColorChanged( e );
+
+         BackColor = Parent.BackColor;
+
+         _backColorChanged = true;
       }
 
       protected override void OnSizeChanged( EventArgs e )
@@ -115,28 +145,27 @@ namespace FlexFieldControlLib
 
       private Size CalculateMinimumSize()
       {
-         if ( Font.Italic || !MinimizeWidth )
+         StringBuilder measureString = new StringBuilder();
+
+         for ( int index = 0; index < MeasureCharCount; ++index )
          {
-            return TextRenderer.MeasureText( Text, Font );
+            measureString.Append( Text );
          }
-         else
-         {
-            StringBuilder measureString = new StringBuilder();
 
-            for ( int index = 0; index < MeasureCharCount; ++index )
-            {
-               measureString.Append( Text );
-            }
+         Size minimumSize = TextRenderer.MeasureText( measureString.ToString(), Font,
+            _proposedSize, _textFormatFlags );
+         minimumSize.Width = (int)Math.Ceiling( (double)minimumSize.Width / (double)MeasureCharCount );
 
-            Size minimumSize = TextRenderer.MeasureText( measureString.ToString(), Font );
-            minimumSize.Width = (int)Math.Ceiling( (double)minimumSize.Width / (double)MeasureCharCount );
-
-            return minimumSize;
-         }
+         return minimumSize;
       }
 
       private const int MeasureCharCount = 10;
 
-      private bool _minimizeWidth = true;
+      private Size _proposedSize = new Size( Int32.MaxValue, Int32.MaxValue );
+      private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter |
+         TextFormatFlags.SingleLine;
+
+      private bool _readOnly;
+      private bool _backColorChanged;
    }
 }
