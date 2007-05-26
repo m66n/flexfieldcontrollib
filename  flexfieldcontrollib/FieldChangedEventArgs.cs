@@ -24,8 +24,14 @@ using System;
 
 namespace FlexFieldControlLib
 {
+   /// <summary>
+   /// Arguments for FieldChangedEvent.
+   /// </summary>
    public class FieldChangedEventArgs : EventArgs
    {
+      /// <summary>
+      /// Gets or sets index of field that is raising FieldChangedEvent.
+      /// </summary>
       public int FieldId
       {
          get
@@ -38,6 +44,9 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Gets or sets text of field that is raising FieldChangedEvent.
+      /// </summary>
       public string Text
       {
          get

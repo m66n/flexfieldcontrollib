@@ -33,18 +33,33 @@ using System.Windows.Forms.VisualStyles;
 
 namespace FlexFieldControlLib
 {
+   /// <summary>
+   /// An abstract base for a numeric fielded control.
+   /// </summary>
    [DesignerAttribute( typeof( FlexFieldControlDesigner ) )]
    public abstract partial class FlexFieldControl : UserControl
    {
       #region Public Events
 
+      /// <summary>
+      /// Raised when the text of any field changes.
+      /// </summary>
       public event EventHandler<FieldChangedEventArgs> FieldChangedEvent;
+      /// <summary>
+      /// Raised when the text of any field is validated, such as when focus
+      /// changes from one field to another.
+      /// </summary>
       public event EventHandler<FieldValidatedEventArgs> FieldValidatedEvent;
 
       #endregion  // Public Events
 
       #region Public Properties
 
+      /// <summary>
+      /// Gets or sets a value indicating whether the control is automatically
+      /// sized vertically according to the current font and border. Default is
+      /// true.
+      /// </summary>
       [Browsable( true )]
       public bool AutoHeight
       {
@@ -65,6 +80,10 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Returns the text baseline. Used by FlexFieldControlDesigner to 
+      /// indicate the baseline when control is used in design mode.
+      /// </summary>
       public int Baseline
       {
          get
@@ -87,6 +106,9 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Gets whether every field in the control is blank.
+      /// </summary>
       public bool Blank
       {
          get
@@ -103,6 +125,10 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Gets or sets the border style for the control. Default is
+      /// BorderStyle.Fixed3D.
+      /// </summary>
       public new BorderStyle BorderStyle
       {
          get
@@ -119,14 +145,11 @@ namespace FlexFieldControlLib
          }
       }
 
-      protected override Size DefaultSize
-      {
-         get
-         {
-            return CalculateMinimumSize();
-         }
-      }
-
+      /// <summary>
+      /// Gets or sets the number of fields in the control. Default is 3;
+      /// minimum is 1. Setting this value resets every field and separator
+      /// to its default state.
+      /// </summary>
       public int FieldCount
       {
          get
@@ -148,6 +171,9 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Gets the minimum size for the control.
+      /// </summary>
       public new Size MinimumSize
       {
          get
@@ -156,6 +182,37 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Gets or sets a value indicating whether the contents of the control
+      /// can be changed. 
+      /// </summary>
+      public bool ReadOnly
+      {
+         get
+         {
+            return _readOnly;
+         }
+         set
+         {
+            _readOnly = value;
+
+            foreach ( FieldControl fc in _fieldControls )
+            {
+               fc.ReadOnly = _readOnly;
+            }
+
+            foreach ( SeparatorControl sc in _separatorControls )
+            {
+               sc.ReadOnly = _readOnly;
+            }
+
+            Invalidate();
+         }
+      }
+
+      /// <summary>
+      /// Gets or sets the text of the control.
+      /// </summary>
       public override string Text
       {
          get
@@ -183,6 +240,13 @@ namespace FlexFieldControlLib
 
       #region Public Methods
 
+      /// <summary>
+      /// Adds a KeyEventArgs to every field that indicates when a field should
+      /// cede focus to the next field in the control. By default, each field
+      /// has a single cede focus key -- the [Space] key. 
+      /// </summary>
+      /// <param name="e"><see cref="System.Windows.Forms.Keys">KeyCode</see>
+      /// indicates which keyboard key will cede focus.</param>
       public void AddCedeFocusKey( KeyEventArgs e )
       {
          foreach ( FieldControl fc in _fieldControls )
@@ -191,6 +255,14 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Adds a KeyEventArgs to a specific field that indicates when a field
+      /// should cede focus to the next field in the control. By default, each
+      /// field has a single cede focus key -- the [Space] key. 
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="e"></param>
+      /// <returns></returns>
       public bool AddCedeFocusKey( int fieldIndex, KeyEventArgs e )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -201,6 +273,9 @@ namespace FlexFieldControlLib
          return false;
       }
 
+      /// <summary>
+      /// Removes every cede focus key from every field in the control.
+      /// </summary>
       public void ClearCedeFocusKeys()
       {
          foreach ( FieldControl fc in _fieldControls )
@@ -209,6 +284,10 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Removes every cede focus key from a specific field in the control.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
       public void ClearCedeFocusKeys( int fieldIndex )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -217,6 +296,14 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Gets the high inclusive boundary of allowed values for a specific
+      /// field. The default value varies based on ValueFormat and MaxLength,
+      /// but it is always the maximum value that can be represented by the
+      /// field.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
       public int GetRangeHigh( int fieldIndex )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -227,6 +314,12 @@ namespace FlexFieldControlLib
          return 0;
       }
 
+      /// <summary>
+      /// Gets the low inclusive boundary of allowed values for a specific
+      /// field. Default value is 0.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
       public int GetRangeLow( int fieldIndex )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -237,6 +330,12 @@ namespace FlexFieldControlLib
          return 0;
       }
 
+      /// <summary>
+      /// Gets the value of a specific field. If the field is blank, its value
+      /// is the same as its low range value.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
       public int GetValue( int fieldIndex )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -247,6 +346,12 @@ namespace FlexFieldControlLib
          return 0;
       }
 
+      /// <summary>
+      /// Determines if a specific field has input focus. True indicates that
+      /// the field has focus.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
       public bool HasFocus( int fieldIndex )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -257,6 +362,12 @@ namespace FlexFieldControlLib
          return false;
       }
 
+      /// <summary>
+      /// Determines if every field in the control is blank. True indicates that
+      /// every field in the control is blank.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
       public bool IsBlank( int fieldIndex )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -267,6 +378,10 @@ namespace FlexFieldControlLib
          return false;
       }
 
+      /// <summary>
+      /// Removes every cede focus key from every field, and adds the default
+      /// cede focus key -- the [Space] key -- to every field.
+      /// </summary>
       public void ResetCedeFocusKeys()
       {
          foreach ( FieldControl fc in _fieldControls )
@@ -275,6 +390,11 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Removes every cede focus key from a specific field, and adds the
+      /// default cede focus key -- the [Space] key -- to the field.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
       public void ResetCedeFocusKeys( int fieldIndex )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -283,6 +403,10 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the character casing for every field in the control.
+      /// </summary>
+      /// <param name="casing"></param>
       public void SetCasing( CharacterCasing casing )
       {
          foreach ( FieldControl fc in _fieldControls )
@@ -292,6 +416,11 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the character casing for a specific field in the control.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="casing"></param>
       public void SetCasing( int fieldIndex, CharacterCasing casing )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -301,6 +430,11 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the maximum length for every field in the control. Default value
+      /// is 3.
+      /// </summary>
+      /// <param name="maxLength"></param>
       public void SetMaxLength( int maxLength )
       {
          foreach ( FieldControl fc in _fieldControls )
@@ -309,6 +443,12 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the maximum length for a specific field in the control. Default
+      /// value is 3.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="maxLength"></param>
       public void SetMaxLength( int fieldIndex, int maxLength )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -317,6 +457,12 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Toggles whether the value for every field is displayed with leading
+      /// zeros.
+      /// </summary>
+      /// <param name="leadingZeros"><code>true</code> indicates that the value
+      /// is displayed with leading zeros.</param>
       public void SetLeadingZeros( bool leadingZeros )
       {
          foreach ( FieldControl fc in _fieldControls )
@@ -325,6 +471,13 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Toggles whether the value for a specific field is displayed with
+      /// leading zeros.
+      /// </summary>
+      /// <param name="fieldIndex">Zero-based index for field.</param>
+      /// <param name="leadingZeros"><c>true</c> indicates value should be
+      /// displayed with leading zeros.</param>
       public void SetLeadingZeros( int fieldIndex, bool leadingZeros )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -333,22 +486,11 @@ namespace FlexFieldControlLib
          }
       }
 
-      public void SetMinimizeWidth( bool minimizeWidth )
-      {
-         foreach ( SeparatorControl sc in _separatorControls )
-         {
-            sc.MinimizeWidth = minimizeWidth;
-         }
-      }
-
-      public void SetMinimizeWidth( int separatorIndex, bool minimizeWidth )
-      {
-         if ( IsValidSeparatorIndex( separatorIndex ) )
-         {
-            _separatorControls[separatorIndex].MinimizeWidth = minimizeWidth;
-         }
-      }
-
+      /// <summary>
+      /// Sets the low and high range for every field.
+      /// </summary>
+      /// <param name="low"></param>
+      /// <param name="high"></param>
       public void SetRange( int low, int high )
       {
          foreach ( FieldControl fc in _fieldControls )
@@ -358,6 +500,12 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the low and high range for a specific field.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="low"></param>
+      /// <param name="high"></param>
       public void SetRange( int fieldIndex, int low, int high )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -367,6 +515,10 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the text for every separator.
+      /// </summary>
+      /// <param name="text"></param>
       public void SetSeparatorText( string text )
       {
          foreach ( SeparatorControl sc in _separatorControls )
@@ -375,6 +527,11 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the text for a specific separator.
+      /// </summary>
+      /// <param name="separatorIndex"></param>
+      /// <param name="text"></param>
       public void SetSeparatorText( int separatorIndex, string text )
       {
          if ( IsValidSeparatorIndex( separatorIndex ) )
@@ -383,6 +540,23 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the value for every field.
+      /// </summary>
+      /// <param name="value"></param>
+      public void SetValue( int value )
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.Value = value;
+         }
+      }
+
+      /// <summary>
+      /// Sets the value for a specific field.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="value"></param>
       public void SetValue( int fieldIndex, int value )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -391,6 +565,10 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the value format for every field.
+      /// </summary>
+      /// <param name="format"></param>
       public void SetValueFormat( ValueFormat format )
       {
          foreach ( FieldControl fc in _fieldControls )
@@ -399,6 +577,11 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Sets the value format for a specific field.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="format"></param>
       public void SetValueFormat( int fieldIndex, ValueFormat format )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
@@ -407,6 +590,11 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Converts the text of every separator and every field to a single
+      /// string.
+      /// </summary>
+      /// <returns></returns>
       public override string ToString()
       {
          StringBuilder sb = new StringBuilder();
@@ -426,11 +614,16 @@ namespace FlexFieldControlLib
 
       #region Constructor
 
+      /// <summary>
+      /// The constructor.
+      /// </summary>
       protected FlexFieldControl()
       {
          InitializeComponent();
 
          base.BackColor = SystemColors.Window;
+
+         ResetBackColorChanged();
 
          InitializeControls();
 
@@ -446,10 +639,40 @@ namespace FlexFieldControlLib
          LayoutControls();
       }
 
-      #endregion     // Constructor
+      #endregion   // Constructor
+
+      #region Protected Properties
+
+      /// <summary>
+      /// Gets the default size for the control.
+      /// </summary>
+      protected override Size DefaultSize
+      {
+         get
+         {
+            return CalculateMinimumSize();
+         }
+      }
+
+      #endregion  // Protected Properties
 
       #region Protected Methods
 
+      /// <summary>
+      /// Raises the BackColorChanged event.
+      /// </summary>
+      /// <param name="e"></param>
+      protected override void OnBackColorChanged( EventArgs e )
+      {
+         base.OnBackColorChanged( e );
+
+         _backColorChanged = true;
+      }
+
+      /// <summary>
+      /// Adjusts the size of the control when font is changed.
+      /// </summary>
+      /// <param name="e"></param>
       protected override void OnFontChanged( EventArgs e )
       {
          Point origin = Location;
@@ -459,23 +682,44 @@ namespace FlexFieldControlLib
          AdjustSize();
       }
 
+      /// <summary>
+      /// Sets focus to the first field when the control gets focus.
+      /// </summary>
+      /// <param name="e"></param>
       protected override void OnGotFocus( EventArgs e )
       {
          base.OnGotFocus( e );
          _fieldControls[0].TakeFocus( Direction.Forward, Selection.All, Action.None );
       }
 
+      /// <summary>
+      /// Sets the cursor to I-beam when mouse is over control.
+      /// </summary>
+      /// <param name="e"></param>
       protected override void OnMouseEnter( EventArgs e )
       {
          base.OnMouseEnter( e );
          Cursor = Cursors.IBeam;
       }
 
+      /// <summary>
+      /// Clears the background and fills it with background color. If control
+      /// has a border, draws it.
+      /// </summary>
+      /// <param name="e"></param>
       protected override void OnPaint( PaintEventArgs e )
       {
          base.OnPaint( e );
 
          Color backColor = BackColor;
+
+         if ( !_backColorChanged )
+         {
+            if ( !Enabled || ReadOnly )
+            {
+               backColor = SystemColors.Control;
+            }
+         }
 
          e.Graphics.FillRectangle( new SolidBrush( backColor ), ClientRectangle );
 
@@ -504,6 +748,11 @@ namespace FlexFieldControlLib
          }
       }
 
+      /// <summary>
+      /// Ensures that any size change of control is constrained by allowed
+      /// range.
+      /// </summary>
+      /// <param name="e"></param>
       protected override void OnSizeChanged( EventArgs e )
       {
          base.OnSizeChanged( e );
@@ -824,6 +1073,11 @@ namespace FlexFieldControlLib
          Invalidate();
       }
 
+      private void ResetBackColorChanged()
+      {
+         _backColorChanged = false;
+      }
+
       #endregion     // Private Methods
 
       #region Private Data
@@ -841,6 +1095,10 @@ namespace FlexFieldControlLib
       private Size FixedSingleOffset = new Size( 2, 2 );
 
       private BorderStyle _borderStyle = BorderStyle.Fixed3D;
+
+      private bool _readOnly;
+
+      private bool _backColorChanged;
 
       #endregion  Private Data
    }

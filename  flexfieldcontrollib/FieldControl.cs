@@ -381,6 +381,20 @@ namespace FlexFieldControlLib
          }
       }
 
+      protected override void OnParentBackColorChanged( EventArgs e )
+      {
+         base.OnParentBackColorChanged( e );
+
+         BackColor = Parent.BackColor;
+      }
+
+      protected override void OnParentForeColorChanged( EventArgs e )
+      {
+         base.OnParentForeColorChanged( e );
+
+         ForeColor = Parent.ForeColor;
+      }
+
       protected override void OnSizeChanged( EventArgs e )
       {
          base.OnSizeChanged( e );
@@ -791,9 +805,22 @@ namespace FlexFieldControlLib
       #endregion     // Private Data
    }
 
+   /// <summary>
+   /// Determines the styles permitted in numeric string arguments for the
+   /// field.
+   /// </summary>
    public enum ValueFormat
    {
+      /// <summary>
+      /// Indicates that the numeric string represents a decimal value. Valid
+      /// decimal values include the numeric digits 0-9.
+      /// </summary>
       Decimal,
+      /// <summary>
+      /// Indicates that the numeric string represents a hexadecimal value.
+      /// Valid hexadecimal values include the numeric digits 0-9 and the
+      /// hexadecimal digits A-F and a-f.
+      /// </summary>
       Hexadecimal
    }
 }
