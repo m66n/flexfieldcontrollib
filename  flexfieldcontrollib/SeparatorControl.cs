@@ -23,6 +23,7 @@
 using System;
 using System.Drawing;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace FlexFieldControlLib
@@ -49,6 +50,23 @@ namespace FlexFieldControlLib
          {
             _readOnly = value;
             Invalidate();
+         }
+      }
+
+      public string RegExString
+      {
+         get
+         {
+            StringBuilder sb = new StringBuilder();
+
+            foreach ( char c in Text )
+            {
+               sb.Append( "[" );
+               sb.Append( Regex.Escape( c.ToString() ) );
+               sb.Append( "]" );
+            }
+
+            return sb.ToString();
          }
       }
 
@@ -163,7 +181,7 @@ namespace FlexFieldControlLib
 
       private Size _proposedSize = new Size( Int32.MaxValue, Int32.MaxValue );
       private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter |
-         TextFormatFlags.SingleLine;
+         TextFormatFlags.SingleLine | TextFormatFlags.NoPrefix;
 
       private bool _readOnly;
       private bool _backColorChanged;
