@@ -106,6 +106,29 @@ namespace FlexFieldControlLib
          }
       }
 
+      public string RegExString
+      {
+         get
+         {
+            StringBuilder sb = new StringBuilder();
+
+            switch ( ValueFormat )
+            {
+               case ValueFormat.Decimal:
+                  sb.Append( "[0-9]" );
+                  break;
+
+               case ValueFormat.Hexadecimal:
+                  sb.Append( "[0-9a-fA-F]" );
+                  break;
+            }
+
+            sb.AppendFormat( CultureInfo.InvariantCulture, "{{0,{0}}}", MaxLength );
+
+            return sb.ToString();
+         }
+      }
+
       public int RangeLow
       {
          get
@@ -428,7 +451,7 @@ namespace FlexFieldControlLib
                if ( TextLength < originalLength )
                {
                   newSelectionStart -= ( originalLength - TextLength );
-                  SelectionStart = newSelectionStart;
+                  SelectionStart = Math.Max( 0, newSelectionStart );
                }
             }
          }

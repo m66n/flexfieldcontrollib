@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
@@ -141,6 +142,7 @@ namespace FlexFieldControlLib
             {
                _borderStyle = value;
                AdjustSize();
+               Invalidate();
             }
          }
       }
@@ -167,6 +169,7 @@ namespace FlexFieldControlLib
             {
                _fieldCount = value;
                InitializeControls();
+               Size = MinimumSize;
             }
          }
       }
@@ -232,7 +235,7 @@ namespace FlexFieldControlLib
          }
          set
          {
-            base.Text = value;
+            Parse( value );
          }
       }
 
@@ -271,6 +274,17 @@ namespace FlexFieldControlLib
          }
 
          return false;
+      }
+
+      /// <summary>
+      /// Clears all content from the fields in the control.
+      /// </summary>
+      public void Clear()
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.Clear();
+         }
       }
 
       /// <summary>
@@ -344,6 +358,23 @@ namespace FlexFieldControlLib
          }
 
          return 0;
+      }
+
+      /// <summary>
+      /// Gets an array of values for the entire control. If any field is blank,
+      /// its value is the same as its low range value.
+      /// </summary>
+      /// <returns></returns>
+      public int[] GetValues()
+      {
+         int[] values = new int[FieldCount];
+
+         for ( int index = 0; index < FieldCount; ++index )
+         {
+            values[index] = _fieldControls[index].Value;
+         }
+
+         return values;
       }
 
       /// <summary>
@@ -525,6 +556,8 @@ namespace FlexFieldControlLib
          {
             sc.Text = text;
          }
+
+         Size = MinimumSize;
       }
 
       /// <summary>
@@ -537,6 +570,7 @@ namespace FlexFieldControlLib
          if ( IsValidSeparatorIndex( separatorIndex ) )
          {
             _separatorControls[separatorIndex].Text = text;
+            Size = MinimumSize;
          }
       }
 
@@ -620,10 +654,6 @@ namespace FlexFieldControlLib
       protected FlexFieldControl()
       {
          InitializeComponent();
-
-         base.BackColor = SystemColors.Window;
-
-         ResetBackColorChanged();
 
          InitializeControls();
 
@@ -868,6 +898,10 @@ namespace FlexFieldControlLib
       {
          Cleanup();
 
+         base.BackColor = SystemColors.Window;
+
+         _backColorChanged = false;
+
          for ( int index = 0; index < FieldCount; ++index )
          {
             FieldControl fc = new FieldControl();
@@ -879,6 +913,7 @@ namespace FlexFieldControlLib
             fc.FieldValidatedEvent += new EventHandler<FieldValidatedEventArgs>( OnFieldValidated );
             fc.Name = Properties.Resources.FieldControlName + index.ToString( CultureInfo.InvariantCulture );
             fc.Parent = this;
+            fc.ReadOnly = ReadOnly;
 
             _fieldControls.Add( fc );
 
@@ -891,6 +926,7 @@ namespace FlexFieldControlLib
 
             sc.Name = Properties.Resources.SeparatorControlName + index.ToString( CultureInfo.InvariantCulture );
             sc.Parent = this;
+            sc.ReadOnly = ReadOnly;
             sc.SeparatorSizeChangedEvent += new EventHandler<EventArgs>( OnSeparatorSizeChanged );
 
             _separatorControls.Add( sc );
@@ -1073,9 +1109,40 @@ namespace FlexFieldControlLib
          Invalidate();
       }
 
-      private void ResetBackColorChanged()
+      private void Parse( string text )
       {
-         _backColorChanged = false;
+         if ( text == null )
+         {
+            return;
+         }
+
+         StringBuilder sb = new StringBuilder();
+
+         for ( int index = 0; index < FieldCount; ++index )
+         {
+            sb.Append( _separatorControls[index].RegExString );
+
+            sb.Append( "(" );
+            sb.Append( _fieldControls[index].RegExString );
+            sb.Append( ")" );
+         }
+
+         sb.Append( _separatorControls[FieldCount].RegExString );
+
+         Regex regex = new Regex( sb.ToString() );
+
+         Match match = regex.Match( text );
+
+         if ( match.Success )
+         {
+            if ( match.Groups.Count == ( FieldCount + 1 ) )
+            {
+               for ( int index = 0; index < FieldCount; ++index )
+               {
+                  _fieldControls[index].Text = match.Groups[index + 1].Value;
+               }
+            }
+         }
       }
 
       #endregion     // Private Methods
