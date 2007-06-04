@@ -50,15 +50,15 @@ namespace FlexFieldControlLib
          }
       }
 
-      public int FieldId
+      public int FieldIndex
       {
          get
          {
-            return _fieldId;
+            return _fieldIndex;
          }
          set
          {
-            _fieldId = value;
+            _fieldIndex = value;
          }
       }
 
@@ -87,7 +87,11 @@ namespace FlexFieldControlLib
          }
          set
          {
-            if ( value > _valueFormatter.MaxFieldLength )
+            if ( value < 1 )
+            {
+               value = 1;
+            }
+            else if ( value > _valueFormatter.MaxFieldLength )
             {
                value = _valueFormatter.MaxFieldLength;
             }
@@ -95,6 +99,18 @@ namespace FlexFieldControlLib
             base.MaxLength = value;
 
             ResetProperties();
+
+            Size = MinimumSize;
+         }
+      }
+
+      public Point MidPoint
+      {
+         get
+         {
+            Point midPoint = Location;
+            midPoint.Offset( Width / 2, Height / 2 );
+            return midPoint;
          }
       }
 
@@ -150,7 +166,7 @@ namespace FlexFieldControlLib
                _rangeLow = value;
             }
 
-            if ( _valueFormatter.Value( Text ) < _rangeLow )
+            if ( !Blank && _valueFormatter.Value( Text ) < _rangeLow )
             {
                Text = _valueFormatter.ValueText( _rangeLow );
             }
@@ -178,7 +194,7 @@ namespace FlexFieldControlLib
                _rangeHigh = value;
             }
 
-            if ( _valueFormatter.Value( Text ) > _rangeHigh )
+            if ( !Blank && _valueFormatter.Value( Text ) > _rangeHigh )
             {
                Text = _valueFormatter.ValueText( _rangeHigh );
             }
@@ -189,7 +205,14 @@ namespace FlexFieldControlLib
       {
          get
          {
-            return _valueFormatter.Value( Text );
+            int result = _valueFormatter.Value( Text );
+            
+            if ( result < RangeLow )
+            {
+               return RangeLow;
+            }
+
+            return result;
          }
          set
          {
@@ -223,6 +246,8 @@ namespace FlexFieldControlLib
                ResetProperties();
 
                ResetCedeFocusKeys();
+
+               Size = MinimumSize;
             }
          }
       }
@@ -470,9 +495,9 @@ namespace FlexFieldControlLib
 
          if ( !Blank )
          {
-            if ( Value < RangeLow )
+            if ( _valueFormatter.Value( Text ) < RangeLow )
             {
-               Text = RangeLow.ToString( CultureInfo.InvariantCulture );
+               Text = _valueFormatter.ValueText( RangeLow );
             }
 
             if ( LeadingZeros )
@@ -490,7 +515,7 @@ namespace FlexFieldControlLib
          {
             FieldValidatedEventArgs args = new FieldValidatedEventArgs();
 
-            args.FieldId = FieldId;
+            args.FieldIndex = FieldIndex;
             args.Text = Text;
 
             FieldValidatedEvent( this, args );
@@ -773,7 +798,7 @@ namespace FlexFieldControlLib
             CedeFocusEventArgs args = new CedeFocusEventArgs();
 
             args.Action = action;
-            args.FieldId = FieldId;
+            args.FieldIndex = FieldIndex;
 
             CedeFocusEvent( this, args );
          }
@@ -787,7 +812,7 @@ namespace FlexFieldControlLib
 
             args.Action = Action.None;
             args.Direction = direction;
-            args.FieldId = FieldId;
+            args.FieldIndex = FieldIndex;
             args.Selection = selection;
 
             CedeFocusEvent( this, args );
@@ -799,7 +824,7 @@ namespace FlexFieldControlLib
          if ( FieldChangedEvent != null )
          {
             FieldChangedEventArgs args = new FieldChangedEventArgs();
-            args.FieldId = FieldId;
+            args.FieldIndex = FieldIndex;
             args.Text = Text;
             FieldChangedEvent( this, args );
          }
@@ -815,7 +840,7 @@ namespace FlexFieldControlLib
 
       #region Private Data
 
-      private int _fieldId = -1;
+      private int _fieldIndex = -1;
       private ValueFormat _valueFormat = ValueFormat.Decimal;
       private IValueFormatter _valueFormatter = new DecimalValue();
       private bool _leadingZeros;

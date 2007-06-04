@@ -30,7 +30,18 @@ namespace FlexFieldControlLib
 {
    internal class SeparatorControl : Control
    {
+      public event EventHandler<SeparatorMouseEventArgs> SeparatorMouseEvent;
       public event EventHandler<EventArgs> SeparatorSizeChangedEvent;
+
+      public Point MidPoint
+      {
+         get
+         {
+            Point midPoint = Location;
+            midPoint.Offset( Width / 2, Height / 2 );
+            return midPoint;
+         }
+      }
 
       public new Size MinimumSize
       {
@@ -70,6 +81,18 @@ namespace FlexFieldControlLib
          }
       }
 
+      public int SeparatorIndex
+      {
+         get
+         {
+            return _separatorIndex;
+         }
+         set
+         {
+            _separatorIndex = value;
+         }
+      }
+
       public override string Text
       {
          get
@@ -105,6 +128,21 @@ namespace FlexFieldControlLib
       {
          base.OnFontChanged( e );
          Size = MinimumSize;
+      }
+
+      protected override void OnMouseDown( MouseEventArgs e )
+      {
+         base.OnMouseDown( e );
+
+         if ( SeparatorMouseEvent != null )
+         {
+            SeparatorMouseEventArgs args = new SeparatorMouseEventArgs();
+
+            args.Location = PointToScreen( e.Location );
+            args.SeparatorIndex = SeparatorIndex;
+
+            SeparatorMouseEvent( this, args );
+         }
       }
 
       protected override void OnPaint( PaintEventArgs e )
@@ -178,6 +216,8 @@ namespace FlexFieldControlLib
       }
 
       private const int MeasureCharCount = 10;
+
+      private int _separatorIndex;
 
       private Size _proposedSize = new Size( Int32.MaxValue, Int32.MaxValue );
       private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter |

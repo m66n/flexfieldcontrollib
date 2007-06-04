@@ -82,8 +82,8 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
-      /// Returns the text baseline. Used by FlexFieldControlDesigner to 
-      /// indicate the baseline when control is used in design mode.
+      /// Gets a horizontal snapline associated with the base of the text
+      /// string .
       /// </summary>
       public int Baseline
       {
@@ -127,8 +127,7 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
-      /// Gets or sets the border style for the control. Default is
-      /// BorderStyle.Fixed3D.
+      /// Gets or sets the type of border that is drawn around the control.
       /// </summary>
       public new BorderStyle BorderStyle
       {
@@ -311,6 +310,36 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
+      /// Gets the text of a specific field in the control.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
+      public string GetFieldText( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            return _fieldControls[fieldIndex].Text;
+         }
+
+         return String.Empty;
+      }
+
+      /// <summary>
+      /// Gets the maximum number of characters allowed in a specific field.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
+      public int GetMaxLength( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            return _fieldControls[fieldIndex].MaxLength;
+         }
+
+         return 0;
+      }
+
+      /// <summary>
       /// Gets the high inclusive boundary of allowed values for a specific
       /// field. The default value varies based on ValueFormat and MaxLength,
       /// but it is always the maximum value that can be represented by the
@@ -345,6 +374,21 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
+      /// Gets the text for a specific separator in the control.
+      /// </summary>
+      /// <param name="separatorIndex"></param>
+      /// <returns></returns>
+      public string GetSeparatorText( int separatorIndex )
+      {
+         if ( IsValidSeparatorIndex( separatorIndex ) )
+         {
+            return _separatorControls[separatorIndex].Text;
+         }
+
+         return String.Empty;
+      }
+
+      /// <summary>
       /// Gets the value of a specific field. If the field is blank, its value
       /// is the same as its low range value.
       /// </summary>
@@ -361,20 +405,18 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
-      /// Gets an array of values for the entire control. If any field is blank,
-      /// its value is the same as its low range value.
+      /// Gets the value format for a specific field in the control.
       /// </summary>
+      /// <param name="fieldIndex"></param>
       /// <returns></returns>
-      public int[] GetValues()
+      public ValueFormat GetValueFormat( int fieldIndex )
       {
-         int[] values = new int[FieldCount];
-
-         for ( int index = 0; index < FieldCount; ++index )
+         if ( IsValidFieldIndex( fieldIndex ) )
          {
-            values[index] = _fieldControls[index].Value;
+            return _fieldControls[fieldIndex].ValueFormat;
          }
 
-         return values;
+         return ValueFormat.Decimal;
       }
 
       /// <summary>
@@ -462,29 +504,39 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
-      /// Sets the maximum length for every field in the control. Default value
-      /// is 3.
+      /// Sets text for every field in the control.
       /// </summary>
-      /// <param name="maxLength"></param>
-      public void SetMaxLength( int maxLength )
+      /// <param name="text"></param>
+      public void SetFieldText( string text )
       {
          foreach ( FieldControl fc in _fieldControls )
          {
-            fc.MaxLength = maxLength;
+            fc.Text = text;
          }
       }
 
       /// <summary>
-      /// Sets the maximum length for a specific field in the control. Default
-      /// value is 3.
+      /// Sets text for a specific field in the control.
       /// </summary>
       /// <param name="fieldIndex"></param>
-      /// <param name="maxLength"></param>
-      public void SetMaxLength( int fieldIndex, int maxLength )
+      /// <param name="text"></param>
+      public void SetFieldText( int fieldIndex, string text )
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].MaxLength = maxLength;
+            _fieldControls[fieldIndex].Text = text;
+         }
+      }
+
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      public void SetFocus( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[fieldIndex].TakeFocus( Direction.Forward, Selection.All, Action.None );
          }
       }
 
@@ -515,6 +567,36 @@ namespace FlexFieldControlLib
          {
             _fieldControls[fieldIndex].LeadingZeros = leadingZeros;
          }
+      }
+
+      /// <summary>
+      /// Sets the maximum length for every field in the control.
+      /// </summary>
+      /// <param name="maxLength"></param>
+      public void SetMaxLength( int maxLength )
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.MaxLength = maxLength;
+         }
+
+         Size = MinimumSize;
+      }
+
+      /// <summary>
+      /// Sets the maximum length for a specific field in the control. Default
+      /// value is 3.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="maxLength"></param>
+      public void SetMaxLength( int fieldIndex, int maxLength )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[fieldIndex].MaxLength = maxLength;
+         }
+
+         Size = MinimumSize;
       }
 
       /// <summary>
@@ -609,6 +691,8 @@ namespace FlexFieldControlLib
          {
             fc.ValueFormat = format;
          }
+
+         Size = MinimumSize;
       }
 
       /// <summary>
@@ -622,6 +706,8 @@ namespace FlexFieldControlLib
          {
             _fieldControls[fieldIndex].ValueFormat = format;
          }
+
+         Size = MinimumSize;
       }
 
       /// <summary>
@@ -720,6 +806,17 @@ namespace FlexFieldControlLib
       {
          base.OnGotFocus( e );
          _fieldControls[0].TakeFocus( Direction.Forward, Selection.All, Action.None );
+      }
+
+      /// <summary>
+      /// Raises the MouseDown event.
+      /// </summary>
+      /// <param name="e"></param>
+      protected override void OnMouseDown( MouseEventArgs e )
+      {
+         base.OnMouseDown( e );
+
+         HandleMouseDown( e.Location );
       }
 
       /// <summary>
@@ -894,6 +991,54 @@ namespace FlexFieldControlLib
          return textMetric;
       }
 
+      private void HandleMouseDown( Point location )
+      {
+         int midPointsCount = FieldCount * 2 - 1;
+
+         Point[] midPoints = new Point[midPointsCount];
+
+         for ( int index = 0; index < FieldCount; ++index )
+         {
+            midPoints[index * 2] = _fieldControls[index].MidPoint;
+
+            if ( index < ( FieldCount - 1 ) )
+            {
+               midPoints[( index * 2 ) + 1] = _separatorControls[index + 1].MidPoint;
+            }
+         }
+
+         int midPointsIndex = 0;
+
+         int fieldIndex = 0;
+         Direction direction = Direction.Forward;
+
+         while ( midPointsIndex < midPointsCount )
+         {
+            if ( location.X <= midPoints[midPointsIndex].X )
+            {
+               break;
+            }
+            else if ( direction == Direction.Forward )
+            {
+               direction = Direction.Reverse;
+            }
+            else
+            {
+               direction = Direction.Forward;
+               ++fieldIndex;
+            }
+
+            ++midPointsIndex;
+         }
+
+         if ( midPointsIndex == midPointsCount )
+         {
+            direction = Direction.Reverse;
+         }
+
+         _fieldControls[fieldIndex].TakeFocus( direction, Selection.None, Action.None );
+      }
+
       private void InitializeControls()
       {
          Cleanup();
@@ -908,7 +1053,7 @@ namespace FlexFieldControlLib
 
             fc.CedeFocusEvent += new EventHandler<CedeFocusEventArgs>( OnFocusCeded );
             fc.FieldChangedEvent += new EventHandler<FieldChangedEventArgs>( OnFieldChanged );
-            fc.FieldId = index;
+            fc.FieldIndex = index;
             fc.FieldSizeChangedEvent += new EventHandler<EventArgs>( OnFieldSizeChanged );
             fc.FieldValidatedEvent += new EventHandler<FieldValidatedEventArgs>( OnFieldValidated );
             fc.Name = Properties.Resources.FieldControlName + index.ToString( CultureInfo.InvariantCulture );
@@ -927,6 +1072,8 @@ namespace FlexFieldControlLib
             sc.Name = Properties.Resources.SeparatorControlName + index.ToString( CultureInfo.InvariantCulture );
             sc.Parent = this;
             sc.ReadOnly = ReadOnly;
+            sc.SeparatorIndex = index;
+            sc.SeparatorMouseEvent += new EventHandler<SeparatorMouseEventArgs>( OnSeparatorMouseEvent );
             sc.SeparatorSizeChangedEvent += new EventHandler<EventArgs>( OnSeparatorSizeChanged );
 
             _separatorControls.Add( sc );
@@ -1074,33 +1221,50 @@ namespace FlexFieldControlLib
 
             case Action.Trim:
 
-               if ( e.FieldId == 0 )
+               if ( e.FieldIndex == 0 )
                {
                   return;
                }
 
-               _fieldControls[e.FieldId - 1].TakeFocus( e.Direction, e.Selection, e.Action );
+               _fieldControls[e.FieldIndex - 1].TakeFocus( e.Direction, e.Selection, e.Action );
                return;
          }
 
-         if ( ( e.Direction == Direction.Reverse && e.FieldId == 0 ) ||
-              ( e.Direction == Direction.Forward && e.FieldId == ( FieldCount - 1 ) ) )
+         if ( ( e.Direction == Direction.Reverse && e.FieldIndex == 0 ) ||
+              ( e.Direction == Direction.Forward && e.FieldIndex == ( FieldCount - 1 ) ) )
          {
             return;
          }
 
-         int fieldId = e.FieldId;
+         int fieldIndex = e.FieldIndex;
 
          if ( e.Direction == Direction.Forward )
          {
-            ++fieldId;
+            ++fieldIndex;
          }
          else
          {
-            --fieldId;
+            --fieldIndex;
          }
 
-         _fieldControls[fieldId].TakeFocus( e.Direction, e.Selection, e.Action );
+         _fieldControls[fieldIndex].TakeFocus( e.Direction, e.Selection, e.Action );
+      }
+
+      private void OnSeparatorMouseEvent( object sender, SeparatorMouseEventArgs e )
+      {
+         if ( e.SeparatorIndex == 0 )
+         {
+            _fieldControls[0].TakeFocus( Direction.Forward, Selection.None, Action.None );
+         }
+         else if ( e.SeparatorIndex == FieldCount )
+         {
+            _fieldControls[FieldCount - 1].TakeFocus( Direction.Reverse, Selection.None, Action.None );
+         }
+         else
+         {
+            Point location = PointToClient( e.Location );
+            HandleMouseDown( location );
+         }
       }
 
       private void OnSeparatorSizeChanged( object sender, EventArgs e )
