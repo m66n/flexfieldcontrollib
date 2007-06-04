@@ -32,15 +32,15 @@ namespace FlexFieldControlLib
       /// <summary>
       /// Gets or sets index for field that is raising FieldValidatedEvent.
       /// </summary>
-      public int FieldId
+      public int FieldIndex
       {
          get
          {
-            return _fieldId;
+            return _fieldIndex;
          }
          set
          {
-            _fieldId = value;
+            _fieldIndex = value;
          }
       }
 
@@ -59,7 +59,7 @@ namespace FlexFieldControlLib
          }
       }
 
-      private int _fieldId;
+      private int _fieldIndex;
       private string _text;
    }
 }

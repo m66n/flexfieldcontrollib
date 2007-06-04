@@ -50,15 +50,15 @@ namespace FlexFieldControlLib
          }
       }
 
-      public int FieldId
+      public int FieldIndex
       {
          get
          {
-            return _fieldId;
+            return _fieldIndex;
          }
          set
          {
-            _fieldId = value;
+            _fieldIndex = value;
          }
       }
 
@@ -76,7 +76,7 @@ namespace FlexFieldControlLib
 
       private Action _action;
       private Direction _direction;
-      private int _fieldId;
+      private int _fieldIndex;
       private Selection _selection;
    }
 
