@@ -21,6 +21,7 @@
 
 
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace FlexFieldControlLib
@@ -32,11 +33,18 @@ namespace FlexFieldControlLib
          get;
       }
 
+      string RegExString
+      {
+         get;
+      }
+
+      Size GetCharacterSize( Font font, CharacterCasing casing );
+
+      bool IsValidKey( KeyEventArgs e );
+
       int MaxValue( int fieldLength );
  
       int Value( string text );
       string ValueText( int value );
-
-      bool IsValidKey( KeyEventArgs e );
    }
 }

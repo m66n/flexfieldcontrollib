@@ -83,7 +83,7 @@ namespace FlexFieldControlLib
 
       /// <summary>
       /// Gets a horizontal snapline associated with the base of the text
-      /// string .
+      /// string.
       /// </summary>
       public int Baseline
       {
@@ -129,6 +129,7 @@ namespace FlexFieldControlLib
       /// <summary>
       /// Gets or sets the type of border that is drawn around the control.
       /// </summary>
+      [Browsable( true )]
       public new BorderStyle BorderStyle
       {
          get
@@ -151,6 +152,7 @@ namespace FlexFieldControlLib
       /// minimum is 1. Setting this value resets every field and separator
       /// to its default state.
       /// </summary>
+      [Browsable( true )]
       public int FieldCount
       {
          get
@@ -176,6 +178,7 @@ namespace FlexFieldControlLib
       /// <summary>
       /// Gets the minimum size for the control.
       /// </summary>
+      [Browsable( true )]
       public new Size MinimumSize
       {
          get
@@ -188,6 +191,7 @@ namespace FlexFieldControlLib
       /// Gets or sets a value indicating whether the contents of the control
       /// can be changed. 
       /// </summary>
+      [Browsable( true )]
       public bool ReadOnly
       {
          get
@@ -215,6 +219,7 @@ namespace FlexFieldControlLib
       /// <summary>
       /// Gets or sets the text of the control.
       /// </summary>
+      [Browsable( true )]
       public override string Text
       {
          get
@@ -1014,7 +1019,7 @@ namespace FlexFieldControlLib
 
          while ( midPointsIndex < midPointsCount )
          {
-            if ( location.X <= midPoints[midPointsIndex].X )
+            if ( location.X < midPoints[midPointsIndex].X )
             {
                break;
             }

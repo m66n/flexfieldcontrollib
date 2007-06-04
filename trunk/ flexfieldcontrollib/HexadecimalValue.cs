@@ -21,6 +21,7 @@
 
 
 using System;
+using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -34,6 +35,95 @@ namespace FlexFieldControlLib
          {
             return String.Format( CultureInfo.InvariantCulture, "{0:x}", int.MaxValue ).Length - 1;
          }
+      }
+
+      public virtual string RegExString
+      {
+         get
+         {
+            return "[0-9a-fA-F]";
+         }
+      }
+
+      public virtual Size GetCharacterSize( Font font, CharacterCasing casing )
+      {
+         const int MeasureCharCount = 10;
+
+         Size charSize = new Size( 0, 0 );
+
+         if ( casing == CharacterCasing.Lower )
+         {
+            for ( char c = 'a'; c <= 'f'; ++c )
+            {
+               Size newSize = TextRenderer.MeasureText( new string( c, MeasureCharCount ), font );
+
+               newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
+
+               if ( newSize.Width > charSize.Width )
+               {
+                  charSize.Width = newSize.Width;
+               }
+
+               if ( newSize.Height > charSize.Height )
+               {
+                  charSize.Height = newSize.Height;
+               }
+            }
+         }
+         else
+         {
+            for ( char c = 'A'; c <= 'F'; ++c )
+            {
+               Size newSize = TextRenderer.MeasureText( new string( c, MeasureCharCount ), font );
+
+               newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
+
+               if ( newSize.Width > charSize.Width )
+               {
+                  charSize.Width = newSize.Width;
+               }
+
+               if ( newSize.Height > charSize.Height )
+               {
+                  charSize.Height = newSize.Height;
+               }
+            }
+         }
+
+         for ( char c = '0'; c <= '9'; ++c )
+         {
+            Size newSize = TextRenderer.MeasureText( new string( c, MeasureCharCount ), font );
+
+            newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
+
+            if ( newSize.Width > charSize.Width )
+            {
+               charSize.Width = newSize.Width;
+            }
+
+            if ( newSize.Height > charSize.Height )
+            {
+               charSize.Height = newSize.Height;
+            }
+         }
+
+         return charSize;
+      }
+
+      public virtual bool IsValidKey( KeyEventArgs e )
+      {
+         if ( e.KeyCode < Keys.A || e.KeyCode > Keys.F )
+         {
+            if ( e.KeyCode < Keys.NumPad0 || e.KeyCode > Keys.NumPad9 )
+            {
+               if ( e.KeyCode < Keys.D0 || e.KeyCode > Keys.D9 )
+               {
+                  return false;
+               }
+            }
+         }
+
+         return true;
       }
 
       public virtual int MaxValue( int fieldLength )
@@ -65,22 +155,6 @@ namespace FlexFieldControlLib
       public virtual string ValueText( int value )
       {
          return String.Format( CultureInfo.InvariantCulture, "{0:x}", value );
-      }
-
-      public virtual bool IsValidKey( KeyEventArgs e )
-      {
-         if ( e.KeyCode < Keys.A || e.KeyCode > Keys.F )
-         {
-            if ( e.KeyCode < Keys.NumPad0 || e.KeyCode > Keys.NumPad9 )
-            {
-               if ( e.KeyCode < Keys.D0 || e.KeyCode > Keys.D9 )
-               {
-                  return false;
-               }
-            }
-         }
-
-         return true;
       }
    }
 }

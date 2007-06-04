@@ -21,6 +21,7 @@
 
 
 using System;
+using System.Drawing;
 using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
@@ -35,6 +36,53 @@ namespace FlexFieldControlLib
          {
             return string.Format( CultureInfo.InvariantCulture, "{0:d}", int.MaxValue ).Length - 1;
          }
+      }
+
+      public virtual string RegExString
+      {
+         get
+         {
+            return "[0-9]";
+         }
+      }
+
+      public virtual Size GetCharacterSize( Font font, CharacterCasing casing )
+      {
+         const int MeasureCharCount = 10;
+
+         Size charSize = new Size( 0, 0 );
+
+         for ( char c = '0'; c <= '9'; ++c )
+         {
+            Size newSize = TextRenderer.MeasureText( new string( c, MeasureCharCount ), font );
+
+            newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
+
+            if ( newSize.Width > charSize.Width )
+            {
+               charSize.Width = newSize.Width;
+            }
+
+            if ( newSize.Height > charSize.Height )
+            {
+               charSize.Height = newSize.Height;
+            }
+         }
+
+         return charSize;
+      }
+
+      public virtual bool IsValidKey( KeyEventArgs e )
+      {
+         if ( e.KeyCode < Keys.NumPad0 || e.KeyCode > Keys.NumPad9 )
+         {
+            if ( e.KeyCode < Keys.D0 || e.KeyCode > Keys.D9 )
+            {
+               return false;
+            }
+         }
+
+         return true;
       }
 
       public virtual int MaxValue( int fieldLength )
@@ -66,19 +114,6 @@ namespace FlexFieldControlLib
       public virtual string ValueText( int value )
       {
          return value.ToString( CultureInfo.InvariantCulture );
-      }
-
-      public virtual bool IsValidKey( KeyEventArgs e )
-      {
-         if ( e.KeyCode < Keys.NumPad0 || e.KeyCode > Keys.NumPad9 )
-         {
-            if ( e.KeyCode < Keys.D0 || e.KeyCode > Keys.D9 )
-            {
-               return false;
-            }
-         }
-
-         return true;
       }
    }
 }
