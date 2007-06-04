@@ -128,16 +128,7 @@ namespace FlexFieldControlLib
          {
             StringBuilder sb = new StringBuilder();
 
-            switch ( ValueFormat )
-            {
-               case ValueFormat.Decimal:
-                  sb.Append( "[0-9]" );
-                  break;
-
-               case ValueFormat.Hexadecimal:
-                  sb.Append( "[0-9a-fA-F]" );
-                  break;
-            }
+            sb.Append( _valueFormatter.RegExString );
 
             sb.AppendFormat( CultureInfo.InvariantCulture, "{{0,{0}}}", MaxLength );
 
@@ -197,6 +188,23 @@ namespace FlexFieldControlLib
             if ( !Blank && _valueFormatter.Value( Text ) > _rangeHigh )
             {
                Text = _valueFormatter.ValueText( _rangeHigh );
+            }
+         }
+      }
+
+      public override string Text
+      {
+         get
+         {
+            return base.Text;
+         }
+         set
+         {
+            base.Text = value;
+
+            if ( LeadingZeros )
+            {
+               base.Text = GetPaddedText();
             }
          }
       }
@@ -526,103 +534,13 @@ namespace FlexFieldControlLib
 
       #region Private Methods
 
-      private Size CalcMinSizeHexadecimal()
-      {
-         Size minSize = new Size( 0, 0 );
-
-         if ( CharacterCasing == CharacterCasing.Lower )
-         {
-            for ( char c = 'a'; c <= 'f'; ++c )
-            {
-               Size newSize = TextRenderer.MeasureText( new string( c, MeasureCharCount ), Font );
-
-               newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
-
-               if ( newSize.Width > minSize.Width )
-               {
-                  minSize.Width = newSize.Width;
-               }
-
-               if ( newSize.Height > minSize.Height )
-               {
-                  minSize.Height = newSize.Height;
-               }
-            }
-         }
-         else
-         {
-            for ( char c = 'A'; c <= 'F'; ++c )
-            {
-               Size newSize = TextRenderer.MeasureText( new string( c, MeasureCharCount ), Font );
-
-               newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
-
-               if ( newSize.Width > minSize.Width )
-               {
-                  minSize.Width = newSize.Width;
-               }
-
-               if ( newSize.Height > minSize.Height )
-               {
-                  minSize.Height = newSize.Height;
-               }
-            }
-         }
-
-         minSize.Width *= MaxLength;
-
-         Size minNumericSize = CalcMinSizeDecimal();
-
-         if ( minNumericSize.Width > minSize.Width )
-         {
-            minSize.Width = minNumericSize.Width;
-         }
-
-         if ( minNumericSize.Height > minSize.Height )
-         {
-            minSize.Height = minNumericSize.Height;
-         }
-
-         return minSize;
-      }
-
-      private Size CalcMinSizeDecimal()
-      {
-         Size minSize = new Size( 0, 0 );
-
-         for ( char c = '0'; c <= '9'; ++c )
-         {
-            Size newSize = TextRenderer.MeasureText( new string( c, MeasureCharCount ), Font );
-
-            newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
-
-            if ( newSize.Width > minSize.Width )
-            {
-               minSize.Width = newSize.Width;
-            }
-
-            if ( newSize.Height > minSize.Height )
-            {
-               minSize.Height = newSize.Height;
-            }
-         }
-
-         minSize.Width *= MaxLength;
-
-         return minSize;
-      }
-
       private Size CalculateMinimumSize()
       {
-         switch ( ValueFormat )
-         {
-            case ValueFormat.Decimal:
-               return CalcMinSizeDecimal();
-            case ValueFormat.Hexadecimal:
-               return CalcMinSizeHexadecimal();
-            default:
-               return new Size( 0, 0 );
-         }
+         Size minSize = _valueFormatter.GetCharacterSize( Font, CharacterCasing );
+
+         minSize.Width *= MaxLength;
+
+         return minSize;
       }
 
       private string GetCasedText()
