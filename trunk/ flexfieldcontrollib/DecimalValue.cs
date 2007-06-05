@@ -46,7 +46,7 @@ namespace FlexFieldControlLib
          }
       }
 
-      public virtual Size GetCharacterSize( Font font, CharacterCasing casing )
+      public virtual Size GetCharacterSize( Graphics g, Font font, CharacterCasing casing )
       {
          const int MeasureCharCount = 10;
 
@@ -54,7 +54,8 @@ namespace FlexFieldControlLib
 
          for ( char c = '0'; c <= '9'; ++c )
          {
-            Size newSize = TextRenderer.MeasureText( new string( c, MeasureCharCount ), font );
+            Size newSize = TextRenderer.MeasureText( g, new string( c, MeasureCharCount ), font, new Size( 0, 0 ),
+               TextFormatFlags.NoPadding );
 
             newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
 
