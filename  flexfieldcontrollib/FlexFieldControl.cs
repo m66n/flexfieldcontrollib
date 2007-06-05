@@ -170,8 +170,27 @@ namespace FlexFieldControlLib
             {
                _fieldCount = value;
                InitializeControls();
-               Size = MinimumSize;
+               AdjustSize();
             }
+         }
+      }
+
+      /// <summary>
+      /// Gets a value indicating whether the control has input focus.
+      /// </summary>
+      public override bool Focused
+      {
+         get
+         {
+            foreach ( FieldControl fc in _fieldControls )
+            {
+               if ( fc.Focused )
+               {
+                  return true;
+               }
+            }
+
+            return false;
          }
       }
 
@@ -235,7 +254,6 @@ namespace FlexFieldControlLib
             sb.Append( _separatorControls[FieldCount].Text );
 
             return sb.ToString();
-
          }
          set
          {
@@ -315,6 +333,21 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
+      /// Gets the character casing for a field in the control.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
+      public CharacterCasing GetCasing( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            return _fieldControls[ fieldIndex ].CharacterCasing;
+         }
+
+         return CharacterCasing.Normal;
+      }
+
+      /// <summary>
       /// Gets the text of a specific field in the control.
       /// </summary>
       /// <param name="fieldIndex"></param>
@@ -327,6 +360,21 @@ namespace FlexFieldControlLib
          }
 
          return String.Empty;
+      }
+
+      /// <summary>
+      /// Gets whether a field that is not blank has leading zeros.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
+      public bool GetLeadingZeros( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            return _fieldControls[ fieldIndex ].LeadingZeros;
+         }
+
+         return false;
       }
 
       /// <summary>
@@ -534,7 +582,7 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
-      /// 
+      /// Sets input focus to a field in the control.
       /// </summary>
       /// <param name="fieldIndex"></param>
       public void SetFocus( int fieldIndex )
@@ -585,7 +633,7 @@ namespace FlexFieldControlLib
             fc.MaxLength = maxLength;
          }
 
-         Size = MinimumSize;
+         AdjustSize();
       }
 
       /// <summary>
@@ -601,7 +649,7 @@ namespace FlexFieldControlLib
             _fieldControls[fieldIndex].MaxLength = maxLength;
          }
 
-         Size = MinimumSize;
+         AdjustSize();
       }
 
       /// <summary>
@@ -644,7 +692,7 @@ namespace FlexFieldControlLib
             sc.Text = text;
          }
 
-         Size = MinimumSize;
+         AdjustSize();
       }
 
       /// <summary>
@@ -657,7 +705,7 @@ namespace FlexFieldControlLib
          if ( IsValidSeparatorIndex( separatorIndex ) )
          {
             _separatorControls[separatorIndex].Text = text;
-            Size = MinimumSize;
+            AdjustSize();
          }
       }
 
@@ -697,7 +745,7 @@ namespace FlexFieldControlLib
             fc.ValueFormat = format;
          }
 
-         Size = MinimumSize;
+         AdjustSize();
       }
 
       /// <summary>
@@ -712,7 +760,7 @@ namespace FlexFieldControlLib
             _fieldControls[fieldIndex].ValueFormat = format;
          }
 
-         Size = MinimumSize;
+         AdjustSize();
       }
 
       /// <summary>
@@ -755,9 +803,7 @@ namespace FlexFieldControlLib
          SetStyle( ControlStyles.Selectable, true );
          SetStyle( ControlStyles.UserPaint, true );
 
-         Size = MinimumSize;
-
-         LayoutControls();
+         AdjustSize();
       }
 
       #endregion   // Constructor
@@ -799,7 +845,6 @@ namespace FlexFieldControlLib
          Point origin = Location;
          base.OnFontChanged( e );
          Location = origin;
-         Size = MinimumSize;
          AdjustSize();
       }
 
@@ -1280,6 +1325,8 @@ namespace FlexFieldControlLib
 
       private void Parse( string text )
       {
+         Clear();
+
          if ( text == null )
          {
             return;

@@ -74,7 +74,7 @@ namespace FlexFieldControlLib
 
             if ( !Blank )
             {
-               Text = GetPaddedText();
+               Text = ( _leadingZeros ? GetPaddedText() : GetCasedText() );
             }
          }
       }
@@ -96,11 +96,20 @@ namespace FlexFieldControlLib
                value = _valueFormatter.MaxFieldLength;
             }
 
+            bool preserveValue = !Blank;
+
+            int previousFieldValue = Value;
+
             base.MaxLength = value;
 
-            ResetProperties();
+            ResetRange();
 
-            Size = MinimumSize;
+            ResetSize();
+
+            if ( preserveValue )
+            {
+               Value = previousFieldValue;
+            }
          }
       }
 
@@ -159,7 +168,7 @@ namespace FlexFieldControlLib
 
             if ( !Blank && _valueFormatter.Value( Text ) < _rangeLow )
             {
-               Text = _valueFormatter.ValueText( _rangeLow );
+               Text = _valueFormatter.ValueText( _rangeLow, CharacterCasing );
             }
          }
       }
@@ -187,7 +196,7 @@ namespace FlexFieldControlLib
 
             if ( !Blank && _valueFormatter.Value( Text ) > _rangeHigh )
             {
-               Text = _valueFormatter.ValueText( _rangeHigh );
+               Text = _valueFormatter.ValueText( _rangeHigh, CharacterCasing );
             }
          }
       }
@@ -224,7 +233,7 @@ namespace FlexFieldControlLib
          }
          set
          {
-            Text = _valueFormatter.ValueText( value );
+            Text = _valueFormatter.ValueText( value, CharacterCasing );
          }
       }
 
@@ -240,6 +249,10 @@ namespace FlexFieldControlLib
             {
                _valueFormat = value;
 
+               bool convertValue = !Blank;
+
+               int previousFieldValue = Value;
+
                switch ( _valueFormat )
                {
                   case ValueFormat.Decimal:
@@ -251,11 +264,16 @@ namespace FlexFieldControlLib
                      break;
                }
 
-               ResetProperties();
+               ResetRange();
 
                ResetCedeFocusKeys();
 
-               Size = MinimumSize;
+               ResetSize();
+
+               if ( convertValue )
+               {
+                  Value = previousFieldValue;
+               }
             }
          }
       }
@@ -349,8 +367,12 @@ namespace FlexFieldControlLib
          {
             return GetPaddedText();
          }
+         else if ( !Blank )
+         {
+            return GetCasedText();
+         }
 
-         return _valueFormatter.ValueText( Value );
+         return _valueFormatter.ValueText( Value, CharacterCasing );
       }
 
       #endregion // Public Methods
@@ -471,7 +493,12 @@ namespace FlexFieldControlLib
 
             if ( value > RangeHigh )
             {
-               base.Text = _valueFormatter.ValueText( RangeHigh );
+               base.Text = _valueFormatter.ValueText( RangeHigh, CharacterCasing );
+               SelectionStart = 0;
+            }
+            else if ( ( TextLength == MaxLength ) && ( value < RangeLow ) )
+            {
+               base.Text = _valueFormatter.ValueText( RangeLow, CharacterCasing );
                SelectionStart = 0;
             }
             else
@@ -505,7 +532,7 @@ namespace FlexFieldControlLib
          {
             if ( _valueFormatter.Value( Text ) < RangeLow )
             {
-               Text = _valueFormatter.ValueText( RangeLow );
+               Text = _valueFormatter.ValueText( RangeLow, CharacterCasing );
             }
 
             if ( LeadingZeros )
@@ -549,7 +576,7 @@ namespace FlexFieldControlLib
 
          int value = _valueFormatter.Value( Text );
 
-         string valueString = _valueFormatter.ValueText( value );
+         string valueString = _valueFormatter.ValueText( value, CharacterCasing );
 
          int textIndex = 0;
          int valueStringIndex = 0;
@@ -699,13 +726,14 @@ namespace FlexFieldControlLib
          return false;
       }
 
-      private void ResetProperties()
+      private void ResetRange()
       {
          RangeLow = 0;
          RangeHigh = _valueFormatter.MaxValue( base.MaxLength );
+      }
 
-         Text = String.Empty;
-
+      private void ResetSize()
+      {
          Size = MinimumSize;
       }
 
