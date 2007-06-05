@@ -45,6 +45,6 @@ namespace FlexFieldControlLib
       int MaxValue( int fieldLength );
  
       int Value( string text );
-      string ValueText( int value );
+      string ValueText( int value, CharacterCasing casing );
    }
 }

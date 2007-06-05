@@ -87,7 +87,7 @@ namespace FlexFieldControlLib
 
       public virtual int MaxValue( int fieldLength )
       {
-         int result;
+         int result = 0;
 
          fieldLength = Math.Min( fieldLength, MaxFieldLength );
          string valueString = new String( '9', fieldLength );
@@ -104,14 +104,14 @@ namespace FlexFieldControlLib
             return 0;
          }
 
-         int result;
+         int result = 0;
 
          Int32.TryParse( text, NumberStyles.Integer, CultureInfo.InvariantCulture, out result );
 
          return result;
       }
 
-      public virtual string ValueText( int value )
+      public virtual string ValueText( int value, CharacterCasing casing )
       {
          return value.ToString( CultureInfo.InvariantCulture );
       }

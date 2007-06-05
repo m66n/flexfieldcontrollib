@@ -128,7 +128,7 @@ namespace FlexFieldControlLib
 
       public virtual int MaxValue( int fieldLength )
       {
-         int result;
+         int result = 0;
 
          fieldLength = Math.Min( fieldLength, MaxFieldLength );
          string valueString = new String( 'f', fieldLength );
@@ -145,15 +145,20 @@ namespace FlexFieldControlLib
             return 0;
          }
 
-         int result;
+         int result = 0;
 
          Int32.TryParse( text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result );
 
          return result;
       }
 
-      public virtual string ValueText( int value )
+      public virtual string ValueText( int value, CharacterCasing casing )
       {
+         if ( casing == CharacterCasing.Upper )
+         {
+            return String.Format( CultureInfo.InvariantCulture, "{0:X}", value );
+         }
+
          return String.Format( CultureInfo.InvariantCulture, "{0:x}", value );
       }
    }
