@@ -38,7 +38,7 @@ namespace FlexFieldControlLib
          get;
       }
 
-      Size GetCharacterSize( Font font, CharacterCasing casing );
+      Size GetCharacterSize( Graphics g, Font font, CharacterCasing casing );
 
       bool IsValidKey( KeyEventArgs e );
 

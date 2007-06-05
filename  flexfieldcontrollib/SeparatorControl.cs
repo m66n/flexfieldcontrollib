@@ -201,27 +201,16 @@ namespace FlexFieldControlLib
 
       private Size CalculateMinimumSize()
       {
-         StringBuilder measureString = new StringBuilder();
-
-         for ( int index = 0; index < MeasureCharCount; ++index )
-         {
-            measureString.Append( Text );
-         }
-
-         Size minimumSize = TextRenderer.MeasureText( measureString.ToString(), Font,
-            _proposedSize, _textFormatFlags );
-         minimumSize.Width = (int)Math.Ceiling( (double)minimumSize.Width / (double)MeasureCharCount );
+         Size minimumSize = TextRenderer.MeasureText( Graphics.FromHwnd( Handle ),
+            Text, Font, Size, _textFormatFlags );
 
          return minimumSize;
       }
 
-      private const int MeasureCharCount = 10;
-
       private int _separatorIndex;
 
-      private Size _proposedSize = new Size( Int32.MaxValue, Int32.MaxValue );
-      private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter |
-         TextFormatFlags.SingleLine | TextFormatFlags.NoPrefix;
+      private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix |
+         TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
 
       private bool _readOnly;
       private bool _backColorChanged;
