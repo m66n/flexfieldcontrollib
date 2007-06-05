@@ -333,6 +333,7 @@ namespace FlexFieldControlLib
             case Action.Home:
 
                SelectionStart = 0;
+               SelectionLength = 0;
 
                return;
 
