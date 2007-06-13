@@ -238,6 +238,7 @@ namespace FlexFieldControlLib
       /// <summary>
       /// Gets or sets the text of the control.
       /// </summary>
+      [DesignerSerializationVisibility( DesignerSerializationVisibility.Visible )]
       [Browsable( true )]
       public override string Text
       {
