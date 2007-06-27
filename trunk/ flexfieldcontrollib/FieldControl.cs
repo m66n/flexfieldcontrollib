@@ -35,6 +35,7 @@ namespace FlexFieldControlLib
 
       public event EventHandler<CedeFocusEventArgs> CedeFocusEvent;
       public event EventHandler<FieldChangedEventArgs> FieldChangedEvent;
+      public event KeyPressEventHandler FieldKeyPressedEvent;
       public event EventHandler<EventArgs> FieldSizeChangedEvent;
       public event EventHandler<FieldValidatedEventArgs> FieldValidatedEvent;
 
@@ -405,6 +406,12 @@ namespace FlexFieldControlLib
       protected override void OnKeyDown( KeyEventArgs e )
       {
          base.OnKeyDown( e );
+
+         if ( FieldKeyPressedEvent != null )
+         {
+            KeyPressEventArgs args = new KeyPressEventArgs( Convert.ToChar( e.KeyCode, CultureInfo.InvariantCulture ) );
+            FieldKeyPressedEvent( this, args );
+         }
 
          switch ( e.KeyCode )
          {

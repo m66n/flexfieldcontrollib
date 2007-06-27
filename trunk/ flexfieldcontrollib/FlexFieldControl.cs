@@ -238,8 +238,9 @@ namespace FlexFieldControlLib
       /// <summary>
       /// Gets or sets the text of the control.
       /// </summary>
-      [DesignerSerializationVisibility( DesignerSerializationVisibility.Visible )]
+      [Bindable( true )]
       [Browsable( true )]
+      [DesignerSerializationVisibility( DesignerSerializationVisibility.Visible )]
       public override string Text
       {
          get
@@ -1105,6 +1106,7 @@ namespace FlexFieldControlLib
             fc.CedeFocusEvent += new EventHandler<CedeFocusEventArgs>( OnFocusCeded );
             fc.FieldChangedEvent += new EventHandler<FieldChangedEventArgs>( OnFieldChanged );
             fc.FieldIndex = index;
+            fc.FieldKeyPressedEvent += new KeyPressEventHandler( OnFieldKeyPressed );
             fc.FieldSizeChangedEvent += new EventHandler<EventArgs>( OnFieldSizeChanged );
             fc.FieldValidatedEvent += new EventHandler<FieldValidatedEventArgs>( OnFieldValidated );
             fc.Name = Properties.Resources.FieldControlName + index.ToString( CultureInfo.InvariantCulture );
@@ -1240,6 +1242,11 @@ namespace FlexFieldControlLib
          }
 
          OnTextChanged( EventArgs.Empty );
+      }
+
+      private void OnFieldKeyPressed( object sender, KeyPressEventArgs e )
+      {
+         OnKeyPress( e );
       }
 
       private void OnFieldSizeChanged( object sender, EventArgs e )
