@@ -44,6 +44,7 @@
     <Compile Include="FieldControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="FieldFocusEventArgs.cs" />
     <Compile Include="FieldValidatedEventArgs.cs" />
     <Compile Include="FlexFieldControl.cs">
       <SubType>UserControl</SubType>

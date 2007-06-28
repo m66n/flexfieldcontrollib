@@ -35,6 +35,7 @@ namespace FlexFieldControlLib
 
       public event EventHandler<CedeFocusEventArgs> CedeFocusEvent;
       public event EventHandler<FieldChangedEventArgs> FieldChangedEvent;
+      public event EventHandler<FieldFocusEventArgs> FieldFocusEvent;
       public event KeyPressEventHandler FieldKeyPressedEvent;
       public event EventHandler<EventArgs> FieldSizeChangedEvent;
       public event EventHandler<FieldValidatedEventArgs> FieldValidatedEvent;
@@ -403,6 +404,14 @@ namespace FlexFieldControlLib
          Size = MinimumSize;
       }
 
+      protected override void OnGotFocus( EventArgs e )
+      {
+         base.OnGotFocus( e );
+         SendFieldFocusEvent( FocusEventType.GotFocus );
+         SelectionStart = 0;
+         SelectionLength = TextLength;
+      }
+
       protected override void OnKeyDown( KeyEventArgs e )
       {
          base.OnKeyDown( e );
@@ -465,6 +474,12 @@ namespace FlexFieldControlLib
          {
             e.SuppressKeyPress = true;
          }
+      }
+
+      protected override void OnLostFocus( EventArgs e )
+      {
+         base.OnLostFocus( e );
+         SendFieldFocusEvent( FocusEventType.LostFocus );
       }
 
       protected override void OnParentBackColorChanged( EventArgs e )
@@ -782,6 +797,17 @@ namespace FlexFieldControlLib
             args.FieldIndex = FieldIndex;
             args.Text = Text;
             FieldChangedEvent( this, args );
+         }
+      }
+
+      private void SendFieldFocusEvent( FocusEventType fet )
+      {
+         if ( FieldFocusEvent != null )
+         {
+            FieldFocusEventArgs args = new FieldFocusEventArgs();
+            args.FieldIndex = FieldIndex;
+            args.FocusEventType = fet;
+            FieldFocusEvent( this, args );
          }
       }
 

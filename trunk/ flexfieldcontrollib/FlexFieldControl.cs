@@ -207,15 +207,7 @@ namespace FlexFieldControlLib
       {
          get
          {
-            foreach ( FieldControl fc in _fieldControls )
-            {
-               if ( fc.Focused )
-               {
-                  return true;
-               }
-            }
-
-            return false;
+            return _focused;
          }
       }
 
@@ -824,7 +816,7 @@ namespace FlexFieldControlLib
          InitializeControls();
 
          SetStyle( ControlStyles.AllPaintingInWmPaint, true );
-         SetStyle( ControlStyles.ContainerControl, true );
+         //SetStyle( ControlStyles.ContainerControl, true );
          SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
          SetStyle( ControlStyles.ResizeRedraw, true );
          SetStyle( ControlStyles.Selectable, true );
@@ -1133,6 +1125,7 @@ namespace FlexFieldControlLib
 
             fc.CedeFocusEvent += new EventHandler<CedeFocusEventArgs>( OnFocusCeded );
             fc.FieldChangedEvent += new EventHandler<FieldChangedEventArgs>( OnFieldChanged );
+            fc.FieldFocusEvent += new EventHandler<FieldFocusEventArgs>( OnFieldFocus );
             fc.FieldIndex = index;
             fc.FieldKeyPressedEvent += new KeyPressEventHandler( OnFieldKeyPressed );
             fc.FieldSizeChangedEvent += new EventHandler<EventArgs>( OnFieldSizeChanged );
@@ -1270,6 +1263,43 @@ namespace FlexFieldControlLib
          }
 
          OnTextChanged( EventArgs.Empty );
+      }
+
+      private void OnFieldFocus( object sender, FieldFocusEventArgs e )
+      {
+         switch ( e.FocusEventType )
+         {
+            case FocusEventType.GotFocus:
+
+               if ( !_focused )
+               {
+                  _focused = true;
+                  OnGotFocus( EventArgs.Empty );
+               }
+
+               break;
+
+            case FocusEventType.LostFocus:
+
+               bool focused = false;
+
+               foreach ( FieldControl fc in _fieldControls )
+               {
+                  if ( fc.Focused )
+                  {
+                     focused = true;
+                     break;
+                  }
+               }
+
+               if ( !focused )
+               {
+                  _focused = false;
+                  OnLostFocus( EventArgs.Empty );
+               }
+
+               break;
+         }
       }
 
       private void OnFieldKeyPressed( object sender, KeyPressEventArgs e )
@@ -1418,6 +1448,8 @@ namespace FlexFieldControlLib
       private bool _readOnly;
 
       private bool _backColorChanged;
+
+      private bool _focused;
 
       #endregion  Private Data
    }
