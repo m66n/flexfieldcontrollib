@@ -57,6 +57,31 @@ namespace FlexFieldControlLib
       #region Public Properties
 
       /// <summary>
+      /// Gets or sets a value indicating whether the control allows the [Tab]
+      /// key to index the fields within the control.
+      /// </summary>
+      [Browsable( true )]
+      public bool AllowInternalTab
+      {
+         get
+         {
+            foreach ( FieldControl fc in _fieldControls )
+            {
+               return fc.TabStop;
+            }
+
+            return false;
+         }
+         set
+         {
+            foreach ( FieldControl fc in _fieldControls )
+            {
+               fc.TabStop = value;
+            }
+         }
+      }
+
+      /// <summary>
       /// Gets or sets a value indicating whether the control is automatically
       /// sized vertically according to the current font and border. Default is
       /// true.
@@ -900,7 +925,10 @@ namespace FlexFieldControlLib
             }
          }
 
-         e.Graphics.FillRectangle( new SolidBrush( backColor ), ClientRectangle );
+         using ( SolidBrush backgroundBrush = new SolidBrush( backColor ) )
+         {
+            e.Graphics.FillRectangle( backgroundBrush, ClientRectangle );
+         }
 
          Rectangle rectBorder = new Rectangle( ClientRectangle.Left, ClientRectangle.Top,
             ClientRectangle.Width - 1, ClientRectangle.Height - 1 );
