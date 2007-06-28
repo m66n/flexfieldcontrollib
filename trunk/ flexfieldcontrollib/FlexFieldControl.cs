@@ -868,16 +868,6 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
-      /// Sets focus to the first field when the control gets focus.
-      /// </summary>
-      /// <param name="e"></param>
-      protected override void OnGotFocus( EventArgs e )
-      {
-         base.OnGotFocus( e );
-         _fieldControls[0].TakeFocus( Direction.Forward, Selection.All, Action.None );
-      }
-
-      /// <summary>
       /// Raises the MouseDown event.
       /// </summary>
       /// <param name="e"></param>
