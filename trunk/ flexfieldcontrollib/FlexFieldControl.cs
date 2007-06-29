@@ -207,7 +207,15 @@ namespace FlexFieldControlLib
       {
          get
          {
-            return _focused;
+            foreach ( FieldControl fc in _fieldControls )
+            {
+               if ( fc.Focused )
+               {
+                  return true;
+               }
+            }
+
+            return false;
          }
       }
 
@@ -816,10 +824,10 @@ namespace FlexFieldControlLib
          InitializeControls();
 
          SetStyle( ControlStyles.AllPaintingInWmPaint, true );
-         //SetStyle( ControlStyles.ContainerControl, true );
+         SetStyle( ControlStyles.ContainerControl, true );
          SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
          SetStyle( ControlStyles.ResizeRedraw, true );
-         SetStyle( ControlStyles.Selectable, true );
+         //SetStyle( ControlStyles.Selectable, true );
          SetStyle( ControlStyles.UserPaint, true );
 
          AdjustSize();
@@ -865,6 +873,30 @@ namespace FlexFieldControlLib
          base.OnFontChanged( e );
          Location = origin;
          AdjustSize();
+      }
+
+      /// <summary>
+      /// Raises the GotFocus event.
+      /// </summary>
+      /// <param name="e"></param>
+      protected override void OnGotFocus( EventArgs e )
+      {
+         base.OnGotFocus( e );
+         _focused = true;
+         _fieldControls[0].TakeFocus( Direction.Forward, Selection.All, Action.None );
+      }
+
+      /// <summary>
+      /// Raises the LostFocus event.
+      /// </summary>
+      /// <param name="e"></param>
+      protected override void OnLostFocus( EventArgs e )
+      {
+         if ( !Focused )
+         {
+            _focused = false;
+            base.OnLostFocus( e );
+         }
       }
 
       /// <summary>
@@ -1264,28 +1296,17 @@ namespace FlexFieldControlLib
                if ( !_focused )
                {
                   _focused = true;
-                  OnGotFocus( EventArgs.Empty );
+                  base.OnGotFocus( EventArgs.Empty );
                }
 
                break;
 
             case FocusEventType.LostFocus:
 
-               bool focused = false;
-
-               foreach ( FieldControl fc in _fieldControls )
-               {
-                  if ( fc.Focused )
-                  {
-                     focused = true;
-                     break;
-                  }
-               }
-
-               if ( !focused )
+               if ( !Focused )
                {
                   _focused = false;
-                  OnLostFocus( EventArgs.Empty );
+                  base.OnLostFocus( EventArgs.Empty );
                }
 
                break;
