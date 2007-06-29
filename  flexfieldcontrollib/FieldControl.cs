@@ -408,8 +408,6 @@ namespace FlexFieldControlLib
       {
          base.OnGotFocus( e );
          SendFieldFocusEvent( FocusEventType.GotFocus );
-         SelectionStart = 0;
-         SelectionLength = TextLength;
       }
 
       protected override void OnKeyDown( KeyEventArgs e )
@@ -805,7 +803,7 @@ namespace FlexFieldControlLib
          if ( FieldFocusEvent != null )
          {
             FieldFocusEventArgs args = new FieldFocusEventArgs();
-            args.FieldIndex = FieldIndex;
+            //args.FieldIndex = FieldIndex;
             args.FocusEventType = fet;
             FieldFocusEvent( this, args );
          }
