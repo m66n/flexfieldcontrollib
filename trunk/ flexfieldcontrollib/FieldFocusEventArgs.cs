@@ -39,7 +39,7 @@ namespace FlexFieldControlLib
             _fieldIndex = value;
          }
       }
-       * */
+      */
 
       public FocusEventType FocusEventType
       {
