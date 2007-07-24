@@ -213,7 +213,7 @@ namespace FlexFieldControlLib
          {
             base.Text = value;
 
-            if ( LeadingZeros )
+            if ( base.TextLength != 0 && LeadingZeros )
             {
                base.Text = GetPaddedText();
             }
