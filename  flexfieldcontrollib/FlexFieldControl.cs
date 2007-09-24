@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -78,6 +77,25 @@ namespace FlexFieldControlLib
             {
                fc.TabStop = value;
             }
+         }
+      }
+
+      /// <summary>
+      /// Gets whether any field in the control is blank.
+      /// </summary>
+      public bool AnyBlank
+      {
+         get
+         {
+            foreach ( FieldControl fc in _fieldControls )
+            {
+               if ( fc.Blank )
+               {
+                  return true;
+               }
+            }
+
+            return false;
          }
       }
 
