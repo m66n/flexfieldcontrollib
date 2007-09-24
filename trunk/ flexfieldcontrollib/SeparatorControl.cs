@@ -204,8 +204,12 @@ namespace FlexFieldControlLib
 
       private Size CalculateMinimumSize()
       {
-         Size minimumSize = TextRenderer.MeasureText( Graphics.FromHwnd( Handle ),
+         Graphics g = Graphics.FromHwnd( Handle );
+
+         Size minimumSize = TextRenderer.MeasureText( g,
             Text, Font, Size, _textFormatFlags );
+
+         g.Dispose();
 
          return minimumSize;
       }
