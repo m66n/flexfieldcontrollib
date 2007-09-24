@@ -584,8 +584,12 @@ namespace FlexFieldControlLib
 
       private Size CalculateMinimumSize()
       {
-         Size minSize = _valueFormatter.GetCharacterSize( Graphics.FromHwnd( Handle ),
+         Graphics g = Graphics.FromHwnd( Handle );
+
+         Size minSize = _valueFormatter.GetCharacterSize( g,
             Font, CharacterCasing );
+
+         g.Dispose();
 
          minSize.Width *= MaxLength;
 
