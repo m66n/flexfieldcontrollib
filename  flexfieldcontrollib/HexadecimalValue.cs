@@ -56,7 +56,7 @@ namespace FlexFieldControlLib
             for ( char c = 'a'; c <= 'f'; ++c )
             {
                Size newSize = TextRenderer.MeasureText( g, new string( c, MeasureCharCount ), font, new Size( 0, 0 ),
-                  TextFormatFlags.NoPadding );
+                  _textFormatFlags );
 
                newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
 
@@ -76,7 +76,7 @@ namespace FlexFieldControlLib
             for ( char c = 'A'; c <= 'F'; ++c )
             {
                Size newSize = TextRenderer.MeasureText( g, new string( c, MeasureCharCount ), font, new Size( 0, 0 ),
-                  TextFormatFlags.NoPadding );
+                  _textFormatFlags );
 
                newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
 
@@ -95,7 +95,7 @@ namespace FlexFieldControlLib
          for ( char c = '0'; c <= '9'; ++c )
          {
             Size newSize = TextRenderer.MeasureText( g, new string( c, MeasureCharCount ), font, new Size( 0, 0 ),
-               TextFormatFlags.NoPadding );
+               _textFormatFlags );
 
             newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
 
@@ -164,5 +164,8 @@ namespace FlexFieldControlLib
 
          return String.Format( CultureInfo.InvariantCulture, "{0:x}", value );
       }
+
+      private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter |
+         TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
    }
 }
