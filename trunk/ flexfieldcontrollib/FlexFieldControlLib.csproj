@@ -48,9 +48,6 @@
     <Compile Include="FlexFieldControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FlexFieldControl.Designer.cs">
-      <DependentUpon>FlexFieldControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="FlexFieldControlDesigner.cs" />
     <Compile Include="HexadecimalValue.cs" />
     <Compile Include="IValueFormatter.cs" />
