@@ -35,9 +35,7 @@ namespace FlexFieldControlLib
 
       public event EventHandler<CedeFocusEventArgs> CedeFocusEvent;
       public event EventHandler<FieldChangedEventArgs> FieldChangedEvent;
-      public event EventHandler<FieldFocusEventArgs> FieldFocusEvent;
-      public event KeyPressEventHandler FieldKeyPressedEvent;
-      public event EventHandler<EventArgs> FieldSizeChangedEvent;
+      public event EventHandler FieldSizeChangedEvent;
       public event EventHandler<FieldValidatedEventArgs> FieldValidatedEvent;
 
       #endregion  // Public Events
@@ -48,7 +46,7 @@ namespace FlexFieldControlLib
       {
          get
          {
-            return ( Text.Length == 0 );
+            return ( TextLength == 0 );
          }
       }
 
@@ -404,21 +402,9 @@ namespace FlexFieldControlLib
          Size = MinimumSize;
       }
 
-      protected override void OnGotFocus( EventArgs e )
-      {
-         base.OnGotFocus( e );
-         SendFieldFocusEvent( FocusEventType.GotFocus );
-      }
-
       protected override void OnKeyDown( KeyEventArgs e )
       {
          base.OnKeyDown( e );
-
-         if ( FieldKeyPressedEvent != null )
-         {
-            KeyPressEventArgs args = new KeyPressEventArgs( Convert.ToChar( e.KeyCode, CultureInfo.InvariantCulture ) );
-            FieldKeyPressedEvent( this, args );
-         }
 
          switch ( e.KeyCode )
          {
@@ -472,12 +458,6 @@ namespace FlexFieldControlLib
          {
             e.SuppressKeyPress = true;
          }
-      }
-
-      protected override void OnLostFocus( EventArgs e )
-      {
-         base.OnLostFocus( e );
-         SendFieldFocusEvent( FocusEventType.LostFocus );
       }
 
       protected override void OnParentBackColorChanged( EventArgs e )
@@ -539,7 +519,7 @@ namespace FlexFieldControlLib
 
          SendFieldChangedEvent();
 
-         if ( Text.Length == MaxLength && Focused && SelectionStart == TextLength )
+         if ( TextLength == MaxLength && Focused && SelectionStart == TextLength )
          {
             SendCedeFocusEvent( Direction.Forward, Selection.All );
          }
@@ -576,6 +556,17 @@ namespace FlexFieldControlLib
 
             FieldValidatedEvent( this, args );
          }
+      }
+
+      protected override void WndProc( ref Message m )
+      {
+         switch ( m.Msg )
+         {
+            case 0x007b:  // WM_CONTEXTMENU
+               return;
+         }
+
+         base.WndProc( ref m );
       }
 
       #endregion     // Protected Methods
@@ -799,17 +790,6 @@ namespace FlexFieldControlLib
             args.FieldIndex = FieldIndex;
             args.Text = Text;
             FieldChangedEvent( this, args );
-         }
-      }
-
-      private void SendFieldFocusEvent( FocusEventType fet )
-      {
-         if ( FieldFocusEvent != null )
-         {
-            FieldFocusEventArgs args = new FieldFocusEventArgs();
-            //args.FieldIndex = FieldIndex;
-            args.FocusEventType = fet;
-            FieldFocusEvent( this, args );
          }
       }
 

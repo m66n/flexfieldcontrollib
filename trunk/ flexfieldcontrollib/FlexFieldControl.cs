@@ -839,13 +839,14 @@ namespace FlexFieldControlLib
       {
          InitializeComponent();
 
+         Cursor = Cursors.IBeam;
+
          InitializeControls();
 
          SetStyle( ControlStyles.AllPaintingInWmPaint, true );
          SetStyle( ControlStyles.ContainerControl, true );
          SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
          SetStyle( ControlStyles.ResizeRedraw, true );
-         //SetStyle( ControlStyles.Selectable, true );
          SetStyle( ControlStyles.UserPaint, true );
 
          AdjustSize();
@@ -912,8 +913,8 @@ namespace FlexFieldControlLib
       {
          if ( !Focused )
          {
-            _focused = false;
             base.OnLostFocus( e );
+            _focused = false;
          }
       }
 
@@ -924,18 +925,33 @@ namespace FlexFieldControlLib
       protected override void OnMouseDown( MouseEventArgs e )
       {
          base.OnMouseDown( e );
-
          HandleMouseDown( e.Location );
       }
 
       /// <summary>
-      /// Sets the cursor to I-beam when mouse is over control.
+      /// Raises the MouseEnter event.
       /// </summary>
       /// <param name="e"></param>
       protected override void OnMouseEnter( EventArgs e )
       {
-         base.OnMouseEnter( e );
-         Cursor = Cursors.IBeam;
+         if ( !_hasMouse )
+         {
+            _hasMouse = true;
+            base.OnMouseEnter( e );
+         }
+      }
+
+      /// <summary>
+      /// Raises the MouseLeave event. 
+      /// </summary>
+      /// <param name="e"></param>
+      protected override void OnMouseLeave( EventArgs e )
+      {
+         if ( !HasMouse )
+         {
+            base.OnMouseLeave( e );
+            _hasMouse = false;
+         }
       }
 
       /// <summary>
@@ -1000,6 +1016,18 @@ namespace FlexFieldControlLib
       }
 
       #endregion     // Protected Methods
+
+      #region Private Properties
+
+      private bool HasMouse
+      {
+         get
+         {
+            return DisplayRectangle.Contains( PointToClient( MousePosition ) );
+         }
+      }
+
+      #endregion  // Private Properties
 
       #region Private Methods
 
@@ -1163,16 +1191,29 @@ namespace FlexFieldControlLib
          {
             FieldControl fc = new FieldControl();
 
-            fc.CedeFocusEvent += new EventHandler<CedeFocusEventArgs>( OnFocusCeded );
-            fc.FieldChangedEvent += new EventHandler<FieldChangedEventArgs>( OnFieldChanged );
-            fc.FieldFocusEvent += new EventHandler<FieldFocusEventArgs>( OnFieldFocus );
+            fc.CreateControl();
+
             fc.FieldIndex = index;
-            fc.FieldKeyPressedEvent += new KeyPressEventHandler( OnFieldKeyPressed );
-            fc.FieldSizeChangedEvent += new EventHandler<EventArgs>( OnFieldSizeChanged );
-            fc.FieldValidatedEvent += new EventHandler<FieldValidatedEventArgs>( OnFieldValidated );
             fc.Name = Properties.Resources.FieldControlName + index.ToString( CultureInfo.InvariantCulture );
             fc.Parent = this;
             fc.ReadOnly = ReadOnly;
+
+            fc.CedeFocusEvent += new EventHandler<CedeFocusEventArgs>( OnFocusCeded );
+            fc.FieldChangedEvent += new EventHandler<FieldChangedEventArgs>( OnFieldChanged );
+            fc.GotFocus += new EventHandler( OnFieldGotFocus );
+            fc.KeyPress += new KeyPressEventHandler( OnFieldKeyPressed );
+            fc.LostFocus += new EventHandler( OnFieldLostFocus );
+            fc.FieldSizeChangedEvent += new EventHandler( OnFieldSizeChanged );
+            fc.FieldValidatedEvent += new EventHandler<FieldValidatedEventArgs>( OnFieldValidated );
+
+            fc.Click += new EventHandler( OnSubControlClicked );
+            fc.DoubleClick += new EventHandler( OnSubControlDoubleClicked );
+            fc.MouseClick += new MouseEventHandler( OnSubControlMouseClicked );
+            fc.MouseDoubleClick += new MouseEventHandler( OnSubControlMouseDoubleClicked );
+            fc.MouseEnter += new EventHandler( OnSubControlMouseEntered );
+            fc.MouseHover += new EventHandler( OnSubControlMouseHovered );
+            fc.MouseLeave += new EventHandler( OnSubControlMouseLeft );
+            fc.MouseMove += new MouseEventHandler( OnSubControlMouseMoved );
 
             _fieldControls.Add( fc );
 
@@ -1183,12 +1224,24 @@ namespace FlexFieldControlLib
          {
             SeparatorControl sc = new SeparatorControl();
 
+            sc.CreateControl();
+
             sc.Name = Properties.Resources.SeparatorControlName + index.ToString( CultureInfo.InvariantCulture );
             sc.Parent = this;
             sc.ReadOnly = ReadOnly;
             sc.SeparatorIndex = index;
+
             sc.SeparatorMouseEvent += new EventHandler<SeparatorMouseEventArgs>( OnSeparatorMouseEvent );
             sc.SeparatorSizeChangedEvent += new EventHandler<EventArgs>( OnSeparatorSizeChanged );
+
+            sc.Click += new EventHandler( OnSubControlClicked );
+            sc.DoubleClick += new EventHandler( OnSubControlDoubleClicked );
+            sc.MouseClick += new MouseEventHandler( OnSubControlMouseClicked );
+            sc.MouseDoubleClick += new MouseEventHandler( OnSubControlMouseDoubleClicked );
+            sc.MouseEnter += new EventHandler( OnSubControlMouseEntered );
+            sc.MouseHover += new EventHandler( OnSubControlMouseHovered );
+            sc.MouseLeave += new EventHandler( OnSubControlMouseLeft );
+            sc.MouseMove += new MouseEventHandler( OnSubControlMouseMoved );
 
             _separatorControls.Add( sc );
 
@@ -1240,7 +1293,7 @@ namespace FlexFieldControlLib
       {
          SuspendLayout();
 
-         int difference = Size.Width - MinimumSize.Width;
+         int difference = Width - MinimumSize.Width;
 
          Debug.Assert( difference >= 0 );
 
@@ -1305,35 +1358,27 @@ namespace FlexFieldControlLib
          OnTextChanged( EventArgs.Empty );
       }
 
-      private void OnFieldFocus( object sender, FieldFocusEventArgs e )
+      private void OnFieldGotFocus( object sender, EventArgs e )
       {
-         switch ( e.FocusEventType )
+         if ( !_focused )
          {
-            case FocusEventType.GotFocus:
-
-               if ( !_focused )
-               {
-                  _focused = true;
-                  base.OnGotFocus( EventArgs.Empty );
-               }
-
-               break;
-
-            case FocusEventType.LostFocus:
-
-               if ( !Focused )
-               {
-                  _focused = false;
-                  base.OnLostFocus( EventArgs.Empty );
-               }
-
-               break;
+            _focused = true;
+            base.OnGotFocus( e );
          }
       }
 
       private void OnFieldKeyPressed( object sender, KeyPressEventArgs e )
       {
          OnKeyPress( e );
+      }
+
+      private void OnFieldLostFocus( object sender, EventArgs e )
+      {
+         if ( !Focused )
+         {
+            base.OnLostFocus( EventArgs.Empty );
+            _focused = false;
+         }
       }
 
       private void OnFieldSizeChanged( object sender, EventArgs e )
@@ -1418,6 +1463,46 @@ namespace FlexFieldControlLib
          Invalidate();
       }
 
+      private void OnSubControlClicked( object sender, EventArgs e )
+      {
+         OnClick( e );
+      }
+
+      private void OnSubControlDoubleClicked( object sender, EventArgs e )
+      {
+         OnDoubleClick( e );
+      }
+
+      private void OnSubControlMouseClicked( object sender, MouseEventArgs e )
+      {
+         OnMouseClick( e );
+      }
+
+      private void OnSubControlMouseDoubleClicked( object sender, MouseEventArgs e )
+      {
+         OnMouseDoubleClick( e );
+      }
+
+      private void OnSubControlMouseEntered( object sender, EventArgs e )
+      {
+         OnMouseEnter( e );
+      }
+
+      private void OnSubControlMouseHovered( object sender, EventArgs e )
+      {
+         OnMouseHover( e );
+      }
+
+      private void OnSubControlMouseLeft( object sender, EventArgs e )
+      {
+         OnMouseLeave( e );
+      }
+
+      private void OnSubControlMouseMoved( object sender, MouseEventArgs e )
+      {
+         OnMouseMove( e );
+      }
+
       private void Parse( string text )
       {
          Clear();
@@ -1479,6 +1564,8 @@ namespace FlexFieldControlLib
       private bool _backColorChanged;
 
       private bool _focused;
+
+      private bool _hasMouse;
 
       #endregion  Private Data
    }
