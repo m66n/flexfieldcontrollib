@@ -37,7 +37,7 @@ namespace FlexFieldControlLib
    /// An abstract base for a numeric fielded control.
    /// </summary>
    [DesignerAttribute( typeof( FlexFieldControlDesigner ) )]
-   public abstract partial class FlexFieldControl : UserControl
+   public abstract class FlexFieldControl : UserControl
    {
       #region Public Events
 
@@ -837,8 +837,6 @@ namespace FlexFieldControlLib
       /// </summary>
       protected FlexFieldControl()
       {
-         InitializeComponent();
-
          Cursor = Cursors.IBeam;
 
          InitializeControls();
