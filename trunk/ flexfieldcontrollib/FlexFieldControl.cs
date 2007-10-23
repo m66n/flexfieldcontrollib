@@ -175,10 +175,7 @@ namespace FlexFieldControlLib
       [Browsable( true )]
       public new BorderStyle BorderStyle
       {
-         get
-         {
-            return _borderStyle;
-         }
+         get { return _borderStyle; }
          set
          {
             if ( _borderStyle != value )
@@ -198,10 +195,7 @@ namespace FlexFieldControlLib
       [Browsable( true )]
       public int FieldCount
       {
-         get
-         {
-            return _fieldCount;
-         }
+         get { return _fieldCount; }
          set
          {
             if ( value < 1 )
@@ -243,10 +237,7 @@ namespace FlexFieldControlLib
       [Browsable( true )]
       public new Size MinimumSize
       {
-         get
-         {
-            return CalculateMinimumSize();
-         }
+         get { return CalculateMinimumSize(); }
       }
 
       /// <summary>
@@ -256,10 +247,7 @@ namespace FlexFieldControlLib
       [Browsable( true )]
       public bool ReadOnly
       {
-         get
-         {
-            return _readOnly;
-         }
+         get { return _readOnly; }
          set
          {
             _readOnly = value;
@@ -300,10 +288,7 @@ namespace FlexFieldControlLib
 
             return sb.ToString();
          }
-         set
-         {
-            Parse( value );
-         }
+         set { Parse( value ); }
       }
 
       #endregion  // Public Properties
@@ -386,7 +371,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[ fieldIndex ].CharacterCasing;
+            return _fieldControls[fieldIndex].CharacterCasing;
          }
 
          return CharacterCasing.Normal;
@@ -416,7 +401,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[ fieldIndex ].LeadingZeros;
+            return _fieldControls[fieldIndex].LeadingZeros;
          }
 
          return false;

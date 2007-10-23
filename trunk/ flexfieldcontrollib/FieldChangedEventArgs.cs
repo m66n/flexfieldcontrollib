@@ -34,14 +34,8 @@ namespace FlexFieldControlLib
       /// </summary>
       public int FieldIndex
       {
-         get
-         {
-            return _fieldIndex;
-         }
-         set
-         {
-            _fieldIndex = value;
-         }
+         get { return _fieldIndex; }
+         set { _fieldIndex = value; }
       }
 
       /// <summary>
@@ -49,14 +43,8 @@ namespace FlexFieldControlLib
       /// </summary>
       public string Text
       {
-         get
-         {
-            return _text;
-         }
-         set
-         {
-            _text = value;
-         }
+         get { return _text; }
+         set { _text = value; }
       }
 
       private int _fieldIndex;
