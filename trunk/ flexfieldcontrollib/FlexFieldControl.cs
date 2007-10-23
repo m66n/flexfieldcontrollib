@@ -634,7 +634,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].TakeFocus( Direction.Forward, Selection.All, Action.None );
+            _fieldControls[fieldIndex].TakeFocus( Direction.Forward, Selection.All );
          }
       }
 
@@ -900,7 +900,7 @@ namespace FlexFieldControlLib
       {
          base.OnGotFocus( e );
          _focused = true;
-         _fieldControls[0].TakeFocus( Direction.Forward, Selection.All, Action.None );
+         _fieldControls[0].TakeFocus( Direction.Forward, Selection.All );
       }
 
       /// <summary>
@@ -1174,7 +1174,7 @@ namespace FlexFieldControlLib
             direction = Direction.Reverse;
          }
 
-         _fieldControls[fieldIndex].TakeFocus( direction, Selection.None, Action.None );
+         _fieldControls[fieldIndex].TakeFocus( direction, Selection.None );
       }
 
       private void InitializeControls()
@@ -1399,12 +1399,12 @@ namespace FlexFieldControlLib
          {
             case Action.Home:
 
-               _fieldControls[0].TakeFocus( e.Direction, e.Selection, e.Action );
+               _fieldControls[0].TakeFocus( Action.Home );
                return;
 
             case Action.End:
 
-               _fieldControls[FieldCount - 1].TakeFocus( e.Direction, e.Selection, e.Action );
+               _fieldControls[FieldCount - 1].TakeFocus( Action.End );
                return;
 
             case Action.Trim:
@@ -1414,7 +1414,7 @@ namespace FlexFieldControlLib
                   return;
                }
 
-               _fieldControls[e.FieldIndex - 1].TakeFocus( e.Direction, e.Selection, e.Action );
+               _fieldControls[e.FieldIndex - 1].TakeFocus( Action.Trim );
                return;
          }
 
@@ -1435,18 +1435,18 @@ namespace FlexFieldControlLib
             --fieldIndex;
          }
 
-         _fieldControls[fieldIndex].TakeFocus( e.Direction, e.Selection, e.Action );
+         _fieldControls[fieldIndex].TakeFocus( e.Direction, e.Selection );
       }
 
       private void OnSeparatorMouseEvent( object sender, SeparatorMouseEventArgs e )
       {
          if ( e.SeparatorIndex == 0 )
          {
-            _fieldControls[0].TakeFocus( Direction.Forward, Selection.None, Action.None );
+            _fieldControls[0].TakeFocus( Direction.Forward, Selection.None );
          }
          else if ( e.SeparatorIndex == FieldCount )
          {
-            _fieldControls[FieldCount - 1].TakeFocus( Direction.Reverse, Selection.None, Action.None );
+            _fieldControls[FieldCount - 1].TakeFocus( Direction.Reverse, Selection.None );
          }
          else
          {
