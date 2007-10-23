@@ -44,30 +44,18 @@ namespace FlexFieldControlLib
 
       public bool Blank
       {
-         get
-         {
-            return ( TextLength == 0 );
-         }
+         get { return ( TextLength == 0 ); }
       }
 
       public int FieldIndex
       {
-         get
-         {
-            return _fieldIndex;
-         }
-         set
-         {
-            _fieldIndex = value;
-         }
+         get { return _fieldIndex; }
+         set { _fieldIndex = value; }
       }
 
       public bool LeadingZeros
       {
-         get
-         {
-            return _leadingZeros;
-         }
+         get { return _leadingZeros; }
          set
          {
             _leadingZeros = value;
@@ -81,10 +69,7 @@ namespace FlexFieldControlLib
 
       public override int MaxLength
       {
-         get
-         {
-            return base.MaxLength;
-         }
+         get { return base.MaxLength; }
          set
          {
             if ( value < 1 )
@@ -125,10 +110,7 @@ namespace FlexFieldControlLib
 
       public new Size MinimumSize
       {
-         get
-         {
-            return CalculateMinimumSize();
-         }
+         get { return CalculateMinimumSize(); }
       }
 
       public string RegExString
@@ -147,10 +129,7 @@ namespace FlexFieldControlLib
 
       public int RangeLow
       {
-         get
-         {
-            return _rangeLow;
-         }
+         get { return _rangeLow; }
          set
          {
             if ( value < 0 )
@@ -175,10 +154,7 @@ namespace FlexFieldControlLib
 
       public int RangeHigh
       {
-         get
-         {
-            return _rangeHigh;
-         }
+         get { return _rangeHigh; }
          set
          {
             if ( value < RangeLow )
@@ -203,10 +179,7 @@ namespace FlexFieldControlLib
 
       public override string Text
       {
-         get
-         {
-            return base.Text;
-         }
+         get { return base.Text; }
          set
          {
             base.Text = value;
@@ -231,18 +204,12 @@ namespace FlexFieldControlLib
 
             return result;
          }
-         set
-         {
-            Text = _valueFormatter.ValueText( value, CharacterCasing );
-         }
+         set { Text = _valueFormatter.ValueText( value, CharacterCasing ); }
       }
 
       public ValueFormat ValueFormat
       {
-         get
-         {
-            return _valueFormat;
-         }
+         get { return _valueFormat; }
          set
          {
             if ( _valueFormat != value )
@@ -423,7 +390,7 @@ namespace FlexFieldControlLib
          }
          else if ( IsForwardKey( e ) )
          {
-            if ( e.Modifiers == Keys.Control )
+            if ( e.Control )
             {
                SendCedeFocusEvent( Direction.Forward, Selection.All );
                return;
@@ -436,7 +403,7 @@ namespace FlexFieldControlLib
          }
          else if ( IsReverseKey( e ) )
          {
-            if ( e.Modifiers == Keys.Control )
+            if ( e.Control )
             {
                SendCedeFocusEvent( Direction.Reverse, Selection.All );
                return;

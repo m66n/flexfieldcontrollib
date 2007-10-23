@@ -45,18 +45,12 @@ namespace FlexFieldControlLib
 
       public new Size MinimumSize
       {
-         get
-         {
-            return CalculateMinimumSize();
-         }
+         get { return CalculateMinimumSize(); }
       }
 
       public bool ReadOnly
       {
-         get
-         {
-            return _readOnly;
-         }
+         get { return _readOnly; }
          set
          {
             _readOnly = value;
@@ -83,22 +77,13 @@ namespace FlexFieldControlLib
 
       public int SeparatorIndex
       {
-         get
-         {
-            return _separatorIndex;
-         }
-         set
-         {
-            _separatorIndex = value;
-         }
+         get { return _separatorIndex; }
+         set { _separatorIndex = value; }
       }
 
       public override string Text
       {
-         get
-         {
-            return base.Text;
-         }
+         get { return base.Text; }
          set
          {
             base.Text = value;

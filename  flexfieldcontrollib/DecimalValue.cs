@@ -32,18 +32,12 @@ namespace FlexFieldControlLib
    {
       public virtual int MaxFieldLength
       {
-         get
-         {
-            return string.Format( CultureInfo.InvariantCulture, "{0:d}", int.MaxValue ).Length - 1;
-         }
+         get { return string.Format( CultureInfo.InvariantCulture, "{0:d}", int.MaxValue ).Length - 1; }
       }
 
       public virtual string RegExString
       {
-         get
-         {
-            return "[0-9]";
-         }
+         get { return "[0-9]"; }
       }
 
       public virtual Size GetCharacterSize( Graphics g, Font font, CharacterCasing casing )

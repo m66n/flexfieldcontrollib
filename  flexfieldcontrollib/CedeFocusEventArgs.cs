@@ -28,62 +28,32 @@ namespace FlexFieldControlLib
    {
       public Action Action
       {
-         get
-         {
-            return _action;
-         }
-         set
-         {
-            _action = value;
-         }
+         get { return _action; }
+         set { _action = value; }
       }
 
       public Direction Direction
       {
-         get
-         {
-            return _direction;
-         }
-         set
-         {
-            _direction = value;
-         }
+         get { return _direction; }
+         set { _direction = value; }
       }
 
       public int FieldIndex
       {
-         get
-         {
-            return _fieldIndex;
-         }
-         set
-         {
-            _fieldIndex = value;
-         }
+         get { return _fieldIndex; }
+         set { _fieldIndex = value; }
       }
 
       public Selection Selection
       {
-         get
-         {
-            return _selection;
-         }
-         set
-         {
-            _selection = value;
-         }
+         get { return _selection; }
+         set { _selection = value; }
       }
 
       private Action _action;
       private Direction _direction;
       private int _fieldIndex;
       private Selection _selection;
-   }
-
-   internal enum Selection
-   {
-      None,
-      All
    }
 
    internal enum Action
@@ -98,5 +68,11 @@ namespace FlexFieldControlLib
    {
       Forward,
       Reverse
+   }
+
+   internal enum Selection
+   {
+      None,
+      All
    }
 }

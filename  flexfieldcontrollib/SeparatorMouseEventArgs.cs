@@ -29,26 +29,14 @@ namespace FlexFieldControlLib
    {
       public Point Location
       {
-         get
-         {
-            return _location;
-         }
-         set
-         {
-            _location = value;
-         }
+         get { return _location; }
+         set { _location = value; }
       }
 
       public int SeparatorIndex
       {
-         get
-         {
-            return _separatorIndex;
-         }
-         set
-         {
-            _separatorIndex = value;
-         }
+         get { return _separatorIndex; }
+         set { _separatorIndex = value; }
       }
 
       private Point _location;
