@@ -312,7 +312,7 @@ namespace FlexFieldControlLib
          _cedeFocusKeys.Add( e );
       }
 
-      public void TakeFocus( Direction direction, Selection selection, Action action )
+      public void TakeFocus( Action action )
       {
          Focus();
 
@@ -343,6 +343,11 @@ namespace FlexFieldControlLib
 
                return;
          }
+      }
+
+      public void TakeFocus( Direction direction, Selection selection )
+      {
+         Focus();
 
          if ( selection == Selection.All )
          {
@@ -351,14 +356,7 @@ namespace FlexFieldControlLib
          }
          else
          {
-            if ( direction == Direction.Forward )
-            {
-               SelectionStart = 0;
-            }
-            else
-            {
-               SelectionStart = TextLength;
-            }
+            SelectionStart = ( direction == Direction.Forward ) ? 0 : TextLength;
          }
       }
 
@@ -662,7 +660,7 @@ namespace FlexFieldControlLib
 
       private void HandleBackspaceKey( KeyEventArgs e )
       {
-         if ( TextLength == 0 || ( SelectionStart == 0 && SelectionLength == 0 ) )
+         if ( !ReadOnly && ( TextLength == 0 || ( SelectionStart == 0 && SelectionLength == 0 ) ) )
          {
             SendCedeFocusEvent( Action.Trim );
             e.SuppressKeyPress = true;
