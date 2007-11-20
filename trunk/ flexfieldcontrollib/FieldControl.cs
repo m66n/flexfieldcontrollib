@@ -42,6 +42,23 @@ namespace FlexFieldControlLib
 
       #region Public Properties
 
+      public bool AllowPrecedingZero
+      {
+         get { return _allowPrecedingZero; }
+         set
+         {
+            _allowPrecedingZero = value;
+
+            if ( !_allowPrecedingZero )
+            {
+               if ( !Blank )
+               {
+                  Text = ( _leadingZeros ? GetPaddedText() : GetCasedText() );
+               }
+            }
+         }
+      }
+
       public bool Blank
       {
          get { return ( TextLength == 0 ); }
@@ -554,8 +571,6 @@ namespace FlexFieldControlLib
 
       private string GetCasedText()
       {
-         string text = Text;
-
          int value = _valueFormatter.Value( Text );
 
          string valueString = _valueFormatter.ValueText( value, CharacterCasing );
@@ -569,12 +584,12 @@ namespace FlexFieldControlLib
 
          bool zeroAppended = false;
 
-         while ( ( textIndex < text.Length ) &&
+         while ( ( textIndex < TextLength ) &&
                  ( valueStringIndex < valueString.Length ) )
          {
-            if ( !nonZeroFound && text[textIndex] == '0' )
+            if ( !nonZeroFound && Text[textIndex] == '0' )
             {
-               if ( LeadingZeros )
+               if ( LeadingZeros || AllowPrecedingZero )
                {
                   sb.Append( '0' );
                }
@@ -586,7 +601,7 @@ namespace FlexFieldControlLib
 
                ++textIndex;          
             }
-            else if ( text[textIndex] == valueString[valueStringIndex] )
+            else if ( Text[textIndex] == valueString[valueStringIndex] )
             {
                sb.Append( valueString[valueStringIndex] );
 
@@ -595,7 +610,7 @@ namespace FlexFieldControlLib
 
                nonZeroFound = true;
             }
-            else if ( Char.IsUpper( text[textIndex] ) )
+            else if ( Char.IsUpper( Text[textIndex] ) )
             {
                sb.Append( Char.ToUpper( valueString[valueStringIndex], CultureInfo.InvariantCulture ) );
 
@@ -772,6 +787,7 @@ namespace FlexFieldControlLib
       private ValueFormat _valueFormat = ValueFormat.Decimal;
       private IValueFormatter _valueFormatter = new DecimalValue();
       private bool _leadingZeros;
+      private bool _allowPrecedingZero;
 
       private int _rangeLow;  // = 0
       private int _rangeHigh = Int32.MaxValue;

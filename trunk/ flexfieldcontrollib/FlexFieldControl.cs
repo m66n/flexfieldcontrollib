@@ -363,6 +363,21 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
+      /// Gets whether a field allows a preceding zero.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <returns></returns>
+      public bool GetAllowPrecedingZero( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            return _fieldControls[fieldIndex].AllowPrecedingZero;
+         }
+
+         return false;
+      }
+
+      /// <summary>
       /// Gets the character casing for a field in the control.
       /// </summary>
       /// <param name="fieldIndex"></param>
@@ -558,6 +573,32 @@ namespace FlexFieldControlLib
             _fieldControls[fieldIndex].ResetCedeFocusKeys();
          }
       }
+
+      /// <summary>
+      /// Toggles whether every field allows a preceding zero.
+      /// </summary>
+      /// <param name="allowPrecedingZero"></param>
+      public void SetAllowPrecedingZero( bool allowPrecedingZero )
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.AllowPrecedingZero = allowPrecedingZero;
+         }
+      }
+
+      /// <summary>
+      /// Toggles whether a specific field allows a preceding zero.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="allowPrecedingZero"></param>
+      public void SetAllowPrecedingZero( int fieldIndex, bool allowPrecedingZero )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[fieldIndex].AllowPrecedingZero = allowPrecedingZero;
+         }
+      }
+
 
       /// <summary>
       /// Sets the character casing for every field in the control.
@@ -1073,11 +1114,13 @@ namespace FlexFieldControlLib
          foreach ( SeparatorControl sc in _separatorControls )
          {
             Controls.Remove( sc );
+            sc.Dispose();
          }
 
          foreach ( FieldControl fc in _fieldControls )
          {
             Controls.Remove( fc );
+            fc.Dispose();
          }
 
          _separatorControls.Clear();
