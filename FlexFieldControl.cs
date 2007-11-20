@@ -1114,11 +1114,13 @@ namespace FlexFieldControlLib
          foreach ( SeparatorControl sc in _separatorControls )
          {
             Controls.Remove( sc );
+            sc.Dispose();
          }
 
          foreach ( FieldControl fc in _fieldControls )
          {
             Controls.Remove( fc );
+            fc.Dispose();
          }
 
          _separatorControls.Clear();
