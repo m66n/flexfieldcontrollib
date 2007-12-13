@@ -1144,9 +1144,9 @@ namespace FlexFieldControlLib
 
          try
          {
-            IntPtr hFontPreviouse = NativeMethods.SelectObject( hdc, hFont );
+            IntPtr hFontPrevious = NativeMethods.SelectObject( hdc, hFont );
             NativeMethods.GetTextMetrics( hdc, out textMetric );
-            NativeMethods.SelectObject( hdc, hFontPreviouse );
+            NativeMethods.SelectObject( hdc, hFontPrevious );
          }
          finally
          {
