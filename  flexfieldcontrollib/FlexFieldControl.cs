@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
+
 namespace FlexFieldControlLib
 {
    /// <summary>
@@ -1135,6 +1136,7 @@ namespace FlexFieldControlLib
          return _referenceTextBox.Height;
       }
 
+      [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1806", Justification = "What should be done if ReleaseDC() doesn't work?" )]
       private static NativeMethods.TEXTMETRIC GetTextMetrics( IntPtr hwnd, Font font )
       {
          IntPtr hdc = NativeMethods.GetWindowDC( hwnd );
@@ -1150,7 +1152,7 @@ namespace FlexFieldControlLib
          }
          finally
          {
-            NativeMethods.ReleaseDC( hwnd, hdc );
+            NativeMethods.ReleaseDC( hwnd, hdc );            
             NativeMethods.DeleteObject( hFont );
          }
 

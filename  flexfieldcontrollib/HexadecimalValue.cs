@@ -130,9 +130,12 @@ namespace FlexFieldControlLib
          fieldLength = Math.Min( fieldLength, MaxFieldLength );
          string valueString = new String( 'f', fieldLength );
 
-         Int32.TryParse( valueString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result );
+         if ( Int32.TryParse( valueString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result ) )
+         {
+            return result;
+         }
 
-         return result;
+         return 0;
       }
 
       public virtual int Value( string text )
@@ -144,9 +147,12 @@ namespace FlexFieldControlLib
 
          int result = 0;
 
-         Int32.TryParse( text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result );
+         if ( Int32.TryParse( text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result ) )
+         {
+            return result;
+         }
 
-         return result;
+         return 0;
       }
 
       public virtual string ValueText( int value, CharacterCasing casing )
