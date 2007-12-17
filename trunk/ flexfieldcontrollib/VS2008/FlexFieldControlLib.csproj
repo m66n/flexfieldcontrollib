@@ -79,7 +79,7 @@
     </Compile>
     <Compile Include="..\FlexFieldControl.cs">
       <Link>FlexFieldControl.cs</Link>
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="..\FlexFieldControlDesigner.cs">
       <Link>FlexFieldControlDesigner.cs</Link>
