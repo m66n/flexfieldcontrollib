@@ -38,7 +38,7 @@ namespace FlexFieldControlLib
    /// An abstract base for a numeric fielded control.
    /// </summary>
    [DesignerAttribute( typeof( FlexFieldControlDesigner ) )]
-   public abstract class FlexFieldControl : UserControl
+   public abstract class FlexFieldControl : Control
    {
       #region Public Events
 
@@ -174,7 +174,7 @@ namespace FlexFieldControlLib
       /// Gets or sets the type of border that is drawn around the control.
       /// </summary>
       [Browsable( true )]
-      public new BorderStyle BorderStyle
+      public BorderStyle BorderStyle
       {
          get { return _borderStyle; }
          set
