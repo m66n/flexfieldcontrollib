@@ -213,7 +213,7 @@ namespace FlexFieldControlLib
          get
          {
             int result = _valueFormatter.Value( Text );
-            
+
             if ( result < RangeLow )
             {
                return RangeLow;
@@ -265,7 +265,7 @@ namespace FlexFieldControlLib
       #endregion     // Public Properties
 
       #region Public Methods
-      
+
       public bool AddCedeFocusKey( KeyEventArgs e )
       {
          if ( _valueFormatter.IsValidKey( e ) )
@@ -282,7 +282,7 @@ namespace FlexFieldControlLib
 
          return false;
       }
-  
+
       public void ClearCedeFocusKeys()
       {
          _cedeFocusKeys.Clear();
@@ -436,7 +436,8 @@ namespace FlexFieldControlLib
             HandleBackspaceKey( e );
          }
          else if ( !_valueFormatter.IsValidKey( e ) &&
-                   !IsEditKey( e ) )
+                   !IsEditKey( e ) &&
+                   !IsEnterKey( e ) )
          {
             e.SuppressKeyPress = true;
          }
@@ -587,7 +588,7 @@ namespace FlexFieldControlLib
          while ( ( textIndex < TextLength ) &&
                  ( valueStringIndex < valueString.Length ) )
          {
-            if ( !nonZeroFound && Text[textIndex] == '0' )
+            if ( !nonZeroFound && Text[ textIndex ] == '0' )
             {
                if ( LeadingZeros || AllowPrecedingZero )
                {
@@ -599,20 +600,20 @@ namespace FlexFieldControlLib
                   zeroAppended = true;
                }
 
-               ++textIndex;          
+               ++textIndex;
             }
-            else if ( Text[textIndex] == valueString[valueStringIndex] )
+            else if ( Text[ textIndex ] == valueString[ valueStringIndex ] )
             {
-               sb.Append( valueString[valueStringIndex] );
+               sb.Append( valueString[ valueStringIndex ] );
 
                ++textIndex;
                ++valueStringIndex;
 
                nonZeroFound = true;
             }
-            else if ( Char.IsUpper( Text[textIndex] ) )
+            else if ( Char.IsUpper( Text[ textIndex ] ) )
             {
-               sb.Append( Char.ToUpper( valueString[valueStringIndex], CultureInfo.InvariantCulture ) );
+               sb.Append( Char.ToUpper( valueString[ valueStringIndex ], CultureInfo.InvariantCulture ) );
 
                ++textIndex;
                ++valueStringIndex;
@@ -694,6 +695,17 @@ namespace FlexFieldControlLib
                   ( e.KeyCode == Keys.C ||
                     e.KeyCode == Keys.V ||
                     e.KeyCode == Keys.X ) )
+         {
+            return true;
+         }
+
+         return false;
+      }
+
+      private static bool IsEnterKey( KeyEventArgs e )
+      {
+         if ( e.KeyCode == Keys.Enter ||
+              e.KeyCode == Keys.Return )
          {
             return true;
          }

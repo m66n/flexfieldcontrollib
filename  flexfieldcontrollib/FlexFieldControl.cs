@@ -281,11 +281,11 @@ namespace FlexFieldControlLib
 
             for ( int index = 0; index < FieldCount; ++index )
             {
-               sb.Append( _separatorControls[index].Text );
-               sb.Append( _fieldControls[index].Text );
+               sb.Append( _separatorControls[ index ].Text );
+               sb.Append( _fieldControls[ index ].Text );
             }
 
-            sb.Append( _separatorControls[FieldCount].Text );
+            sb.Append( _separatorControls[ FieldCount ].Text );
 
             return sb.ToString();
          }
@@ -323,7 +323,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].AddCedeFocusKey( e );
+            return _fieldControls[ fieldIndex ].AddCedeFocusKey( e );
          }
 
          return false;
@@ -359,7 +359,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].ClearCedeFocusKeys();
+            _fieldControls[ fieldIndex ].ClearCedeFocusKeys();
          }
       }
 
@@ -372,7 +372,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].AllowPrecedingZero;
+            return _fieldControls[ fieldIndex ].AllowPrecedingZero;
          }
 
          return false;
@@ -387,7 +387,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].CharacterCasing;
+            return _fieldControls[ fieldIndex ].CharacterCasing;
          }
 
          return CharacterCasing.Normal;
@@ -402,7 +402,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].Text;
+            return _fieldControls[ fieldIndex ].Text;
          }
 
          return String.Empty;
@@ -417,7 +417,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].LeadingZeros;
+            return _fieldControls[ fieldIndex ].LeadingZeros;
          }
 
          return false;
@@ -432,7 +432,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].MaxLength;
+            return _fieldControls[ fieldIndex ].MaxLength;
          }
 
          return 0;
@@ -450,7 +450,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].RangeHigh;
+            return _fieldControls[ fieldIndex ].RangeHigh;
          }
 
          return 0;
@@ -466,7 +466,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].RangeLow;
+            return _fieldControls[ fieldIndex ].RangeLow;
          }
 
          return 0;
@@ -481,7 +481,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidSeparatorIndex( separatorIndex ) )
          {
-            return _separatorControls[separatorIndex].Text;
+            return _separatorControls[ separatorIndex ].Text;
          }
 
          return String.Empty;
@@ -497,7 +497,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].Value;
+            return _fieldControls[ fieldIndex ].Value;
          }
 
          return 0;
@@ -512,7 +512,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].ValueFormat;
+            return _fieldControls[ fieldIndex ].ValueFormat;
          }
 
          return ValueFormat.Decimal;
@@ -528,7 +528,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].Focused;
+            return _fieldControls[ fieldIndex ].Focused;
          }
 
          return false;
@@ -544,7 +544,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            return _fieldControls[fieldIndex].Blank;
+            return _fieldControls[ fieldIndex ].Blank;
          }
 
          return false;
@@ -571,7 +571,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].ResetCedeFocusKeys();
+            _fieldControls[ fieldIndex ].ResetCedeFocusKeys();
          }
       }
 
@@ -596,7 +596,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].AllowPrecedingZero = allowPrecedingZero;
+            _fieldControls[ fieldIndex ].AllowPrecedingZero = allowPrecedingZero;
          }
       }
 
@@ -623,8 +623,8 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].CharacterCasing = casing;
-            _fieldControls[fieldIndex].Size = _fieldControls[fieldIndex].MinimumSize;
+            _fieldControls[ fieldIndex ].CharacterCasing = casing;
+            _fieldControls[ fieldIndex ].Size = _fieldControls[ fieldIndex ].MinimumSize;
          }
       }
 
@@ -649,7 +649,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].Text = text;
+            _fieldControls[ fieldIndex ].Text = text;
          }
       }
 
@@ -661,7 +661,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].TakeFocus( Direction.Forward, Selection.All );
+            _fieldControls[ fieldIndex ].TakeFocus( Direction.Forward, Selection.All );
          }
       }
 
@@ -690,7 +690,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].LeadingZeros = leadingZeros;
+            _fieldControls[ fieldIndex ].LeadingZeros = leadingZeros;
          }
       }
 
@@ -718,7 +718,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].MaxLength = maxLength;
+            _fieldControls[ fieldIndex ].MaxLength = maxLength;
          }
 
          AdjustSize();
@@ -748,8 +748,8 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].RangeLow = low;
-            _fieldControls[fieldIndex].RangeHigh = high;
+            _fieldControls[ fieldIndex ].RangeLow = low;
+            _fieldControls[ fieldIndex ].RangeHigh = high;
          }
       }
 
@@ -776,7 +776,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidSeparatorIndex( separatorIndex ) )
          {
-            _separatorControls[separatorIndex].Text = text;
+            _separatorControls[ separatorIndex ].Text = text;
             AdjustSize();
          }
       }
@@ -802,7 +802,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].Value = value;
+            _fieldControls[ fieldIndex ].Value = value;
          }
       }
 
@@ -829,7 +829,7 @@ namespace FlexFieldControlLib
       {
          if ( IsValidFieldIndex( fieldIndex ) )
          {
-            _fieldControls[fieldIndex].ValueFormat = format;
+            _fieldControls[ fieldIndex ].ValueFormat = format;
          }
 
          AdjustSize();
@@ -846,11 +846,11 @@ namespace FlexFieldControlLib
 
          for ( int index = 0; index < FieldCount; ++index )
          {
-            sb.Append( _separatorControls[index].ToString() );
-            sb.Append( _fieldControls[index].ToString() );
+            sb.Append( _separatorControls[ index ].ToString() );
+            sb.Append( _fieldControls[ index ].ToString() );
          }
 
-         sb.Append( _separatorControls[FieldCount].ToString() );
+         sb.Append( _separatorControls[ FieldCount ].ToString() );
 
          return sb.ToString();
       }
@@ -927,7 +927,7 @@ namespace FlexFieldControlLib
       {
          base.OnGotFocus( e );
          _focused = true;
-         _fieldControls[0].TakeFocus( Direction.Forward, Selection.All );
+         _fieldControls[ 0 ].TakeFocus( Direction.Forward, Selection.All );
       }
 
       /// <summary>
@@ -1152,7 +1152,7 @@ namespace FlexFieldControlLib
          }
          finally
          {
-            NativeMethods.ReleaseDC( hwnd, hdc );            
+            NativeMethods.ReleaseDC( hwnd, hdc );
             NativeMethods.DeleteObject( hFont );
          }
 
@@ -1163,15 +1163,15 @@ namespace FlexFieldControlLib
       {
          int midPointsCount = FieldCount * 2 - 1;
 
-         Point[] midPoints = new Point[midPointsCount];
+         Point[] midPoints = new Point[ midPointsCount ];
 
          for ( int index = 0; index < FieldCount; ++index )
          {
-            midPoints[index * 2] = _fieldControls[index].MidPoint;
+            midPoints[ index * 2 ] = _fieldControls[ index ].MidPoint;
 
             if ( index < ( FieldCount - 1 ) )
             {
-               midPoints[( index * 2 ) + 1] = _separatorControls[index + 1].MidPoint;
+               midPoints[ ( index * 2 ) + 1 ] = _separatorControls[ index + 1 ].MidPoint;
             }
          }
 
@@ -1182,7 +1182,7 @@ namespace FlexFieldControlLib
 
          while ( midPointsIndex < midPointsCount )
          {
-            if ( location.X < midPoints[midPointsIndex].X )
+            if ( location.X < midPoints[ midPointsIndex ].X )
             {
                break;
             }
@@ -1204,7 +1204,7 @@ namespace FlexFieldControlLib
             direction = Direction.Reverse;
          }
 
-         _fieldControls[fieldIndex].TakeFocus( direction, Selection.None );
+         _fieldControls[ fieldIndex ].TakeFocus( direction, Selection.None );
       }
 
       private void InitializeControls()
@@ -1229,8 +1229,12 @@ namespace FlexFieldControlLib
             fc.CedeFocusEvent += new EventHandler<CedeFocusEventArgs>( OnFocusCeded );
             fc.FieldChangedEvent += new EventHandler<FieldChangedEventArgs>( OnFieldChanged );
             fc.GotFocus += new EventHandler( OnFieldGotFocus );
+            fc.KeyDown += new KeyEventHandler( OnFieldKeyDown );
             fc.KeyPress += new KeyPressEventHandler( OnFieldKeyPressed );
+            fc.KeyUp += new KeyEventHandler( OnFieldKeyUp );
             fc.LostFocus += new EventHandler( OnFieldLostFocus );
+            fc.PreviewKeyDown += new PreviewKeyDownEventHandler( OnFieldPreviewKeyDown );
+
             fc.FieldSizeChangedEvent += new EventHandler( OnFieldSizeChanged );
             fc.FieldValidatedEvent += new EventHandler<FieldValidatedEventArgs>( OnFieldValidated );
 
@@ -1293,7 +1297,7 @@ namespace FlexFieldControlLib
                text = "><";
             }
 
-            _separatorControls[index].Text = text;
+            _separatorControls[ index ].Text = text;
          }
       }
 
@@ -1330,15 +1334,15 @@ namespace FlexFieldControlLib
          int div = difference / offsetCount;
          int mod = difference % offsetCount;
 
-         int[] offsets = new int[offsetCount];
+         int[] offsets = new int[ offsetCount ];
 
          for ( int index = 0; index < offsetCount; ++index )
          {
-            offsets[index] = div;
+            offsets[ index ] = div;
 
             if ( index < mod )
             {
-               ++offsets[index];
+               ++offsets[ index ];
             }
          }
 
@@ -1360,18 +1364,18 @@ namespace FlexFieldControlLib
 
          for ( int index = 0; index < FieldCount; ++index )
          {
-            _separatorControls[index].Location = new Point( x, y );
-            x += _separatorControls[index].Width;
+            _separatorControls[ index ].Location = new Point( x, y );
+            x += _separatorControls[ index ].Width;
 
-            x += offsets[2 * index];
+            x += offsets[ 2 * index ];
 
-            _fieldControls[index].Location = new Point( x, y );
-            x += _fieldControls[index].Width;
+            _fieldControls[ index ].Location = new Point( x, y );
+            x += _fieldControls[ index ].Width;
 
-            x += offsets[2 * ( FieldCount - index ) - 1];
+            x += offsets[ 2 * ( FieldCount - index ) - 1 ];
          }
 
-         _separatorControls[FieldCount].Location = new Point( x, y );
+         _separatorControls[ FieldCount ].Location = new Point( x, y );
 
          ResumeLayout( false );
       }
@@ -1395,9 +1399,19 @@ namespace FlexFieldControlLib
          }
       }
 
+      private void OnFieldKeyDown( object sender, KeyEventArgs e )
+      {
+         OnKeyDown( e );
+      }
+
       private void OnFieldKeyPressed( object sender, KeyPressEventArgs e )
       {
          OnKeyPress( e );
+      }
+
+      private void OnFieldKeyUp( object sender, KeyEventArgs e )
+      {
+         OnKeyUp( e );
       }
 
       private void OnFieldLostFocus( object sender, EventArgs e )
@@ -1407,6 +1421,11 @@ namespace FlexFieldControlLib
             base.OnLostFocus( EventArgs.Empty );
             _focused = false;
          }
+      }
+
+      private void OnFieldPreviewKeyDown( object sender, PreviewKeyDownEventArgs e )
+      {
+         OnPreviewKeyDown( e );
       }
 
       private void OnFieldSizeChanged( object sender, EventArgs e )
@@ -1429,12 +1448,12 @@ namespace FlexFieldControlLib
          {
             case Action.Home:
 
-               _fieldControls[0].TakeFocus( Action.Home );
+               _fieldControls[ 0 ].TakeFocus( Action.Home );
                return;
 
             case Action.End:
 
-               _fieldControls[FieldCount - 1].TakeFocus( Action.End );
+               _fieldControls[ FieldCount - 1 ].TakeFocus( Action.End );
                return;
 
             case Action.Trim:
@@ -1444,7 +1463,7 @@ namespace FlexFieldControlLib
                   return;
                }
 
-               _fieldControls[e.FieldIndex - 1].TakeFocus( Action.Trim );
+               _fieldControls[ e.FieldIndex - 1 ].TakeFocus( Action.Trim );
                return;
          }
 
@@ -1465,18 +1484,18 @@ namespace FlexFieldControlLib
             --fieldIndex;
          }
 
-         _fieldControls[fieldIndex].TakeFocus( e.Direction, e.Selection );
+         _fieldControls[ fieldIndex ].TakeFocus( e.Direction, e.Selection );
       }
 
       private void OnSeparatorMouseEvent( object sender, SeparatorMouseEventArgs e )
       {
          if ( e.SeparatorIndex == 0 )
          {
-            _fieldControls[0].TakeFocus( Direction.Forward, Selection.None );
+            _fieldControls[ 0 ].TakeFocus( Direction.Forward, Selection.None );
          }
          else if ( e.SeparatorIndex == FieldCount )
          {
-            _fieldControls[FieldCount - 1].TakeFocus( Direction.Reverse, Selection.None );
+            _fieldControls[ FieldCount - 1 ].TakeFocus( Direction.Reverse, Selection.None );
          }
          else
          {
@@ -1544,14 +1563,14 @@ namespace FlexFieldControlLib
 
          for ( int index = 0; index < FieldCount; ++index )
          {
-            sb.Append( _separatorControls[index].RegExString );
+            sb.Append( _separatorControls[ index ].RegExString );
 
             sb.Append( "(" );
-            sb.Append( _fieldControls[index].RegExString );
+            sb.Append( _fieldControls[ index ].RegExString );
             sb.Append( ")" );
          }
 
-         sb.Append( _separatorControls[FieldCount].RegExString );
+         sb.Append( _separatorControls[ FieldCount ].RegExString );
 
          Regex regex = new Regex( sb.ToString() );
 
@@ -1563,7 +1582,7 @@ namespace FlexFieldControlLib
             {
                for ( int index = 0; index < FieldCount; ++index )
                {
-                  _fieldControls[index].Text = match.Groups[index + 1].Value;
+                  _fieldControls[ index ].Text = match.Groups[ index + 1 ].Value;
                }
             }
          }
