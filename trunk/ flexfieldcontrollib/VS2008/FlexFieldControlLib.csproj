@@ -60,51 +60,30 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CedeFocusEventArgs.cs">
-      <Link>CedeFocusEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\DecimalValue.cs">
-      <Link>DecimalValue.cs</Link>
-    </Compile>
-    <Compile Include="..\FieldChangedEventArgs.cs">
-      <Link>FieldChangedEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\FieldControl.cs">
-      <Link>FieldControl.cs</Link>
+    <Compile Include="CedeFocusEventArgs.cs" />
+    <Compile Include="DecimalValue.cs" />
+    <Compile Include="FieldChangedEventArgs.cs" />
+    <Compile Include="FieldControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="..\FieldValidatedEventArgs.cs">
-      <Link>FieldValidatedEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\FlexFieldControl.cs">
-      <Link>FlexFieldControl.cs</Link>
+    <Compile Include="FieldValidatedEventArgs.cs" />
+    <Compile Include="FlexFieldControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="..\FlexFieldControlDesigner.cs">
-      <Link>FlexFieldControlDesigner.cs</Link>
-    </Compile>
-    <Compile Include="..\HexadecimalValue.cs">
-      <Link>HexadecimalValue.cs</Link>
-    </Compile>
-    <Compile Include="..\IValueFormatter.cs">
-      <Link>IValueFormatter.cs</Link>
-    </Compile>
-    <Compile Include="..\NativeMethods.cs">
-      <Link>NativeMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\SeparatorControl.cs">
-      <Link>SeparatorControl.cs</Link>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="..\SeparatorMouseEventArgs.cs">
-      <Link>SeparatorMouseEventArgs.cs</Link>
-    </Compile>
+    <Compile Include="FlexFieldControlDesigner.cs" />
+    <Compile Include="HexadecimalValue.cs" />
+    <Compile Include="IValueFormatter.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SeparatorControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SeparatorMouseEventArgs.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
