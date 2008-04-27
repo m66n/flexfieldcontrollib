@@ -436,7 +436,8 @@ namespace FlexFieldControlLib
             HandleBackspaceKey( e );
          }
          else if ( !_valueFormatter.IsValidKey( e ) &&
-                   !IsEditKey( e ) )
+                   !IsEditKey( e ) &&
+                   !IsEnterKey( e ) )
          {
             e.SuppressKeyPress = true;
          }
@@ -694,6 +695,17 @@ namespace FlexFieldControlLib
                   ( e.KeyCode == Keys.C ||
                     e.KeyCode == Keys.V ||
                     e.KeyCode == Keys.X ) )
+         {
+            return true;
+         }
+
+         return false;
+      }
+
+      private static bool IsEnterKey( KeyEventArgs e )
+      {
+         if ( e.KeyCode == Keys.Enter ||
+              e.KeyCode == Keys.Return )
          {
             return true;
          }

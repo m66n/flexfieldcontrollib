@@ -1229,8 +1229,12 @@ namespace FlexFieldControlLib
             fc.CedeFocusEvent += new EventHandler<CedeFocusEventArgs>( OnFocusCeded );
             fc.FieldChangedEvent += new EventHandler<FieldChangedEventArgs>( OnFieldChanged );
             fc.GotFocus += new EventHandler( OnFieldGotFocus );
+            fc.KeyDown += new KeyEventHandler( OnFieldKeyDown );
             fc.KeyPress += new KeyPressEventHandler( OnFieldKeyPressed );
+            fc.KeyUp += new KeyEventHandler( OnFieldKeyUp );
             fc.LostFocus += new EventHandler( OnFieldLostFocus );
+            fc.PreviewKeyDown += new PreviewKeyDownEventHandler( OnFieldPreviewKeyDown );
+
             fc.FieldSizeChangedEvent += new EventHandler( OnFieldSizeChanged );
             fc.FieldValidatedEvent += new EventHandler<FieldValidatedEventArgs>( OnFieldValidated );
 
@@ -1395,9 +1399,19 @@ namespace FlexFieldControlLib
          }
       }
 
+      private void OnFieldKeyDown( object sender, KeyEventArgs e )
+      {
+         OnKeyDown( e );
+      }
+
       private void OnFieldKeyPressed( object sender, KeyPressEventArgs e )
       {
          OnKeyPress( e );
+      }
+
+      private void OnFieldKeyUp( object sender, KeyEventArgs e )
+      {
+         OnKeyUp( e );
       }
 
       private void OnFieldLostFocus( object sender, EventArgs e )
@@ -1407,6 +1421,11 @@ namespace FlexFieldControlLib
             base.OnLostFocus( EventArgs.Empty );
             _focused = false;
          }
+      }
+
+      private void OnFieldPreviewKeyDown( object sender, PreviewKeyDownEventArgs e )
+      {
+         OnPreviewKeyDown( e );
       }
 
       private void OnFieldSizeChanged( object sender, EventArgs e )
