@@ -38,7 +38,7 @@ namespace FlexFieldControlLib
    /// An abstract base for a numeric fielded control.
    /// </summary>
    [DesignerAttribute( typeof( FlexFieldControlDesigner ) )]
-   public abstract class FlexFieldControl : Control
+   public abstract class FlexFieldControl : ContainerControl
    {
       #region Public Events
 
@@ -874,6 +874,12 @@ namespace FlexFieldControlLib
          SetStyle( ControlStyles.ResizeRedraw, true );
          SetStyle( ControlStyles.UserPaint, true );
 
+         SetStyle( ControlStyles.FixedHeight, true );
+         SetStyle( ControlStyles.FixedWidth, true );
+
+         AutoScaleDimensions = new SizeF( 96F, 96F );
+         AutoScaleMode = AutoScaleMode.Dpi;
+
          AdjustSize();
       }
 
@@ -1592,7 +1598,7 @@ namespace FlexFieldControlLib
 
       #region Private Data
 
-      private TextBox _referenceTextBox = new TextBox();
+      private static TextBox _referenceTextBox = new TextBox();
 
       private int _fieldCount = 3;
 
