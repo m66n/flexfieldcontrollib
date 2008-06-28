@@ -1,5 +1,10 @@
 #summary A list of changes for each released revision
 
+=== Revision 54 (28-Jun-08) ===
+
+  * Changed base of `FlexFieldControl` to `ContainerControl` so that its `AutoScaleMode` could be set to `AutoScaleMode.Dpi`.  Also set the `FixedWidth` and `FixedHeight` control styles to true.  These changes fix rendering problems when screen resolution is 120 dpi.
+  * Using `Graphics.DrawString()` rather than `TextRenderer.DrawText()` in `SeparatorControl`.  `TextRenderer` does not use the correct baseline at 120 dpi.
+
 === Revision 52 (27-Apr-08) ===
   * Added propagation for `PreviewKeyDown`, `KeyDown`, and `KeyUp` events.
 
@@ -32,4 +37,3 @@
 
 === Revision 20 (5-Jun-07) ===
   * Initial release.
-
