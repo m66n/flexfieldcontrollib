@@ -100,10 +100,15 @@ namespace FlexFieldControlLib
       {
          SetStyle( ControlStyles.AllPaintingInWmPaint, true );
          SetStyle( ControlStyles.OptimizedDoubleBuffer, true );
-         SetStyle( ControlStyles.ResizeRedraw, true );
          SetStyle( ControlStyles.UserPaint, true );
 
+         SetStyle( ControlStyles.FixedHeight, true );
+         SetStyle( ControlStyles.FixedWidth, true );
+
          BackColor = SystemColors.Window;
+
+         _stringFormat = StringFormat.GenericTypographic;
+         _stringFormat.FormatFlags = StringFormatFlags.MeasureTrailingSpaces;
 
          Size = MinimumSize;
          TabStop = false;
@@ -163,9 +168,12 @@ namespace FlexFieldControlLib
             e.Graphics.FillRectangle( backgroundBrush, ClientRectangle );
          }
          
-         TextRenderer.DrawText( e.Graphics, Text, Font, ClientRectangle,
-            foreColor, _textFormatFlags );
-         
+         using ( SolidBrush foreBrush = new SolidBrush( foreColor ) )
+         {
+            float x = (float)ClientRectangle.Width / 2F - _sizeText.Width / 2F;
+            e.Graphics.DrawString( Text, Font, foreBrush,
+               new RectangleF( x, 0F, _sizeText.Width, _sizeText.Height ), _stringFormat );
+         }
       }
 
       protected override void OnParentBackColorChanged( EventArgs e )
@@ -189,22 +197,25 @@ namespace FlexFieldControlLib
 
       private Size CalculateMinimumSize()
       {
-         Graphics g = Graphics.FromHwnd( Handle );
+         using ( Graphics g = Graphics.FromHwnd( Handle ) )
+         {
+            _sizeText = g.MeasureString( Text, Font, -1, _stringFormat );
+         }
 
-         Size minimumSize = TextRenderer.MeasureText( g,
-            Text, Font, Size, _textFormatFlags );
+         // MeasureString() cuts off the bottom pixel for descenders no matter
+         // which StringFormatFlags are chosen
+         //
+         _sizeText.Height += 1F;
 
-         g.Dispose();
-
-         return minimumSize;
+         return _sizeText.ToSize();
       }
 
       private int _separatorIndex;
 
-      private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix |
-         TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
-
       private bool _readOnly;
       private bool _backColorChanged;
+
+      private StringFormat _stringFormat;
+      private SizeF _sizeText;
    }
 }
