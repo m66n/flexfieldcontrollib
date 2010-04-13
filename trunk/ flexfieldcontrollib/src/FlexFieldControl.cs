@@ -1136,10 +1136,11 @@ namespace FlexFieldControlLib
 
       private int GetSuggestedHeight()
       {
-         _referenceTextBox.AutoSize = true;
-         _referenceTextBox.BorderStyle = BorderStyle;
-         _referenceTextBox.Font = Font;
-         return _referenceTextBox.Height;
+         TextBox dummy = new TextBox();
+         dummy.AutoSize = true;
+         dummy.BorderStyle = BorderStyle;
+         dummy.Font = Font;
+         return dummy.Height;
       }
 
       [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1806", Justification = "What should be done if ReleaseDC() doesn't work?" )]
@@ -1597,8 +1598,6 @@ namespace FlexFieldControlLib
       #endregion     // Private Methods
 
       #region Private Data
-
-      private static TextBox _referenceTextBox = new TextBox();
 
       private int _fieldCount = 3;
 
