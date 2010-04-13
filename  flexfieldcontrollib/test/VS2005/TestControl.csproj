@@ -4,13 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D1BF6ACC-BE80-4478-B715-3CA174CEF119}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{22BDEEAC-CFA2-4E01-8A52-673CF7A7B2A7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FlexFieldControlLib</RootNamespace>
-    <AssemblyName>FlexFieldControlLib</AssemblyName>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>FlexFieldControlLib.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>TestControl</RootNamespace>
+    <AssemblyName>TestControl</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,8 +18,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\Debug\FlexFieldControlLib.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,46 +29,53 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Design" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CedeFocusEventArgs.cs" />
-    <Compile Include="FieldControl.cs">
+    <Compile Include="..\FlexControls\IPAddressControl.cs">
+      <Link>IPAddressControl.cs</Link>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="FieldValidatedEventArgs.cs" />
-    <Compile Include="FlexFieldControl.cs">
-      <SubType>Component</SubType>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FlexFieldControlDesigner.cs" />
-    <Compile Include="HexadecimalValue.cs" />
-    <Compile Include="IValueFormatter.cs" />
-    <Compile Include="NativeMethods.cs" />
-    <Compile Include="DecimalValue.cs" />
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="SeparatorControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="FieldChangedEventArgs.cs" />
-    <Compile Include="SeparatorMouseEventArgs.cs" />
-    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FlexFieldControlLib.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\VS2005\FlexFieldControlLib.csproj">
+      <Project>{D1BF6ACC-BE80-4478-B715-3CA174CEF119}</Project>
+      <Name>FlexFieldControlLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

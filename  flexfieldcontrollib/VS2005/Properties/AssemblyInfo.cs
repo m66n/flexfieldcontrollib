@@ -35,7 +35,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "FlexFieldControlLib" )]
-[assembly: AssemblyCopyright( "Copyright (c) 2007 Michael Chapman" )]
+[assembly: AssemblyCopyright( "Copyright (c) 2010 Michael Chapman" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
