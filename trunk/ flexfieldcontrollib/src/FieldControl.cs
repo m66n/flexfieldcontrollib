@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.Security.Permissions;
 using System.Text;
 using System.Windows.Forms;
 

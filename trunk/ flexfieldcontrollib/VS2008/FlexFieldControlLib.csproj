@@ -43,7 +43,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <DocumentationFile>bin\Debug\FlexFieldControlLib.XML</DocumentationFile>
-    <CodeAnalysisRules>-Microsoft.Design#CA1020</CodeAnalysisRules>
+    <CodeAnalysisRules>-Microsoft.Design#CA2210;-Microsoft.Design#CA1020</CodeAnalysisRules>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
