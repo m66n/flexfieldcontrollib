@@ -28,9 +28,19 @@
       /// </summary>
       private void InitializeComponent()
       {
-         this.ipAddressControl1 = new FlexControls.IPAddressControl();
          this.label1 = new System.Windows.Forms.Label();
+         this.ipAddressControl1 = new FlexControls.IPAddressControl();
          this.SuspendLayout();
+         // 
+         // label1
+         // 
+         this.label1.AutoSize = true;
+         this.label1.Location = new System.Drawing.Point( 12, 15 );
+         this.label1.Name = "label1";
+         this.label1.Size = new System.Drawing.Size( 61, 13 );
+         this.label1.TabIndex = 1;
+         this.label1.Text = "IP Address:";
+         this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
          // 
          // ipAddressControl1
          // 
@@ -39,34 +49,23 @@
          this.ipAddressControl1.BackColor = System.Drawing.SystemColors.Window;
          this.ipAddressControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
          this.ipAddressControl1.Cursor = System.Windows.Forms.Cursors.IBeam;
-         this.ipAddressControl1.FieldCount = 4;
-         this.ipAddressControl1.Location = new System.Drawing.Point(79, 12);
+         this.ipAddressControl1.Location = new System.Drawing.Point( 79, 12 );
          this.ipAddressControl1.Name = "ipAddressControl1";
          this.ipAddressControl1.ReadOnly = false;
-         this.ipAddressControl1.Size = new System.Drawing.Size(87, 20);
+         this.ipAddressControl1.Size = new System.Drawing.Size( 87, 20 );
          this.ipAddressControl1.TabIndex = 0;
          this.ipAddressControl1.Text = "...";
          // 
-         // label1
-         // 
-         this.label1.AutoSize = true;
-         this.label1.Location = new System.Drawing.Point(12, 15);
-         this.label1.Name = "label1";
-         this.label1.Size = new System.Drawing.Size(61, 13);
-         this.label1.TabIndex = 1;
-         this.label1.Text = "IP Address:";
-         this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
-         // 
          // MainForm
          // 
-         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+         this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-         this.ClientSize = new System.Drawing.Size(292, 266);
-         this.Controls.Add(this.label1);
-         this.Controls.Add(this.ipAddressControl1);
+         this.ClientSize = new System.Drawing.Size( 292, 266 );
+         this.Controls.Add( this.label1 );
+         this.Controls.Add( this.ipAddressControl1 );
          this.Name = "MainForm";
          this.Text = "TestControl";
-         this.ResumeLayout(false);
+         this.ResumeLayout( false );
          this.PerformLayout();
 
       }

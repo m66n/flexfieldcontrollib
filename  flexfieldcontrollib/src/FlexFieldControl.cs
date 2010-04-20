@@ -27,6 +27,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -85,6 +86,7 @@ namespace FlexFieldControlLib
       /// <summary>
       /// Gets whether any field in the control is blank.
       /// </summary>
+      [Browsable( false )]
       public bool AnyBlank
       {
          get
@@ -130,6 +132,7 @@ namespace FlexFieldControlLib
       /// Gets a horizontal snapline associated with the base of the text
       /// string.
       /// </summary>
+      [Browsable( false )]
       public int Baseline
       {
          get
@@ -155,6 +158,7 @@ namespace FlexFieldControlLib
       /// <summary>
       /// Gets whether every field in the control is blank.
       /// </summary>
+      [Browsable( false )]
       public bool Blank
       {
          get
@@ -194,10 +198,12 @@ namespace FlexFieldControlLib
       /// minimum is 1. Setting this value resets every field and separator
       /// to its default state.
       /// </summary>
-      [Browsable( true )]
+      [Browsable( false )]
       public int FieldCount
       {
          get { return _fieldCount; }
+         [SecurityPermissionAttribute( SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
+         [SecurityPermissionAttribute( SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
          set
          {
             if ( value < 1 )
@@ -863,6 +869,8 @@ namespace FlexFieldControlLib
       /// <summary>
       /// The constructor.
       /// </summary>
+      [SecurityPermissionAttribute( SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
+      [SecurityPermissionAttribute( SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
       protected FlexFieldControl()
       {
          Cursor = Cursors.IBeam;
@@ -1215,6 +1223,8 @@ namespace FlexFieldControlLib
          _fieldControls[ fieldIndex ].TakeFocus( direction, Selection.None );
       }
 
+      [SecurityPermissionAttribute( SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
+      [SecurityPermissionAttribute( SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
       private void InitializeControls()
       {
          Cleanup();
