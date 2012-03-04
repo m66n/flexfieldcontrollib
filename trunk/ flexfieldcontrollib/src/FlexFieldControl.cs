@@ -1,4 +1,4 @@
-// Copyright (c) 2010 Michael Chapman
+// Copyright (c) 2010-2012 Michael Chapman
 // http://flexfieldcontrollib.googlecode.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -27,6 +27,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.Security;
 using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -202,8 +203,7 @@ namespace FlexFieldControlLib
       public int FieldCount
       {
          get { return _fieldCount; }
-         [SecurityPermissionAttribute( SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
-         [SecurityPermissionAttribute( SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
+         [SecurityCritical]
          set
          {
             if ( value < 1 )
@@ -869,8 +869,7 @@ namespace FlexFieldControlLib
       /// <summary>
       /// The constructor.
       /// </summary>
-      [SecurityPermissionAttribute( SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
-      [SecurityPermissionAttribute( SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
+      [SecurityCritical]
       protected FlexFieldControl()
       {
          Cursor = Cursors.IBeam;
@@ -910,6 +909,20 @@ namespace FlexFieldControlLib
       #endregion  // Protected Properties
 
       #region Protected Methods
+
+      /// <summary>
+      /// Clean up any resources being used.
+      /// </summary>
+      /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+      protected override void Dispose( bool disposing )
+      {
+         if ( disposing )
+         {
+            Cleanup();
+         }
+
+         base.Dispose( disposing );
+      }
 
       /// <summary>
       /// Raises the BackColorChanged event.
@@ -964,6 +977,11 @@ namespace FlexFieldControlLib
       /// <param name="e"></param>
       protected override void OnMouseDown( MouseEventArgs e )
       {
+         if ( null == e )
+         {
+            throw new ArgumentNullException( "e" );
+         }
+
          base.OnMouseDown( e );
          HandleMouseDown( e.Location );
       }
@@ -1001,6 +1019,11 @@ namespace FlexFieldControlLib
       /// <param name="e"></param>
       protected override void OnPaint( PaintEventArgs e )
       {
+         if ( null == e )
+         {
+            throw new ArgumentNullException( "e" );
+         }
+
          base.OnPaint( e );
 
          Color backColor = BackColor;
@@ -1027,7 +1050,12 @@ namespace FlexFieldControlLib
 
                if ( Application.RenderWithVisualStyles )
                {
-                  ControlPaint.DrawVisualStyleBorder( e.Graphics, rectBorder );
+                  using ( Pen pen = new Pen( VisualStyleInformation.TextControlBorder ) )
+                  {
+                     e.Graphics.DrawRectangle( pen, rectBorder );
+                  }
+                  rectBorder.Inflate( -1, -1 );
+                  e.Graphics.DrawRectangle( SystemPens.Window, rectBorder );
                }
                else
                {
@@ -1145,11 +1173,15 @@ namespace FlexFieldControlLib
 
       private int GetSuggestedHeight()
       {
-         TextBox dummy = new TextBox();
-         dummy.AutoSize = true;
-         dummy.BorderStyle = BorderStyle;
-         dummy.Font = Font;
-         return dummy.Height;
+         int height = 0;
+         using ( TextBox dummy = new TextBox() )
+         {
+            dummy.AutoSize = true;
+            dummy.BorderStyle = BorderStyle;
+            dummy.Font = Font;
+            height = dummy.Height;
+         }
+         return height;
       }
 
       [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA1806", Justification = "What should be done if ReleaseDC() doesn't work?" )]
@@ -1223,8 +1255,8 @@ namespace FlexFieldControlLib
          _fieldControls[ fieldIndex ].TakeFocus( direction, Selection.None );
       }
 
-      [SecurityPermissionAttribute( SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
-      [SecurityPermissionAttribute( SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode )]
+      [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Reliability", "CA2000:Dispose objects before losing scope" )]
+      [SecurityCritical]
       private void InitializeControls()
       {
          Cleanup();
@@ -1304,15 +1336,15 @@ namespace FlexFieldControlLib
 
             if ( index == 0 )
             {
-               text = "<";
+               text = Properties.Resources.NearText;
             }
             else if ( index == ( _separatorControls.Count - 1 ) )
             {
-               text = ">";
+               text = Properties.Resources.FarText;
             }
             else
             {
-               text = "><";
+               text = Properties.Resources.MiddleText;
             }
 
             _separatorControls[ index ].Text = text;
