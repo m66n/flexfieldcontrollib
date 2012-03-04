@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FarText" xml:space="preserve">
+    <value>&gt;</value>
+  </data>
   <data name="FieldControlName" xml:space="preserve">
     <value>FieldControl</value>
   </data>
   <data name="FieldMeasureText" xml:space="preserve">
     <value>M</value>
+  </data>
+  <data name="MiddleText" xml:space="preserve">
+    <value>&gt;&lt;</value>
+  </data>
+  <data name="NearText" xml:space="preserve">
+    <value>&lt;</value>
   </data>
   <data name="SeparatorControlName" xml:space="preserve">
     <value>SeparatorControl</value>
