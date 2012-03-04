@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2007 Michael Chapman
+﻿// Copyright (c) 2007-2012 Michael Chapman
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -35,7 +35,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "FlexFieldControlLib" )]
-[assembly: AssemblyCopyright( "Copyright (c) 2010 Michael Chapman" )]
+[assembly: AssemblyCopyright( "Copyright (c) 2007-2012 Michael Chapman" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -56,7 +56,9 @@ using System.Resources;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion( "1.0.*" )]
+[assembly: AssemblyVersion( "1.1.*" )]
 
 [assembly: CLSCompliant( true )]
 [assembly: NeutralResourcesLanguageAttribute( "en-US" )]
+
+[module: System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "FlexFieldControlLib" )]

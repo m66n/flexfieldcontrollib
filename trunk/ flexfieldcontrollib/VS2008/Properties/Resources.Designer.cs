@@ -79,15 +79,6 @@ namespace FlexFieldControlLib.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M.
-        /// </summary>
-        internal static string FieldMeasureText {
-            get {
-                return ResourceManager.GetString("FieldMeasureText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &gt;&lt;.
         /// </summary>
         internal static string MiddleText {
