@@ -123,9 +123,6 @@
   <data name="FieldControlName" xml:space="preserve">
     <value>FieldControl</value>
   </data>
-  <data name="FieldMeasureText" xml:space="preserve">
-    <value>M</value>
-  </data>
   <data name="MiddleText" xml:space="preserve">
     <value>&gt;&lt;</value>
   </data>
