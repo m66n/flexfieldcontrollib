@@ -123,6 +123,11 @@ namespace FlexFieldControlLib
 
       protected override void OnMouseDown( MouseEventArgs e )
       {
+         if ( null == e )
+         {
+            throw new ArgumentNullException( "e" );
+         }
+
          base.OnMouseDown( e );
 
          if ( SeparatorMouseEvent != null )
@@ -138,6 +143,11 @@ namespace FlexFieldControlLib
 
       protected override void OnPaint( PaintEventArgs e )
       {
+         if ( null == e )
+         {
+            throw new ArgumentNullException( "e" );
+         }
+
          base.OnPaint( e );
 
          Color backColor = BackColor;
