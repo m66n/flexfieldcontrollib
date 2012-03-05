@@ -304,39 +304,6 @@ namespace FlexFieldControlLib
       #region Public Methods
 
       /// <summary>
-      /// Adds a KeyEventArgs to every field that indicates when a field should
-      /// cede focus to the next field in the control. By default, each field
-      /// has a single cede focus key -- the [Space] key. 
-      /// </summary>
-      /// <param name="e"><see cref="System.Windows.Forms.Keys">KeyCode</see>
-      /// indicates which keyboard key will cede focus.</param>
-      public void AddCedeFocusKey( KeyEventArgs e )
-      {
-         foreach ( FieldControl fc in _fieldControls )
-         {
-            fc.AddCedeFocusKey( e );
-         }
-      }
-
-      /// <summary>
-      /// Adds a KeyEventArgs to a specific field that indicates when a field
-      /// should cede focus to the next field in the control. By default, each
-      /// field has a single cede focus key -- the [Space] key. 
-      /// </summary>
-      /// <param name="fieldIndex"></param>
-      /// <param name="e"></param>
-      /// <returns></returns>
-      public bool AddCedeFocusKey( int fieldIndex, KeyEventArgs e )
-      {
-         if ( IsValidFieldIndex( fieldIndex ) )
-         {
-            return _fieldControls[ fieldIndex ].AddCedeFocusKey( e );
-         }
-
-         return false;
-      }
-
-      /// <summary>
       /// Clears all content from the fields in the control.
       /// </summary>
       public void Clear()
@@ -344,29 +311,6 @@ namespace FlexFieldControlLib
          foreach ( FieldControl fc in _fieldControls )
          {
             fc.Clear();
-         }
-      }
-
-      /// <summary>
-      /// Removes every cede focus key from every field in the control.
-      /// </summary>
-      public void ClearCedeFocusKeys()
-      {
-         foreach ( FieldControl fc in _fieldControls )
-         {
-            fc.ClearCedeFocusKeys();
-         }
-      }
-
-      /// <summary>
-      /// Removes every cede focus key from a specific field in the control.
-      /// </summary>
-      /// <param name="fieldIndex"></param>
-      public void ClearCedeFocusKeys( int fieldIndex )
-      {
-         if ( IsValidFieldIndex( fieldIndex ) )
-         {
-            _fieldControls[ fieldIndex ].ClearCedeFocusKeys();
          }
       }
 
@@ -558,84 +502,6 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
-      /// Removes every cede focus key from every field, and adds the default
-      /// cede focus key -- the [Space] key -- to every field.
-      /// </summary>
-      public void ResetCedeFocusKeys()
-      {
-         foreach ( FieldControl fc in _fieldControls )
-         {
-            fc.ResetCedeFocusKeys();
-         }
-      }
-
-      /// <summary>
-      /// Removes every cede focus key from a specific field, and adds the
-      /// default cede focus key -- the [Space] key -- to the field.
-      /// </summary>
-      /// <param name="fieldIndex"></param>
-      public void ResetCedeFocusKeys( int fieldIndex )
-      {
-         if ( IsValidFieldIndex( fieldIndex ) )
-         {
-            _fieldControls[ fieldIndex ].ResetCedeFocusKeys();
-         }
-      }
-
-      /// <summary>
-      /// Toggles whether every field allows a preceding zero.
-      /// </summary>
-      /// <param name="allowPrecedingZero"></param>
-      public void SetAllowPrecedingZero( bool allowPrecedingZero )
-      {
-         foreach ( FieldControl fc in _fieldControls )
-         {
-            fc.AllowPrecedingZero = allowPrecedingZero;
-         }
-      }
-
-      /// <summary>
-      /// Toggles whether a specific field allows a preceding zero.
-      /// </summary>
-      /// <param name="fieldIndex"></param>
-      /// <param name="allowPrecedingZero"></param>
-      public void SetAllowPrecedingZero( int fieldIndex, bool allowPrecedingZero )
-      {
-         if ( IsValidFieldIndex( fieldIndex ) )
-         {
-            _fieldControls[ fieldIndex ].AllowPrecedingZero = allowPrecedingZero;
-         }
-      }
-
-
-      /// <summary>
-      /// Sets the character casing for every field in the control.
-      /// </summary>
-      /// <param name="casing"></param>
-      public void SetCasing( CharacterCasing casing )
-      {
-         foreach ( FieldControl fc in _fieldControls )
-         {
-            fc.CharacterCasing = casing;
-            fc.Size = fc.MinimumSize;
-         }
-      }
-
-      /// <summary>
-      /// Sets the character casing for a specific field in the control.
-      /// </summary>
-      /// <param name="fieldIndex"></param>
-      /// <param name="casing"></param>
-      public void SetCasing( int fieldIndex, CharacterCasing casing )
-      {
-         if ( IsValidFieldIndex( fieldIndex ) )
-         {
-            _fieldControls[ fieldIndex ].CharacterCasing = casing;
-            _fieldControls[ fieldIndex ].Size = _fieldControls[ fieldIndex ].MinimumSize;
-         }
-      }
-
-      /// <summary>
       /// Sets text for every field in the control.
       /// </summary>
       /// <param name="text"></param>
@@ -673,122 +539,6 @@ namespace FlexFieldControlLib
       }
 
       /// <summary>
-      /// Toggles whether the value for every field is displayed with leading
-      /// zeros.
-      /// </summary>
-      /// <param name="leadingZeros"><code>true</code> indicates that the value
-      /// is displayed with leading zeros.</param>
-      public void SetLeadingZeros( bool leadingZeros )
-      {
-         foreach ( FieldControl fc in _fieldControls )
-         {
-            fc.LeadingZeros = leadingZeros;
-         }
-      }
-
-      /// <summary>
-      /// Toggles whether the value for a specific field is displayed with
-      /// leading zeros.
-      /// </summary>
-      /// <param name="fieldIndex">Zero-based index for field.</param>
-      /// <param name="leadingZeros"><c>true</c> indicates value should be
-      /// displayed with leading zeros.</param>
-      public void SetLeadingZeros( int fieldIndex, bool leadingZeros )
-      {
-         if ( IsValidFieldIndex( fieldIndex ) )
-         {
-            _fieldControls[ fieldIndex ].LeadingZeros = leadingZeros;
-         }
-      }
-
-      /// <summary>
-      /// Sets the maximum length for every field in the control.
-      /// </summary>
-      /// <param name="maxLength"></param>
-      public void SetMaxLength( int maxLength )
-      {
-         foreach ( FieldControl fc in _fieldControls )
-         {
-            fc.MaxLength = maxLength;
-         }
-
-         AdjustSize();
-      }
-
-      /// <summary>
-      /// Sets the maximum length for a specific field in the control. Default
-      /// value is 3.
-      /// </summary>
-      /// <param name="fieldIndex"></param>
-      /// <param name="maxLength"></param>
-      public void SetMaxLength( int fieldIndex, int maxLength )
-      {
-         if ( IsValidFieldIndex( fieldIndex ) )
-         {
-            _fieldControls[ fieldIndex ].MaxLength = maxLength;
-         }
-
-         AdjustSize();
-      }
-
-      /// <summary>
-      /// Sets the low and high range for every field.
-      /// </summary>
-      /// <param name="low"></param>
-      /// <param name="high"></param>
-      public void SetRange( int low, int high )
-      {
-         foreach ( FieldControl fc in _fieldControls )
-         {
-            fc.RangeLow = low;
-            fc.RangeHigh = high;
-         }
-      }
-
-      /// <summary>
-      /// Sets the low and high range for a specific field.
-      /// </summary>
-      /// <param name="fieldIndex"></param>
-      /// <param name="low"></param>
-      /// <param name="high"></param>
-      public void SetRange( int fieldIndex, int low, int high )
-      {
-         if ( IsValidFieldIndex( fieldIndex ) )
-         {
-            _fieldControls[ fieldIndex ].RangeLow = low;
-            _fieldControls[ fieldIndex ].RangeHigh = high;
-         }
-      }
-
-      /// <summary>
-      /// Sets the text for every separator.
-      /// </summary>
-      /// <param name="text"></param>
-      public void SetSeparatorText( string text )
-      {
-         foreach ( SeparatorControl sc in _separatorControls )
-         {
-            sc.Text = text;
-         }
-
-         AdjustSize();
-      }
-
-      /// <summary>
-      /// Sets the text for a specific separator.
-      /// </summary>
-      /// <param name="separatorIndex"></param>
-      /// <param name="text"></param>
-      public void SetSeparatorText( int separatorIndex, string text )
-      {
-         if ( IsValidSeparatorIndex( separatorIndex ) )
-         {
-            _separatorControls[ separatorIndex ].Text = text;
-            AdjustSize();
-         }
-      }
-
-      /// <summary>
       /// Sets the value for every field.
       /// </summary>
       /// <param name="value"></param>
@@ -811,35 +561,6 @@ namespace FlexFieldControlLib
          {
             _fieldControls[ fieldIndex ].Value = value;
          }
-      }
-
-      /// <summary>
-      /// Sets the value format for every field.
-      /// </summary>
-      /// <param name="format"></param>
-      public void SetValueFormat( ValueFormat format )
-      {
-         foreach ( FieldControl fc in _fieldControls )
-         {
-            fc.ValueFormat = format;
-         }
-
-         AdjustSize();
-      }
-
-      /// <summary>
-      /// Sets the value format for a specific field.
-      /// </summary>
-      /// <param name="fieldIndex"></param>
-      /// <param name="format"></param>
-      public void SetValueFormat( int fieldIndex, ValueFormat format )
-      {
-         if ( IsValidFieldIndex( fieldIndex ) )
-         {
-            _fieldControls[ fieldIndex ].ValueFormat = format;
-         }
-
-         AdjustSize();
       }
 
       /// <summary>
@@ -909,6 +630,62 @@ namespace FlexFieldControlLib
       #endregion  // Protected Properties
 
       #region Protected Methods
+
+      /// <summary>
+      /// Adds a KeyEventArgs to every field that indicates when a field should
+      /// cede focus to the next field in the control. By default, each field
+      /// has a single cede focus key -- the [Space] key. 
+      /// </summary>
+      /// <param name="e"><see cref="System.Windows.Forms.Keys">KeyCode</see>
+      /// indicates which keyboard key will cede focus.</param>
+      protected void AddCedeFocusKey(KeyEventArgs e)
+      {
+         foreach (FieldControl fc in _fieldControls)
+         {
+            fc.AddCedeFocusKey(e);
+         }
+      }
+
+      /// <summary>
+      /// Adds a KeyEventArgs to a specific field that indicates when a field
+      /// should cede focus to the next field in the control. By default, each
+      /// field has a single cede focus key -- the [Space] key. 
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="e"></param>
+      /// <returns></returns>
+      protected bool AddCedeFocusKey(int fieldIndex, KeyEventArgs e)
+      {
+         if (IsValidFieldIndex(fieldIndex))
+         {
+            return _fieldControls[fieldIndex].AddCedeFocusKey(e);
+         }
+
+         return false;
+      }
+
+      /// <summary>
+      /// Removes every cede focus key from every field in the control.
+      /// </summary>
+      protected void ClearCedeFocusKeys()
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.ClearCedeFocusKeys();
+         }
+      }
+
+      /// <summary>
+      /// Removes every cede focus key from a specific field in the control.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      protected void ClearCedeFocusKeys( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[ fieldIndex ].ClearCedeFocusKeys();
+         }
+      }
 
       /// <summary>
       /// Clean up any resources being used.
@@ -1079,6 +856,228 @@ namespace FlexFieldControlLib
       protected override void OnSizeChanged( EventArgs e )
       {
          base.OnSizeChanged( e );
+
+         AdjustSize();
+      }
+
+      /// <summary>
+      /// Removes every cede focus key from every field, and adds the default
+      /// cede focus key -- the [Space] key -- to every field.
+      /// </summary>
+      protected void ResetCedeFocusKeys()
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.ResetCedeFocusKeys();
+         }
+      }
+      
+      /// <summary>
+      /// Removes every cede focus key from a specific field, and adds the
+      /// default cede focus key -- the [Space] key -- to the field.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      protected void ResetCedeFocusKeys( int fieldIndex )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[ fieldIndex ].ResetCedeFocusKeys();
+         }
+      }
+
+            /// <summary>
+      /// Toggles whether every field allows a preceding zero.
+      /// </summary>
+      /// <param name="allowPrecedingZero"></param>
+      protected void SetAllowPrecedingZero( bool allowPrecedingZero )
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.AllowPrecedingZero = allowPrecedingZero;
+         }
+      }
+
+      /// <summary>
+      /// Toggles whether a specific field allows a preceding zero.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="allowPrecedingZero"></param>
+      protected void SetAllowPrecedingZero( int fieldIndex, bool allowPrecedingZero )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[ fieldIndex ].AllowPrecedingZero = allowPrecedingZero;
+         }
+      }
+
+      /// <summary>
+      /// Sets the character casing for every field in the control.
+      /// </summary>
+      /// <param name="casing"></param>
+      protected void SetCasing( CharacterCasing casing )
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.CharacterCasing = casing;
+            fc.Size = fc.MinimumSize;
+         }
+      }
+
+      /// <summary>
+      /// Sets the character casing for a specific field in the control.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="casing"></param>
+      protected void SetCasing( int fieldIndex, CharacterCasing casing )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[ fieldIndex ].CharacterCasing = casing;
+            _fieldControls[ fieldIndex ].Size = _fieldControls[ fieldIndex ].MinimumSize;
+         }
+      }
+
+      /// <summary>
+      /// Toggles whether the value for every field is displayed with leading
+      /// zeros.
+      /// </summary>
+      /// <param name="leadingZeros"><code>true</code> indicates that the value
+      /// is displayed with leading zeros.</param>
+      protected void SetLeadingZeros( bool leadingZeros )
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.LeadingZeros = leadingZeros;
+         }
+      }
+
+            /// <summary>
+      /// Toggles whether the value for a specific field is displayed with
+      /// leading zeros.
+      /// </summary>
+      /// <param name="fieldIndex">Zero-based index for field.</param>
+      /// <param name="leadingZeros"><c>true</c> indicates value should be
+      /// displayed with leading zeros.</param>
+      protected void SetLeadingZeros( int fieldIndex, bool leadingZeros )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[ fieldIndex ].LeadingZeros = leadingZeros;
+         }
+      }
+
+      /// <summary>
+      /// Sets the maximum length for every field in the control.
+      /// </summary>
+      /// <param name="maxLength"></param>
+      protected void SetMaxLength( int maxLength )
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.MaxLength = maxLength;
+         }
+
+         AdjustSize();
+      }
+
+      /// <summary>
+      /// Sets the maximum length for a specific field in the control. Default
+      /// value is 3.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="maxLength"></param>
+      protected void SetMaxLength( int fieldIndex, int maxLength )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[ fieldIndex ].MaxLength = maxLength;
+         }
+
+         AdjustSize();
+      }
+
+      /// <summary>
+      /// Sets the low and high range for every field.
+      /// </summary>
+      /// <param name="low"></param>
+      /// <param name="high"></param>
+      protected void SetRange( int low, int high )
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.RangeLow = low;
+            fc.RangeHigh = high;
+         }
+      }
+
+      /// <summary>
+      /// Sets the low and high range for a specific field.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="low"></param>
+      /// <param name="high"></param>
+      protected void SetRange( int fieldIndex, int low, int high )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[ fieldIndex ].RangeLow = low;
+            _fieldControls[ fieldIndex ].RangeHigh = high;
+         }
+      }
+
+      /// <summary>
+      /// Sets the text for every separator.
+      /// </summary>
+      /// <param name="text"></param>
+      protected void SetSeparatorText( string text )
+      {
+         foreach ( SeparatorControl sc in _separatorControls )
+         {
+            sc.Text = text;
+         }
+
+         AdjustSize();
+      }
+
+      /// <summary>
+      /// Sets the text for a specific separator.
+      /// </summary>
+      /// <param name="separatorIndex"></param>
+      /// <param name="text"></param>
+      protected void SetSeparatorText( int separatorIndex, string text )
+      {
+         if ( IsValidSeparatorIndex( separatorIndex ) )
+         {
+            _separatorControls[ separatorIndex ].Text = text;
+            AdjustSize();
+         }
+      }
+      
+      /// <summary>
+      /// Sets the value format for every field.
+      /// </summary>
+      /// <param name="format"></param>
+      protected void SetValueFormat( ValueFormat format )
+      {
+         foreach ( FieldControl fc in _fieldControls )
+         {
+            fc.ValueFormat = format;
+         }
+
+         AdjustSize();
+      }
+
+      /// <summary>
+      /// Sets the value format for a specific field.
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="format"></param>
+      protected void SetValueFormat( int fieldIndex, ValueFormat format )
+      {
+         if ( IsValidFieldIndex( fieldIndex ) )
+         {
+            _fieldControls[ fieldIndex ].ValueFormat = format;
+         }
 
          AdjustSize();
       }
