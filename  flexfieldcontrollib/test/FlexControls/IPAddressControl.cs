@@ -1,6 +1,8 @@
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Net;
+using System.Net.Sockets;
 using System.Windows.Forms;
 
 using FlexFieldControlLib;
@@ -10,11 +12,7 @@ namespace FlexControls
 {
    class IPAddressControl : FlexFieldControl
    {
-      public new int FieldCount
-      {
-         get { return base.FieldCount; }
-      }
-
+      [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
       public IPAddress IPAddress
       {
          get
@@ -23,6 +21,8 @@ namespace FlexControls
          }
          set
          {
+            Clear();
+            if ( null == value || value.AddressFamily != AddressFamily.InterNetwork ) { return; }
             SetAddressBytes( value.GetAddressBytes() );
          }
       }
@@ -39,12 +39,13 @@ namespace FlexControls
          return bytes;
       }
 
-      [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720", Justification = "Prefer to use bytes as a variable name." )]
+      [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1720",
+            Justification = "Prefer to use Bytes in method name, as IPAddress does." )]
       public void SetAddressBytes( byte[] bytes )
       {
          Clear();
 
-         if ( bytes == null )
+         if ( null == bytes )
          {
             return;
          }

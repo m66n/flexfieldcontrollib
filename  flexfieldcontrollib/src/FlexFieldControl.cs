@@ -199,12 +199,12 @@ namespace FlexFieldControlLib
       /// minimum is 1. Setting this value resets every field and separator
       /// to its default state.
       /// </summary>
-      [Browsable( false )]
+      [Browsable( false ), DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
       public int FieldCount
       {
          get { return _fieldCount; }
          [SecurityCritical]
-         set
+         protected set
          {
             if ( value < 1 )
             {
