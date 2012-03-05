@@ -28,24 +28,11 @@
       /// </summary>
       private void InitializeComponent()
       {
-         this.ipAddressControl1 = new FlexControls.IPAddressControl();
          this.label1 = new System.Windows.Forms.Label();
+         this.label2 = new System.Windows.Forms.Label();
+         this.ipAddressPortControl1 = new FlexControls.IPAddressPortControl();
+         this.ipAddressControl1 = new FlexControls.IPAddressControl();
          this.SuspendLayout();
-         // 
-         // ipAddressControl1
-         // 
-         this.ipAddressControl1.AllowInternalTab = false;
-         this.ipAddressControl1.AutoHeight = true;
-         this.ipAddressControl1.BackColor = System.Drawing.SystemColors.Window;
-         this.ipAddressControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-         this.ipAddressControl1.Cursor = System.Windows.Forms.Cursors.IBeam;
-         this.ipAddressControl1.FieldCount = 4;
-         this.ipAddressControl1.Location = new System.Drawing.Point(79, 12);
-         this.ipAddressControl1.Name = "ipAddressControl1";
-         this.ipAddressControl1.ReadOnly = false;
-         this.ipAddressControl1.Size = new System.Drawing.Size(87, 20);
-         this.ipAddressControl1.TabIndex = 0;
-         this.ipAddressControl1.Text = "...";
          // 
          // label1
          // 
@@ -57,13 +44,53 @@
          this.label1.Text = "IP Address:";
          this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
          // 
+         // label2
+         // 
+         this.label2.AutoSize = true;
+         this.label2.Location = new System.Drawing.Point(12, 41);
+         this.label2.Name = "label2";
+         this.label2.Size = new System.Drawing.Size(92, 13);
+         this.label2.TabIndex = 3;
+         this.label2.Text = "IP Address + Port:";
+         this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+         // 
+         // ipAddressPortControl1
+         // 
+         this.ipAddressPortControl1.AllowInternalTab = false;
+         this.ipAddressPortControl1.AutoHeight = true;
+         this.ipAddressPortControl1.BackColor = System.Drawing.SystemColors.Window;
+         this.ipAddressPortControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+         this.ipAddressPortControl1.Cursor = System.Windows.Forms.Cursors.IBeam;
+         this.ipAddressPortControl1.Location = new System.Drawing.Point(110, 38);
+         this.ipAddressPortControl1.Name = "ipAddressPortControl1";
+         this.ipAddressPortControl1.ReadOnly = false;
+         this.ipAddressPortControl1.Size = new System.Drawing.Size(125, 20);
+         this.ipAddressPortControl1.TabIndex = 4;
+         this.ipAddressPortControl1.Text = "... : ";
+         // 
+         // ipAddressControl1
+         // 
+         this.ipAddressControl1.AllowInternalTab = false;
+         this.ipAddressControl1.AutoHeight = true;
+         this.ipAddressControl1.BackColor = System.Drawing.SystemColors.Window;
+         this.ipAddressControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+         this.ipAddressControl1.Cursor = System.Windows.Forms.Cursors.IBeam;
+         this.ipAddressControl1.Location = new System.Drawing.Point(110, 12);
+         this.ipAddressControl1.Name = "ipAddressControl1";
+         this.ipAddressControl1.ReadOnly = false;
+         this.ipAddressControl1.Size = new System.Drawing.Size(125, 20);
+         this.ipAddressControl1.TabIndex = 2;
+         this.ipAddressControl1.Text = "...";
+         // 
          // MainForm
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(292, 266);
-         this.Controls.Add(this.label1);
+         this.Controls.Add(this.ipAddressPortControl1);
+         this.Controls.Add(this.label2);
          this.Controls.Add(this.ipAddressControl1);
+         this.Controls.Add(this.label1);
          this.Name = "MainForm";
          this.Text = "TestControl";
          this.ResumeLayout(false);
@@ -73,8 +100,10 @@
 
       #endregion
 
-      private FlexControls.IPAddressControl ipAddressControl1;
       private System.Windows.Forms.Label label1;
+      private FlexControls.IPAddressControl ipAddressControl1;
+      private System.Windows.Forms.Label label2;
+      private FlexControls.IPAddressPortControl ipAddressPortControl1;
    }
 }
 
