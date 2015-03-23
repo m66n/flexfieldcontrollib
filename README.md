@@ -144,3 +144,5 @@ As a convenience to the user, this control adds the [;] key as a cede focus key 
 If the value of a field can be represented by one character, the user can enter that character and then press the [;] key or the [Space] key to advance the input focus of the control to the next field. Alternatively, `AddCedeFocusKey` can be called with a field index to set the cede focus keys for each field individually.
 
 The final call in the constructor - `Size = MinimumSize` - forces the control to be as small as possible. As settings change, the control will only grow to accommodate them; it will not automatically shrink. Once the control is placed on a form, it can be resized as necessary.
+
+Copyright (c) Michael Chapman. All rights reserved.
