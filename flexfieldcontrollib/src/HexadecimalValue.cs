@@ -28,145 +28,145 @@ using System.Windows.Forms;
 
 namespace FlexFieldControlLib
 {
-   internal class HexadecimalValue : IValueFormatter
-   {
-      public virtual int MaxFieldLength
+  internal class HexadecimalValue : IValueFormatter
+  {
+    public virtual int MaxFieldLength
+    {
+      get { return String.Format(CultureInfo.InvariantCulture, "{0:x}", int.MaxValue).Length - 1; }
+    }
+
+    public virtual string RegexString
+    {
+      get { return @"([0-9a-fA-F]*)"; }
+    }
+
+    public virtual Size GetCharacterSize(Graphics g, Font font, CharacterCasing casing)
+    {
+      const int MeasureCharCount = 10;
+
+      Size charSize = new Size(0, 0);
+
+      if (casing == CharacterCasing.Lower)
       {
-         get { return String.Format( CultureInfo.InvariantCulture, "{0:x}", int.MaxValue ).Length - 1; }
+        for (char c = 'a'; c <= 'f'; ++c)
+        {
+          Size newSize = TextRenderer.MeasureText(g, new string(c, MeasureCharCount), font, new Size(0, 0),
+             _textFormatFlags);
+
+          newSize.Width = (int)Math.Ceiling((double)newSize.Width / (double)MeasureCharCount);
+
+          if (newSize.Width > charSize.Width)
+          {
+            charSize.Width = newSize.Width;
+          }
+
+          if (newSize.Height > charSize.Height)
+          {
+            charSize.Height = newSize.Height;
+          }
+        }
+      }
+      else
+      {
+        for (char c = 'A'; c <= 'F'; ++c)
+        {
+          Size newSize = TextRenderer.MeasureText(g, new string(c, MeasureCharCount), font, new Size(0, 0),
+             _textFormatFlags);
+
+          newSize.Width = (int)Math.Ceiling((double)newSize.Width / (double)MeasureCharCount);
+
+          if (newSize.Width > charSize.Width)
+          {
+            charSize.Width = newSize.Width;
+          }
+
+          if (newSize.Height > charSize.Height)
+          {
+            charSize.Height = newSize.Height;
+          }
+        }
       }
 
-      public virtual string RegExString
+      for (char c = '0'; c <= '9'; ++c)
       {
-         get { return "[0-9a-fA-F]"; }
+        Size newSize = TextRenderer.MeasureText(g, new string(c, MeasureCharCount), font, new Size(0, 0),
+           _textFormatFlags);
+
+        newSize.Width = (int)Math.Ceiling((double)newSize.Width / (double)MeasureCharCount);
+
+        if (newSize.Width > charSize.Width)
+        {
+          charSize.Width = newSize.Width;
+        }
+
+        if (newSize.Height > charSize.Height)
+        {
+          charSize.Height = newSize.Height;
+        }
       }
 
-      public virtual Size GetCharacterSize( Graphics g, Font font, CharacterCasing casing )
+      return charSize;
+    }
+
+    public virtual bool IsValidKey(KeyEventArgs e)
+    {
+      if (e.KeyCode < Keys.A || e.KeyCode > Keys.F)
       {
-         const int MeasureCharCount = 10;
-
-         Size charSize = new Size( 0, 0 );
-
-         if ( casing == CharacterCasing.Lower )
-         {
-            for ( char c = 'a'; c <= 'f'; ++c )
-            {
-               Size newSize = TextRenderer.MeasureText( g, new string( c, MeasureCharCount ), font, new Size( 0, 0 ),
-                  _textFormatFlags );
-
-               newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
-
-               if ( newSize.Width > charSize.Width )
-               {
-                  charSize.Width = newSize.Width;
-               }
-
-               if ( newSize.Height > charSize.Height )
-               {
-                  charSize.Height = newSize.Height;
-               }
-            }
-         }
-         else
-         {
-            for ( char c = 'A'; c <= 'F'; ++c )
-            {
-               Size newSize = TextRenderer.MeasureText( g, new string( c, MeasureCharCount ), font, new Size( 0, 0 ),
-                  _textFormatFlags );
-
-               newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
-
-               if ( newSize.Width > charSize.Width )
-               {
-                  charSize.Width = newSize.Width;
-               }
-
-               if ( newSize.Height > charSize.Height )
-               {
-                  charSize.Height = newSize.Height;
-               }
-            }
-         }
-
-         for ( char c = '0'; c <= '9'; ++c )
-         {
-            Size newSize = TextRenderer.MeasureText( g, new string( c, MeasureCharCount ), font, new Size( 0, 0 ),
-               _textFormatFlags );
-
-            newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
-
-            if ( newSize.Width > charSize.Width )
-            {
-               charSize.Width = newSize.Width;
-            }
-
-            if ( newSize.Height > charSize.Height )
-            {
-               charSize.Height = newSize.Height;
-            }
-         }
-
-         return charSize;
+        if (e.KeyCode < Keys.NumPad0 || e.KeyCode > Keys.NumPad9)
+        {
+          if (e.KeyCode < Keys.D0 || e.KeyCode > Keys.D9)
+          {
+            return false;
+          }
+        }
       }
 
-      public virtual bool IsValidKey( KeyEventArgs e )
-      {
-         if ( e.KeyCode < Keys.A || e.KeyCode > Keys.F )
-         {
-            if ( e.KeyCode < Keys.NumPad0 || e.KeyCode > Keys.NumPad9 )
-            {
-               if ( e.KeyCode < Keys.D0 || e.KeyCode > Keys.D9 )
-               {
-                  return false;
-               }
-            }
-         }
+      return true;
+    }
 
-         return true;
+    public virtual int MaxValue(int fieldLength)
+    {
+      int result = 0;
+
+      fieldLength = Math.Min(fieldLength, MaxFieldLength);
+      string valueString = new String('f', fieldLength);
+
+      if (Int32.TryParse(valueString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result))
+      {
+        return result;
       }
 
-      public virtual int MaxValue( int fieldLength )
+      return 0;
+    }
+
+    public virtual int Value(string text)
+    {
+      if (text == null)
       {
-         int result = 0;
-
-         fieldLength = Math.Min( fieldLength, MaxFieldLength );
-         string valueString = new String( 'f', fieldLength );
-
-         if ( Int32.TryParse( valueString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result ) )
-         {
-            return result;
-         }
-
-         return 0;
+        return 0;
       }
 
-      public virtual int Value( string text )
+      int result = 0;
+
+      if (Int32.TryParse(text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result))
       {
-         if ( text == null )
-         {
-            return 0;
-         }
-
-         int result = 0;
-
-         if ( Int32.TryParse( text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result ) )
-         {
-            return result;
-         }
-
-         return 0;
+        return result;
       }
 
-      public virtual string ValueText( int value, CharacterCasing casing )
-      {
-         if ( casing == CharacterCasing.Upper )
-         {
-            return String.Format( CultureInfo.InvariantCulture, "{0:X}", value );
-         }
+      return 0;
+    }
 
-         return String.Format( CultureInfo.InvariantCulture, "{0:x}", value );
+    public virtual string ValueText(int value, CharacterCasing casing)
+    {
+      if (casing == CharacterCasing.Upper)
+      {
+        return String.Format(CultureInfo.InvariantCulture, "{0:X}", value);
       }
 
-      private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter |
-         TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
-   }
+      return String.Format(CultureInfo.InvariantCulture, "{0:x}", value);
+    }
+
+    private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter |
+       TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
+  }
 }

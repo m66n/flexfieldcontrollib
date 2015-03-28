@@ -28,38 +28,38 @@ using System.Windows.Forms.Design.Behavior;
 
 namespace FlexFieldControlLib
 {
-   class FlexFieldControlDesigner : ControlDesigner
-   {
-      public override SelectionRules SelectionRules
-      {      
-         get
-         {
-            FlexFieldControl control = (FlexFieldControl)Control;
-
-            if ( control.AutoHeight )
-            {
-               return SelectionRules.Moveable | SelectionRules.Visible |
-                  SelectionRules.RightSizeable | SelectionRules.LeftSizeable;
-            }
-            else
-            {
-               return SelectionRules.AllSizeable | SelectionRules.Moveable | SelectionRules.Visible;
-            }
-         }
-      }
-
-      public override IList SnapLines
+  class FlexFieldControlDesigner : ControlDesigner
+  {
+    public override SelectionRules SelectionRules
+    {
+      get
       {
-         get
-         {
-            FlexFieldControl control = (FlexFieldControl)Control;
+        FlexFieldControl control = (FlexFieldControl)Control;
 
-            IList snapLines = base.SnapLines;
-
-            snapLines.Add( new SnapLine( SnapLineType.Baseline, control.Baseline ) );
-
-            return snapLines;
-         }
+        if (control.AutoHeight)
+        {
+          return SelectionRules.Moveable | SelectionRules.Visible |
+             SelectionRules.RightSizeable | SelectionRules.LeftSizeable;
+        }
+        else
+        {
+          return SelectionRules.AllSizeable | SelectionRules.Moveable | SelectionRules.Visible;
+        }
       }
-   }
+    }
+
+    public override IList SnapLines
+    {
+      get
+      {
+        FlexFieldControl control = (FlexFieldControl)Control;
+
+        IList snapLines = base.SnapLines;
+
+        snapLines.Add(new SnapLine(SnapLineType.Baseline, control.Baseline));
+
+        return snapLines;
+      }
+    }
+  }
 }

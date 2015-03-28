@@ -33,7 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FlexFieldControlLib">
+    <Reference Include="FlexFieldControlLib, Version=1.1.5565.2352, Culture=neutral, PublicKeyToken=b8054e2ad0d89485, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\VS2013\bin\Release\FlexFieldControlLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -48,12 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FlexControls\DefaultControl.cs">
+      <Link>DefaultControl.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="..\FlexControls\IPAddressControl.cs">
       <Link>IPAddressControl.cs</Link>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="..\FlexControls\IPAddressPortControl.cs">
       <Link>IPAddressPortControl.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\FlexControls\MACAddressControl.cs">
+      <Link>MACAddressControl.cs</Link>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.cs">

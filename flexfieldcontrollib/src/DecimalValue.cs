@@ -29,96 +29,96 @@ using System.Windows.Forms;
 
 namespace FlexFieldControlLib
 {
-   internal class DecimalValue : IValueFormatter
-   {
-      public virtual int MaxFieldLength
+  internal class DecimalValue : IValueFormatter
+  {
+    public virtual int MaxFieldLength
+    {
+      get { return string.Format(CultureInfo.InvariantCulture, "{0:d}", int.MaxValue).Length - 1; }
+    }
+
+    public virtual string RegexString
+    {
+      get { return @"([0-9]*)"; }
+    }
+
+    public virtual Size GetCharacterSize(Graphics g, Font font, CharacterCasing casing)
+    {
+      const int MeasureCharCount = 10;
+
+      Size charSize = new Size(0, 0);
+
+      for (char c = '0'; c <= '9'; ++c)
       {
-         get { return string.Format( CultureInfo.InvariantCulture, "{0:d}", int.MaxValue ).Length - 1; }
+        Size newSize = TextRenderer.MeasureText(g, new string(c, MeasureCharCount), font, new Size(0, 0),
+           _textFormatFlags);
+
+        newSize.Width = (int)Math.Ceiling((double)newSize.Width / (double)MeasureCharCount);
+
+        if (newSize.Width > charSize.Width)
+        {
+          charSize.Width = newSize.Width;
+        }
+
+        if (newSize.Height > charSize.Height)
+        {
+          charSize.Height = newSize.Height;
+        }
       }
 
-      public virtual string RegExString
+      return charSize;
+    }
+
+    public virtual bool IsValidKey(KeyEventArgs e)
+    {
+      if (e.KeyCode < Keys.NumPad0 || e.KeyCode > Keys.NumPad9)
       {
-         get { return "[0-9]"; }
+        if (e.KeyCode < Keys.D0 || e.KeyCode > Keys.D9)
+        {
+          return false;
+        }
       }
 
-      public virtual Size GetCharacterSize( Graphics g, Font font, CharacterCasing casing )
+      return true;
+    }
+
+    public virtual int MaxValue(int fieldLength)
+    {
+      int result = 0;
+
+      fieldLength = Math.Min(fieldLength, MaxFieldLength);
+      string valueString = new String('9', fieldLength);
+
+      if (Int32.TryParse(valueString, NumberStyles.Integer, CultureInfo.InvariantCulture, out result))
       {
-         const int MeasureCharCount = 10;
-
-         Size charSize = new Size( 0, 0 );
-
-         for ( char c = '0'; c <= '9'; ++c )
-         {
-            Size newSize = TextRenderer.MeasureText( g, new string( c, MeasureCharCount ), font, new Size( 0, 0 ),
-               _textFormatFlags );
-
-            newSize.Width = (int)Math.Ceiling( (double)newSize.Width / (double)MeasureCharCount );
-
-            if ( newSize.Width > charSize.Width )
-            {
-               charSize.Width = newSize.Width;
-            }
-
-            if ( newSize.Height > charSize.Height )
-            {
-               charSize.Height = newSize.Height;
-            }
-         }
-
-         return charSize;
+        return result;
       }
 
-      public virtual bool IsValidKey( KeyEventArgs e )
-      {
-         if ( e.KeyCode < Keys.NumPad0 || e.KeyCode > Keys.NumPad9 )
-         {
-            if ( e.KeyCode < Keys.D0 || e.KeyCode > Keys.D9 )
-            {
-               return false;
-            }
-         }
+      return 0;
+    }
 
-         return true;
+    public virtual int Value(string text)
+    {
+      if (text == null)
+      {
+        return 0;
       }
 
-      public virtual int MaxValue( int fieldLength )
+      int result = 0;
+
+      if (Int32.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out result))
       {
-         int result = 0;
-
-         fieldLength = Math.Min( fieldLength, MaxFieldLength );
-         string valueString = new String( '9', fieldLength );
-
-         if ( Int32.TryParse( valueString, NumberStyles.Integer, CultureInfo.InvariantCulture, out result ) )
-         {
-            return result;
-         }
-
-         return 0;
+        return result;
       }
 
-      public virtual int Value( string text )
-      {
-         if ( text == null )
-         {
-            return 0;
-         }
+      return 0;
+    }
 
-         int result = 0;
+    public virtual string ValueText(int value, CharacterCasing casing)
+    {
+      return value.ToString(CultureInfo.InvariantCulture);
+    }
 
-         if ( Int32.TryParse( text, NumberStyles.Integer, CultureInfo.InvariantCulture, out result ) )
-         {
-            return result;
-         }
-
-         return 0;
-      }
-
-      public virtual string ValueText( int value, CharacterCasing casing )
-      {
-         return value.ToString( CultureInfo.InvariantCulture );
-      }
-
-      private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter |
-         TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
-   }
+    private TextFormatFlags _textFormatFlags = TextFormatFlags.HorizontalCenter |
+        TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
+  }
 }

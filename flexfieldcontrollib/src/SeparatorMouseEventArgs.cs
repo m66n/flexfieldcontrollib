@@ -26,21 +26,21 @@ using System.Drawing;
 
 namespace FlexFieldControlLib
 {
-   class SeparatorMouseEventArgs : EventArgs
-   {
-      public Point Location
-      {
-         get { return _location; }
-         set { _location = value; }
-      }
+  class SeparatorMouseEventArgs : EventArgs
+  {
+    public Point Location
+    {
+      get { return _location; }
+      set { _location = value; }
+    }
 
-      public int SeparatorIndex
-      {
-         get { return _separatorIndex; }
-         set { _separatorIndex = value; }
-      }
+    public int SeparatorIndex
+    {
+      get { return _separatorIndex; }
+      set { _separatorIndex = value; }
+    }
 
-      private Point _location;
-      private int _separatorIndex;
-   }
+    private Point _location;
+    private int _separatorIndex;
+  }
 }

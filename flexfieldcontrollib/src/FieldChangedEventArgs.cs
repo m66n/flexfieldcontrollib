@@ -25,30 +25,30 @@ using System;
 
 namespace FlexFieldControlLib
 {
-   /// <summary>
-   /// Arguments for FieldChangedEvent.
-   /// </summary>
-   public class FieldChangedEventArgs : EventArgs
-   {
-      /// <summary>
-      /// Gets or sets index of field that is raising FieldChangedEvent.
-      /// </summary>
-      public int FieldIndex
-      {
-         get { return _fieldIndex; }
-         set { _fieldIndex = value; }
-      }
+  /// <summary>
+  /// Arguments for FieldChangedEvent.
+  /// </summary>
+  public class FieldChangedEventArgs : EventArgs
+  {
+    /// <summary>
+    /// Gets or sets index of field that is raising FieldChangedEvent.
+    /// </summary>
+    public int FieldIndex
+    {
+      get { return _fieldIndex; }
+      set { _fieldIndex = value; }
+    }
 
-      /// <summary>
-      /// Gets or sets text of field that is raising FieldChangedEvent.
-      /// </summary>
-      public string Text
-      {
-         get { return _text; }
-         set { _text = value; }
-      }
+    /// <summary>
+    /// Gets or sets text of field that is raising FieldChangedEvent.
+    /// </summary>
+    public string Text
+    {
+      get { return _text; }
+      set { _text = value; }
+    }
 
-      private int _fieldIndex;
-      private string _text;
-   }
+    private int _fieldIndex;
+    private string _text;
+  }
 }

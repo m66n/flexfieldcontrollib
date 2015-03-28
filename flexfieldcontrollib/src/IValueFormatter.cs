@@ -27,25 +27,25 @@ using System.Windows.Forms;
 
 namespace FlexFieldControlLib
 {
-   internal interface IValueFormatter
-   {
-      int MaxFieldLength
-      {
-         get;
-      }
+  internal interface IValueFormatter
+  {
+    int MaxFieldLength
+    {
+      get;
+    }
 
-      string RegExString
-      {
-         get;
-      }
+    string RegexString
+    {
+      get;
+    }
 
-      Size GetCharacterSize( Graphics g, Font font, CharacterCasing casing );
+    Size GetCharacterSize(Graphics g, Font font, CharacterCasing casing);
 
-      bool IsValidKey( KeyEventArgs e );
+    bool IsValidKey(KeyEventArgs e);
 
-      int MaxValue( int fieldLength );
- 
-      int Value( string text );
-      string ValueText( int value, CharacterCasing casing );
-   }
+    int MaxValue(int fieldLength);
+
+    int Value(string text);
+    string ValueText(int value, CharacterCasing casing);
+  }
 }
