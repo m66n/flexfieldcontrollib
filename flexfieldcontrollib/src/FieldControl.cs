@@ -284,7 +284,7 @@ namespace FlexFieldControlLib
       return false;
     }
 
-    public void Clear()
+    public new void Clear()
     {
       base.Text = String.Empty;
     }
