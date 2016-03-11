@@ -309,7 +309,7 @@ namespace FlexFieldControlLib
         for (int i = 0; i < _separatorControls.Count; ++i)
         {
           sb.Append(Regex.Escape(_separatorControls[i].Text));
-          
+
           if (i < _fieldControls.Count)
           {
             sb.Append(_fieldControls[i].RegexString);
@@ -324,7 +324,7 @@ namespace FlexFieldControlLib
         {
           for (int i = 0; i < Math.Min(_fieldControls.Count, m.Groups.Count - 1); ++i)
           {
-            _fieldControls[i].Text = m.Groups[i + 1].Value;
+            _fieldControls[i].SetText(m.Groups[i + 1].Value);
           }
         }
       }

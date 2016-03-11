@@ -302,6 +302,27 @@ namespace FlexFieldControlLib
       _cedeFocusKeys.Add(e);
     }
 
+    public void SetText(string text)
+    {
+      if (text == null || text == String.Empty || !IsValue(text))
+      {
+        return;
+      }
+
+      int result = _valueFormatter.Value(text);
+
+      if (result < RangeLow)
+      {
+        result = RangeLow;
+      }
+      else if (result > RangeHigh)
+      {
+        result = RangeHigh;
+      }
+
+      Value = result;
+    }
+
     public void TakeFocus(Action action)
     {
       Focus();
