@@ -40,6 +40,7 @@ namespace FlexFieldControlLib
   /// <summary>
   /// An abstract base for a numeric fielded control.
   /// </summary>
+  [DefaultEvent("TextChanged")]
   [DesignerAttribute(typeof(FlexFieldControlDesigner))]
   public abstract class FlexFieldControl : ContainerControl
   {
