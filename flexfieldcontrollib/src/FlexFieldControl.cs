@@ -250,6 +250,27 @@ namespace FlexFieldControlLib
     }
 
     /// <summary>
+    /// Gets a value for the height of the control according to font
+    /// and border style. 
+    /// </summary>
+    [Browsable(false), EditorBrowsable(EditorBrowsableState.Advanced),
+    DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int PreferredHeight
+    {
+      get
+      {
+        int height = FontHeight;
+
+        if (BorderStyle != BorderStyle.None)
+        {
+          height += SystemInformation.BorderSize.Height * 4 + 3;
+        }
+
+        return height;
+      }
+    }
+
+    /// <summary>
     /// Gets or sets a value indicating whether the contents of the control
     /// can be changed. 
     /// </summary>
@@ -1172,12 +1193,12 @@ namespace FlexFieldControlLib
       {
         case BorderStyle.Fixed3D:
           minimumSize.Width += (2 * Fixed3DOffset.Width);
-          minimumSize.Height = GetSuggestedHeight();
+          minimumSize.Height = PreferredHeight;
           break;
 
         case BorderStyle.FixedSingle:
           minimumSize.Width += (2 * FixedSingleOffset.Width);
-          minimumSize.Height = GetSuggestedHeight();
+          minimumSize.Height = PreferredHeight;
           break;
       }
 
@@ -1200,19 +1221,6 @@ namespace FlexFieldControlLib
 
       _separatorControls.Clear();
       _fieldControls.Clear();
-    }
-
-    private int GetSuggestedHeight()
-    {
-      int height = 0;
-      using (TextBox dummy = new TextBox())
-      {
-        dummy.AutoSize = true;
-        dummy.BorderStyle = BorderStyle;
-        dummy.Font = Font;
-        height = dummy.Height;
-      }
-      return height;
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806", Justification = "What should be done if ReleaseDC() doesn't work?")]
